@@ -1,0 +1,18 @@
+<c-col xs="12" class="p-1">
+  <div class="wrap">
+    <c-row>
+      <div class="col-6">{{config.key}}</div>
+      <div class="col-6" *ngIf="config.type === 'date'; else block">
+        <span *ngIf="isDate(config.value); else invalidDate">{{config.value | date}}</span>
+      </div>
+    </c-row>
+  </div>
+</c-col>
+
+<ng-template #block>
+  <div class="col-6 key">{{config.value}}</div>
+</ng-template>
+
+<ng-template #invalidDate>
+  <span>Invalid Date</span>
+</ng-template>

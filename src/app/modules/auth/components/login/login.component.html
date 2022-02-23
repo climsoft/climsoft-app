@@ -1,0 +1,68 @@
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+  <c-container>
+    <c-row class="justify-content-center">
+      <c-col md="8" lg="6" xl="5">
+        <c-card-group>
+          <c-card class="p-4">
+            <c-card-body>
+              <form [formGroup]="form" cForm (ngSubmit)="onSubmit()" novalidate class="needs-validation">
+                <div class="logo">
+                  <img src="./assets/img/brand/opencdms-logo.png" alt="">
+                </div>
+                <h2>Login</h2>
+                <p class="text-medium-emphasis">Sign In to your account</p>
+                <c-input-group class="mb-3">
+                  <span cInputGroupText [ngClass]="{ 'invalid': (submitted || f['username'].touched) && f['username'].invalid }">
+                    <svg cIcon name="cilUser"></svg>
+                  </span>
+                  <input
+                    formControlName="username"
+                    [autofocus]="true"
+                    cFormControl
+                    [ngClass]="{ 'is-invalid': (submitted || f['username'].touched) && f['username'].invalid }"
+                    placeholder="Email" />
+                    <div col="12" class="invalid-feedback pl-1" *ngIf="f['username'].errors">
+                      <div *ngIf="f['username'].errors['required']"> <i class="fa fa-times"></i> Username is required.</div>
+                    </div>
+                </c-input-group>
+                <c-input-group class="mb-1">
+                  <span cInputGroupText [ngClass]="{ 'invalid': (submitted || f['username'].touched) && f['username'].invalid }">
+                    <svg cIcon name="cilLockLocked"></svg>
+                  </span>
+                  <input
+                    type="password"
+                    formControlName="password"
+                    cFormControl
+                    [ngClass]="{ 'is-invalid': (submitted || f['password'].touched) && f['password'].invalid }"
+                    placeholder="Password"
+                  />
+                  <div col="12" class="invalid-feedback" *ngIf="f['password'].errors">
+                    <div *ngIf="f['password'].errors['required']">Password is required.</div>
+                  </div>
+                </c-input-group>
+                <c-row *ngIf="submitted && error">
+                  <c-col class="mt-2 mb-3">
+                    <div class="error-block"> <svg cIcon name="cilFaceDead"></svg> Authentication failed, Please try again.</div>
+                  </c-col>
+                </c-row>
+                <c-row [ngClass]="{ 'mt-3': !error }">
+                  <c-col xs="6">
+                    <button type="submit" cButton class="px-4" color="dark">
+                      <c-spinner *ngIf="loading" aria-hidden="true" size="sm"></c-spinner>
+                      Login
+                    </button>
+                  </c-col>
+                  <c-col class="text-end" xs="6">
+                    <a class="px-0" color="link" [routerLink]="['/forgot-password']">
+                      Forgot password?
+                    </a>
+                  </c-col>
+                </c-row>
+              </form>
+            </c-card-body>
+          </c-card>
+        </c-card-group>
+      </c-col>
+    </c-row>
+  </c-container>
+</div>

@@ -1,0 +1,56 @@
+.app-splash-screen {
+  background: #4f5d73;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  z-index: 1040;
+  opacity: 1;
+}
+
+.app-label {
+  margin-top: 32px;
+  color: #fff;
+  font-size: 2.5em;
+  text-align: center;
+}
+
+.app-splash-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.app-logo {
+  background-repeat: no-repeat;
+  max-width: 100%;
+  width: 150px;
+  height: 150px;
+  text-align: center;
+
+  img {
+    width: 150px;
+  }
+}
+
+.app-loader {
+  max-width: 100%;
+  background-position: center;
+  background-size: contain;
+  width: 150px;
+  height: 150px;
+  margin-top: 10px;
+  text-align: center;
+
+  img {
+    width: 100px;
+  }
+}

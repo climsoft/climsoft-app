@@ -1,0 +1,27 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>{{stationName}}</strong>
+      </c-card-header>
+      <c-card-body>
+        <c-row>
+          <c-col xs="12" md="5" xl="4" *ngFor="let item of station">
+            <app-info-block [config]="item"></app-info-block>
+          </c-col>
+        </c-row>
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-body>
+        <c-row>
+          <c-col xs="12">
+            <h5>Station Elements</h5>
+          </c-col>
+        </c-row>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

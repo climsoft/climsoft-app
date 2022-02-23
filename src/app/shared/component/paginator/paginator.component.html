@@ -1,0 +1,40 @@
+<c-row>
+  <c-col xs="12" md="8" xl="5">
+    <c-pagination aria-label="navigation" size="sm" class="justify-content-center">
+      <li cPageItem [disabled]="current === 1">
+        <a cPageLink (click)="pageChange(1)">
+          <svg cIcon name="cilMediaStepBackward"></svg>
+        </a>
+      </li>
+      <li cPageItem [disabled]="current === 1">
+        <a cPageLink (click)="pageChange(current - 1)">
+          <svg cIcon name="cilMediaSkipBackward"></svg>
+        </a>
+      </li>
+      <li cPageItem [active]="current === p" *ngFor="let p of getPages()">
+        <a cPageLink (click)="pageChange(p)">{{p}}</a>
+      </li>
+      <li cPageItem [disabled]="current === pages.length">
+        <a cPageLink (click)="pageChange(current + 1)">
+          <svg cIcon name="cilMediaSkipForward"></svg>
+        </a>
+      </li>
+      <li cPageItem [disabled]="current === pages.length">
+        <a cPageLink (click)="pageChange(pages.length)">
+          <svg cIcon name="cilMediaStepForward"></svg>
+        </a>
+      </li>
+    </c-pagination>
+  </c-col>
+  <c-col xs="12" md="4" xl="7" class="text-end">
+    <c-button-group aria-label="Basic outlined example" role="group" size="sm">
+      <button
+        cButton
+        color="primary"
+        [active]="lim === limit"
+        (click)="onLimit(lim)"
+        variant="outline"
+        *ngFor="let lim of limits"> {{lim}} </button>
+    </c-button-group>
+  </c-col>
+</c-row>
