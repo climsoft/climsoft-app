@@ -1,3 +1,4 @@
+import { AppMode } from './../../data/enum/app-mode';
 import { INavData } from '@coreui/angular';
 
 export const navItems: INavData[] = [
@@ -9,6 +10,10 @@ export const navItems: INavData[] = [
       color: 'info',
       text: 'NEW'
     }
+  },
+  {
+    title: true,
+    name: 'Station Metadata'
   },
   {
     name: 'Stations',
@@ -23,26 +28,82 @@ export const navItems: INavData[] = [
     badge: { color: 'info', text: '850' }
   },
   {
+    name: 'Station Elements',
+    url: '/station-elements',
+    iconComponent: { name: 'cil-puzzle' },
+    badge: { color: 'info', text: '850' }
+  },
+  {
     name: 'Instruments',
     url: '/instruments',
     iconComponent: { name: 'cil-apps-settings' },
     badge: { color: 'info', text: '190' }
   },
   {
+    name: 'Location Histories',
+    url: '/location-histories',
+    iconComponent: { name: 'cil-puzzle' },
+    badge: { color: 'info', text: '850' }
+  },
+  {
+    name: 'Qualifiers',
+    url: '/qualifiers',
+    iconComponent: { name: 'cil-puzzle' },
+    badge: { color: 'info', text: '850' }
+  },
+  {
+    name: 'Schedule Class',
+    url: '/schedule-classes',
+    iconComponent: { name: 'cil-puzzle' },
+    badge: { color: 'info', text: '120' }
+  },
+  {
+    name: 'Physical Features',
+    url: '/physical-features',
+    iconComponent: { name: 'cil-puzzle' },
+    badge: { color: 'info', text: '850' }
+  },
+  {
+    name: 'Paper Archive',
+    url: '/paper-archive',
+    iconComponent: { name: 'cil-puzzle' },
+    badge: { color: 'info', text: '850' }
+  },
+  {
     title: true,
-    name: 'Theme'
+    name: 'Data Entry'
   },
   {
-    name: 'Colors',
-    url: '/theme/colors',
-    iconComponent: { name: 'cil-drop' }
-  },
-  {
-    name: 'Typography',
-    url: '/theme/typography',
-    linkProps: { fragment: 'someAnchor' },
-    iconComponent: { name: 'cil-pencil' }
-  },
+    name: 'Data Entry Forms',
+    url: '/data-entry',
+    iconComponent: { name: 'cil-clipboard' },
+    children: [
+      {
+        name: 'Daily',
+        url: '/data-entry/daily'
+      },
+      {
+        name: 'Hourly',
+        url: '/data-entry/hourly'
+      },
+      {
+        name: 'Hourly Wind',
+        url: '/data-entry/hourly-wind'
+      },
+      {
+        name: 'Monthly',
+        url: '/data-entry/monthly'
+      },
+      {
+        name: 'Synoptic',
+        url: '/data-entry/synoptic'
+      },
+      {
+        name: 'Agroment',
+        url: '/data-entry/agro'
+      }
+    ]
+  }
   /*
   {
     title: true,
@@ -50,3 +111,5 @@ export const navItems: INavData[] = [
   }
   */
 ];
+
+export const DefaultNavItems = ['Dashboard'];

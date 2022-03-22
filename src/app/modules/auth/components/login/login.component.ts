@@ -1,7 +1,10 @@
+import { AppMode } from './../../../../data/enum/app-mode';
+import { environment } from 'src/environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 import { catchError, Subject, Observable, of } from 'rxjs';
 import { AuthService } from './../../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -17,10 +20,16 @@ export class LoginComponent {
   loading = false;
   error: boolean = false;
 
-  constructor(private authService: AuthService) {}
+  mode!: AppMode;
+
+  constructor(private cookieService: CookieService, private authService: AuthService) {}
 
   get f() {
     return this.form.controls;
+  }
+
+  get isClimsoft(): boolean {
+    return +this.cookieService.get(environment.APP_MODE_COOKIE) === AppMode.CLIMSOFT || false;
   }
 
   onSubmit() {

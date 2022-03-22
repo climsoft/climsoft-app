@@ -1,0 +1,87 @@
+<div class="modal-header">
+  <h5 class="modal-title pull-left">Update Profile</h5>
+  <button type="button" class="btn-close pull-right" aria-label="Close" (click)="onCancel()"></button>
+</div>
+<div class="modal-body">
+  <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Error(s)!</strong> Please correct the following errors.</c-alert>
+  <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
+
+    <c-row>
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="firstName">First Name</label>
+          <input
+            id="firstName"
+            type="text"
+            formControlName="firstName"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['firstName'].touched) && f['firstName'].invalid }"
+            placeholder="First Name"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['firstName'].errors">
+            <div *ngIf="f['firstName'].errors['required']"> <svg cIcon name="cilXCircle"></svg> First Name is required.</div>
+          </div>
+        </div>
+      </c-col>
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="pass">Last Name</label>
+          <input
+            id="lastName"
+            type="text"
+            formControlName="lastName"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['lastName'].touched) && f['lastName'].invalid }"
+            placeholder="Last Name"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['lastName'].errors">
+            <div *ngIf="f['lastName'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Last Name is required.</div>
+          </div>
+        </div>
+      </c-col>
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="email">Email</label>
+          <input
+            id="email"
+            formControlName="email"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['email'].touched) && f['email'].invalid }"
+            placeholder="Email"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['email'].errors">
+            <div *ngIf="f['email'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Email is required.</div>
+            <div *ngIf="f['email'].errors['pattern']"> <svg cIcon name="cilXCircle"></svg> Invalid email is provided.</div>
+          </div>
+        </div>
+      </c-col>
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="userId">User ID</label>
+          <input
+            id="userId"
+            type="text"
+            formControlName="userId"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['userId'].touched) && f['userId'].invalid }"
+            placeholder="User ID"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['userId'].errors">
+            <div *ngIf="f['userId'].errors['required']"> <svg cIcon name="cilXCircle"></svg> User Id is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" class="text-end pt-3">
+        <button type="submit" class="btn btn-dark mx-1">Submit</button>
+        <button type="button" class="btn btn-dark" [routerLink]="['../profile']">Cancel</button>
+      </c-col>
+    </c-row>
+  </form>
+</div>

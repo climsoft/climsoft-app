@@ -5,12 +5,14 @@
         <strong>{{isUpdate? 'Update' : 'Add'}} Station</strong>
       </c-card-header>
       <c-card-body>
-        <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Validator Errors!</strong> Please correct the following erros before you proceed.</c-alert>
+        <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Error(s) Found!</strong> Please correct the following erros before you proceed.</c-alert>
         <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
           <c-row>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
+                <label cLabel for="st_name">Name</label>
                 <input
+                  id="st-name"
                   formControlName="station_name"
                   aria-label="default input"
                   cFormControl
@@ -26,7 +28,9 @@
           <c-row>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
+                <label cLabel for="st_long">Longitude</label>
                 <input
+                  id="st-long"
                   formControlName="longitude"
                   aria-label="default input"
                   cFormControl
@@ -40,7 +44,9 @@
             </c-col>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
+                <label cLabel for="st_lat">Latitude</label>
                 <input
+                  id="st-lat"
                   formControlName="latitude"
                   aria-label="default input"
                   cFormControl
@@ -57,7 +63,9 @@
           <c-row>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
+                <label cLabel for="st_elev">Elevation</label>
                 <input
+                  id="st-elev"
                   formControlName="elevation"
                   aria-label="default input"
                   cFormControl
@@ -70,7 +78,9 @@
             </c-col>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
+                <label cLabel for="st_wmoid">WMO ID</label>
                 <input
+                  id="st-wmoid"
                   formControlName="wmoid"
                   aria-label="default input"
                   cFormControl
@@ -86,7 +96,9 @@
           <c-row>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
+                <label cLabel for="st-icao">ICAO ID</label>
                 <input
+                  id="st-icao"
                   formControlName="icaoid"
                   aria-label="default input"
                   cFormControl
@@ -99,7 +111,9 @@
             </c-col>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
+                <label cLabel for="st-county">Country</label>
                 <input
+                  id="st-country"
                   formControlName="country"
                   aria-label="default input"
                   cFormControl
@@ -115,7 +129,9 @@
           <c-row>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
+                <label cLabel for="st-auth">Authority</label>
                 <input
+                  id="st-auth"
                   formControlName="authority"
                   aria-label="default input"
                   cFormControl
@@ -128,7 +144,9 @@
             </c-col>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
+                <label cLabel for="st-adm-reg">Admin Region</label>
                 <input
+                  id="st-adm-reg"
                   formControlName="admin_region"
                   aria-label="default input"
                   cFormControl
@@ -144,7 +162,9 @@
           <c-row>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
+                <label cLabel for="st-drain">Drainage Basin</label>
                 <input
+                  id="st-drain"
                   formControlName="drainage_basin"
                   aria-label="default input"
                   cFormControl
@@ -157,7 +177,9 @@
             </c-col>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
+                <label cLabel for="st-qual">Qualifier</label>
                 <input
+                  id="st-qual"
                   formControlName="qualifier"
                   aria-label="default input"
                   cFormControl
@@ -173,7 +195,9 @@
           <c-row>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
+                <label cLabel for="st-open-dt">Opening Date</label>
                 <input
+                  id="st-open-dt"
                   formControlName="opening_datetime"
                   aria-label="default input"
                   cFormControl
@@ -186,7 +210,9 @@
             </c-col>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
+                <label cLabel for="st-clos-dt">Closing Date</label>
                 <input
+                  id="st-clos-dt"
                   formControlName="closing_datetime"
                   aria-label="default input"
                   cFormControl
@@ -202,7 +228,9 @@
           <c-row>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
+                <label cLabel for="st-geo-method">Geolocation Method</label>
                 <input
+                  id="st-geo-method"
                   formControlName="geolocation_method"
                   aria-label="default input"
                   cFormControl
@@ -215,7 +243,9 @@
             </c-col>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
+                <label cLabel for="st-geo-acc">Geolocation Accuracy</label>
                 <input
+                  id="st-geo-acc"
                   formControlName="geolocation_accuracy"
                   aria-label="default input"
                   cFormControl

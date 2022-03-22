@@ -1,0 +1,55 @@
+<div class="modal-header">
+  <h5 class="modal-title pull-left">Update Preferences</h5>
+  <button type="button" class="btn-close pull-right" aria-label="Close" (click)="onCancel()"></button>
+</div>
+<div class="modal-body">
+  <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Error(s)!</strong> Please correct the following errors.</c-alert>
+  <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
+
+    <c-row>
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="st-type">Mode</label>
+          <select formControlName="mode" aria-label="Mode" cSelect [ngClass]="{ 'is-invalid': (submitted || f['mode'].touched) && f['mode'].invalid }">
+            <option value>Select App Mode</option>
+            <option *ngFor="let m of modes" [value]="m.key">{{m.value}}</option>
+          </select>
+          <div col="12" class="invalid-feedback" *ngIf="f['mode'].errors">
+            <div *ngIf="f['mode'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Mode is required.</div>
+          </div>
+        </div>
+      </c-col>
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="locale">Locale</label>
+          <select formControlName="locale" aria-label="Locale" cSelect [ngClass]="{ 'is-invalid': (submitted || f['locale'].touched) && f['locale'].invalid }">
+            <option value>Select Locale</option>
+            <option *ngFor="let l of locales" [value]="l.key">{{l.value}}</option>
+          </select>
+          <div col="12" class="invalid-feedback" *ngIf="f['locale'].errors">
+            <div *ngIf="f['locale'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Locale is required.</div>
+          </div>
+        </div>
+      </c-col>
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="lang">Language</label>
+          <select formControlName="language" aria-label="Mode" cSelect [ngClass]="{ 'is-invalid': (submitted || f['language'].touched) && f['language'].invalid }">
+            <option value>Select Language</option>
+            <option *ngFor="let lang of locales" [value]="lang.key">{{lang.value}}</option>
+          </select>
+          <div col="12" class="invalid-feedback" *ngIf="f['language'].errors">
+            <div *ngIf="f['language'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Lanugage is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" class="text-end pt-3">
+        <button type="submit" class="btn btn-dark mx-1">Submit</button>
+        <button type="button" class="btn btn-dark" [routerLink]="['../profile']">Cancel</button>
+      </c-col>
+    </c-row>
+  </form>
+</div>

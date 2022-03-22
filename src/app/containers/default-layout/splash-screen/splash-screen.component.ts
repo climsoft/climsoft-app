@@ -1,5 +1,8 @@
+import { AppMode } from './../../../data/enum/app-mode';
+import { environment } from 'src/environments/environment';
 import { SplashAnimationType } from './../../../data/enum/splash-animation-type';
 import { Component, OnInit, Input } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-splash-screen',
@@ -12,9 +15,15 @@ export class SplashScreenComponent implements OnInit {
   opacityChange: number = 1;
   showSplash = true;
 
+  constructor(private cookieService: CookieService) {}
+
   @Input() animationDuration: number = 0.5;
   @Input() duration: number = 3;
   @Input() animationType: SplashAnimationType = SplashAnimationType.SlideLeft;
+
+  get isClimsoft(): boolean {
+    return +this.cookieService.get(environment.APP_MODE_COOKIE) === AppMode.CLIMSOFT || false;
+  }
 
   ngOnInit(): void {
     setTimeout(() => {

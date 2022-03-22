@@ -1,0 +1,58 @@
+$active-tab-border: #458CFF;
+$active-tab-color: #3c87ff;
+$active-tab-bg: #fff;
+
+$disabled-tab-border: #eaeaea;
+$text-color: #141922;
+
+.nav-item-link-after {
+  content: "";
+  background-color: $active-tab-border;
+  height: 2px;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: -1px;
+  transition: all 250ms ease 0s;
+  transform: scale(0);
+}
+
+.nav-tabs {
+  border-bottom: 2px solid $disabled-tab-border;
+
+  .nav-item {
+    border: none;
+    color: $text-color;
+    border-width: 0;
+  }
+
+  .nav-item > .nav-link {
+    border: none;
+    color: $text-color;
+    position: relative;
+  }
+
+  .nav-item > .nav-link, .nav-item > .nav-link:hover {
+    border: none;
+    color: $text-color !important;
+  }
+
+  .nav-item > .nav-link.active, .nav-item > .nav-link.active:hover {
+    border: none;
+    color: $text-color !important;
+    font-weight: 600;
+    background-color: $active-tab-bg;
+  }
+
+  .nav-item > .nav-link.active::after {
+    @extend .nav-item-link-after;
+  }
+
+  .nav-item > .nav-link:hover::after {
+    @extend .nav-item-link-after;
+  }
+
+  .nav-item .nav-link::after, .nav-item .nav-link.active::after, .nav-item .nav-link:hover::after {
+    transform: scale(1);
+  }
+}

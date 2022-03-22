@@ -7,7 +7,8 @@
             <c-card-body>
               <form [formGroup]="form" cForm (ngSubmit)="onSubmit()" novalidate class="needs-validation">
                 <div class="logo">
-                  <img src="./assets/img/brand/opencdms-logo.png" alt="">
+                  <img *ngIf="!isClimsoft" src="./assets/img/brand/opencdms-logo.png" alt="">
+                  <img *ngIf="isClimsoft" src="./assets/img/brand/climsoft_sm.png" alt="">
                 </div>
                 <h2>Login</h2>
                 <p class="text-medium-emphasis">Sign In to your account</p>

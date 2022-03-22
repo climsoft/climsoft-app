@@ -6,28 +6,22 @@
   visible
 >
   <c-sidebar-brand
-    [brandFull]="{
-      src: 'assets/img/brand/opencdms-logo.png',
-      width: 140,
-      height: 35,
-      alt: 'Climsoft'
-    }"
-    [brandNarrow]="{
-      src: 'assets/img/brand/opencdms-signet.png',
-      width: 40,
-      height: 40,
-      alt: 'Climsoft'
-    }"
+    *ngIf="isClimsoft"
+    [brandFull]="{ src: 'assets/img/brand/climsoft_sm.png', width: 115, height: 28, alt: 'Climsoft' }"
+    [brandNarrow]="{ src: 'assets/img/brand/climsoft-signet.png', width: 30, height: 40, alt: 'Climsoft' }"
     routerLink="./"
-  >
-  </c-sidebar-brand>
-    <perfect-scrollbar [config]="perfectScrollbarConfig">
-  <!--  [perfectScrollbar]="perfectScrollbarConfig"-->
-  <c-sidebar-nav
-    [navItems]="navItems"
-  >
-  </c-sidebar-nav>
-    </perfect-scrollbar>
+  ></c-sidebar-brand>
+  <c-sidebar-brand
+    *ngIf="!isClimsoft"
+    [brandFull]="{ src: 'assets/img/brand/opencdms-logo.png', width: 140, height: 35, alt: 'OpenCDMS' }"
+    [brandNarrow]="{ src: 'assets/img/brand/opencdms-signet.png', width: 40, height: 40, alt: 'OpenCDMS' }"
+    routerLink="./"
+  ></c-sidebar-brand>
+
+  <perfect-scrollbar [config]="perfectScrollbarConfig">
+    <!--  [perfectScrollbar]="perfectScrollbarConfig"-->
+    <c-sidebar-nav [navItems]="navItems"></c-sidebar-nav>
+  </perfect-scrollbar>
   <c-sidebar-toggler
     *ngIf="!sidebar.narrow"
     toggle="unfoldable"

@@ -1,0 +1,49 @@
+$icon-bg-color: #475778;
+$icon-bg-hover: #54668b;
+$icon-hover-color: #39f;
+
+.loc {
+  border: 1px solid #d7dde2;
+  border-radius: 0.3rem;
+  padding: 0;
+  cursor: pointer;
+  transition: box-shadow .3s;
+
+  &:hover {
+    box-shadow: 0 0 11px rgba(33,33,33,.2);
+
+    .icon-wrap {
+      background-color: $icon-bg-hover;
+      border-color: $icon-hover-color;
+    }
+  }
+
+  &-head {
+    text-align: center;
+    padding: 0.15rem 0.3rem;
+    width: 100%;
+    font-size: 0.7rem;
+    background-color: #d7dde2;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+  }
+
+  &-icon {
+    padding: 0.3rem;
+    width: 100%;
+    text-align: center;
+
+    &-wrap {
+      margin: 0 auto;
+      padding: 0.5rem;
+      width: 70px;
+      border: 1px solid #e65754;
+      border-radius: 35px;
+
+      img {
+        position: relative;
+        width: 50px;
+      }
+    }
+  }
+}

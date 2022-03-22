@@ -65,6 +65,10 @@ export class ElementService {
     });
   }
 
+  searchElements(query: string) {
+    return this.http.GET(`climsoft/v1/obselements/search?query=${query}`);
+  }
+
   getElement(id: number): Observable<ObsElement | any> {
     return this.http.GET(`${apiPrefix}/${id}`);
   }

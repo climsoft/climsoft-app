@@ -22,6 +22,12 @@ const routes: Routes = [
     },
     children: [
       {
+        path: 'profile',
+        canActivate: [AuthGuard],
+        loadChildren: () =>
+          import('./modules/user/user.module').then((m) => m.UserModule)
+      },
+      {
         path: 'dashboard',
         canActivate: [AuthGuard],
         loadChildren: () =>
@@ -40,16 +46,34 @@ const routes: Routes = [
           import('./modules/element/element.module').then((m) => m.ElementModule)
       },
       {
+        path: 'station-elements',
+        canActivate: [AuthGuard],
+        loadChildren: () =>
+          import('./modules/station-element/station-element.module').then((m) => m.StationElementModule)
+      },
+      {
         path: 'instruments',
         canActivate: [AuthGuard],
         loadChildren: () =>
           import('./modules/instrument/instrument.module').then((m) => m.InstrumentModule)
       },
       {
+        path: 'qualifiers',
+        canActivate: [AuthGuard],
+        loadChildren: () =>
+          import('./modules/qualifier/qualifier.module').then((m) => m.QualifierModule)
+      },
+      {
+        path: 'data-entry',
+        canActivate: [AuthGuard],
+        loadChildren: () =>
+          import('./modules/data-entry/data-entry.module').then((m) => m.DataEntryModule)
+      },
+      {
         path: 'pages',
         loadChildren: () =>
           import('./views/pages/pages.module').then((m) => m.PagesModule)
-      },
+      }
     ]
   },
   {

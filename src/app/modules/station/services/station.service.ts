@@ -95,6 +95,10 @@ export class StationService {
     return this.http.GET(`${apiPrefix}/stations/${id}`);
   }
 
+  searchStation(query: string) {
+    return this.http.GET(`${apiPrefix}/stations/search?query=${query}`);
+  }
+
   addStation(payload: Station): Observable<any> {
     const station_id = '2343403';
     return this.http.POST(`${apiPrefix}/stations`, { ...payload, station_id }).pipe(
@@ -136,8 +140,26 @@ export class StationService {
   }
 
   getStationElements(id: string): Observable<any> {
-    return this.http.GET(`${apiPrefix}/station-elements?recorded_from=${id}`).pipe(
-      tap(res => console.log(res))
-    );
+    return this.http.GET(`${apiPrefix}/stations/${id}//station-elements`);
+  }
+
+  addStationElement(payload: any): Observable<any> {
+    return this.http.POST(`${apiPrefix}/station-elements`, payload);
+  }
+
+  updateStationElement(params: any, payload: any): Observable<any> {
+    return this.http.PUT(`${apiPrefix}/station-elements/${params.recorded_from}/${params.described_by}/${params.recoded_with}/${params.begin_date}`, payload);
+  }
+
+  getStationLocHistory(id: string): Observable<any> {
+    return this.http.GET(`${apiPrefix}/station-location-histories?belongs_to=${id}`);
+  }
+
+  addStationLocHistory(payload: any): Observable<any> {
+    return this.http.POST(`${apiPrefix}/station-location-histories`, payload);
+  }
+
+  updateStationLocHistory(belongsTo: string, opening_datetime: string, payload: any): Observable<any> {
+    return this.http.PUT(`${apiPrefix}/station-location-histories/${belongsTo}/${opening_datetime}`, payload);
   }
 }

@@ -19,8 +19,14 @@ $enable-rtl: true;
 // Some temp fixes
 @import "fixes";
 
-// Prism.js
-@import "examples";
+// // Prism.js
+// @import "examples";
+
+@import "../assets/weather_icons/sass/weather-icons";
+@import "../assets/weather_icons/sass/weather-icons-wind";
+
+// ngx-bootstrap components
+@import "~ngx-bootstrap/datepicker/bs-datepicker.css";
 
 // If you want to add something do it here
 @import "custom";

@@ -5,7 +5,6 @@ import { filter, switchMap, tap } from 'rxjs/operators';
 
 import { IDeactivateComponent } from '../../../../data/interface/deactivate-component';
 import { StationService } from '../../services/station.service';
-import { templateJitUrl } from '@angular/compiler';
 
 declare var window: any;
 

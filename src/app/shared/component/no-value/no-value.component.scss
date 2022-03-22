@@ -1,0 +1,14 @@
+$bg-color: #ffdddd;
+$border-color: #e2c6c6;
+
+.no-val {
+  width: auto;
+  display: initial;
+  padding: 0.2rem 0.6rem;
+  background-color: $bg-color;
+  border: 1px solid $border-color;
+  border-radius: 1rem;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+}

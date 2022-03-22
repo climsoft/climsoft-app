@@ -1,11 +1,13 @@
 <c-row ngPreserveWhitespaces>
   <c-col xs="12">
     <c-card class="mb-4">
-      <c-card-header>
-        <strong>{{stationName}}</strong>
-      </c-card-header>
       <c-card-body>
         <c-row>
+          <c-col xs="10">
+            <h4> <img src="./assets/img/icons/station_icon.png" width="40" alt=""> {{stationName}}</h4>
+          </c-col>
+        </c-row>
+        <c-row class="mt-3">
           <c-col xs="12" md="5" xl="4" *ngFor="let item of station">
             <app-info-block [config]="item"></app-info-block>
           </c-col>
@@ -13,12 +15,55 @@
       </c-card-body>
     </c-card>
   </c-col>
-  <c-col xs="12">
+</c-row>
+<c-row ngPreserveWhitespaces *ngIf="station">
+  <c-col xs="12" lg="12" xl="6">
     <c-card class="mb-4">
       <c-card-body>
         <c-row>
+          <c-col xs="10">
+            <h5>Elements</h5>
+          </c-col>
+          <c-col xs="2" class="text-end">
+            <button cButton
+                    size="sm"
+                    color="warning"
+                    shape="rounded-pill"
+                    (click)="addElement()"
+                    cTooltip="Add Element">
+              <svg cIcon name="cilPlus" size="sm"></svg>
+            </button>
+          </c-col>
+        </c-row>
+        <c-row class="mt-3">
           <c-col xs="12">
-            <h5>Station Elements</h5>
+            <app-station-elements (onSelect)="updateElement($event)" [source]="elements"></app-station-elements>
+          </c-col>
+        </c-row>
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="12" lg="12" xl="6">
+    <c-card class="mb-4">
+      <c-card-body>
+        <c-row>
+          <c-col xs="10">
+            <h5>Location History</h5>
+          </c-col>
+          <c-col xs="2" class="text-end">
+            <button cButton
+                    size="sm"
+                    color="warning"
+                    shape="rounded-pill"
+                    (click)="addLocHistory()"
+                    cTooltip="Add Location History">
+              <svg cIcon name="cilPlus" size="sm"></svg>
+            </button>
+          </c-col>
+        </c-row>
+        <c-row class="mt-3">
+          <c-col xs="12">
+            <app-location-history (onSelect)="editLocHistory($event)" [source]="history"></app-location-history>
           </c-col>
         </c-row>
       </c-card-body>

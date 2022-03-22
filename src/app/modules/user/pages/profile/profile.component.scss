@@ -1,0 +1,62 @@
+.profile-left {
+  height: 70vh;
+
+  &-head {
+    background: linear-gradient(to bottom right, #d5ddea, #ffffff);
+    background-position: cover;
+    padding: 1rem;
+    min-height: 220px;
+    height: 220px;
+    background-color: #333;
+    text-align: center;
+
+    img {
+      width: 40%;
+    }
+
+    h5 {
+      font-size: 1.2rem;
+      margin: 0.3rem 0;
+    }
+
+    small {
+      font-size: 0.7rem;
+    }
+  }
+
+  &-content {
+    padding: 1rem;
+  }
+}
+
+.profile-right {
+  height: 70vh;
+
+  .profile-info {
+    list-style: none;
+    padding: 0;
+
+    li {
+      list-style: none;
+      display: inline-block;
+      padding: 0.5rem 1rem;
+
+      .inner {
+        padding: 0.4rem 1rem;
+        border: 1px solid #dcdfe3;
+        border-radius: 0.1rem;
+        background-color: #f2f5f9;
+
+        .label {
+          font-size: 0.7rem;
+          font-weight: 600;
+        }
+
+        .value {
+          font-size: 1rem;
+          color: #777;
+        }
+      }
+    }
+  }
+}

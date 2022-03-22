@@ -1,0 +1,14 @@
+<c-row class="daily-data-row" [formGroup]="group">
+  <c-col class="py-2 label">
+    <span>{{fg['day'].value}}</span>
+  </c-col>
+  <c-col class="py-1">
+    <input formControlName="value" aria-label="value" cFormControl />
+  </c-col>
+  <c-col class="py-1">
+    <input formControlName="flag" aria-label="flag" cFormControl />
+  </c-col>
+  <c-col class="py-1">
+    <input formControlName="period" aria-label="period" cFormControl />
+  </c-col>
+</c-row>

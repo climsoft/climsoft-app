@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   apiPrefix: '',
-  AUTH_KEY: 'api_key'
+  AUTH_KEY: 'api_key',
+  APP_MODE_COOKIE: 'app_mode'
 };
 
 /*

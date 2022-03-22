@@ -40,7 +40,6 @@ import {
   NavModule,
   ProgressModule,
   SidebarModule,
-  SpinnerModule,
   TabsModule,
   ToastModule,
   UtilitiesModule,
@@ -57,6 +56,7 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { ErrorInterceptor } from './modules/auth/interceptors/error.interceptor';
 import { AppToastComponent } from './containers/default-layout/toast/toast.component';
 import { SplashScreenComponent } from './containers/default-layout/splash-screen/splash-screen.component';
+import { CookieService } from 'ngx-cookie-service';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -126,6 +126,7 @@ const APP_CONTAINERS = [
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
     },
+    CookieService,
     IconSetService,
     Title
   ],
