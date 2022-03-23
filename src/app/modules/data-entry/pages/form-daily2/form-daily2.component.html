@@ -17,7 +17,7 @@
                 cFormControl
                 [ngClass]="{ 'is-invalid': (submitted || f['station'].touched) && f['station'].invalid }"
               />
-              <div class="typeahead-selection success form-group" *ngIf="station">
+              <div class="typeahead-selection theme form-group" *ngIf="station">
                 <div class="typeahead-selection-inner">
                   <span>{{station.station_name}}</span>
                   <a (click)="resetStation()" class="btn"> <svg cIcon name="cilX"></svg> </a>

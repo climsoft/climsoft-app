@@ -66,18 +66,17 @@ fieldset {
   &-inner {
     cursor: not-allowed;
     position: relative;
-    padding: 0.3rem;
+    padding: 0.5rem 0.3rem;
     background-color: #eeeeee;
     border: 1px solid #bebebe;
     border-radius: 0.3rem;
-    font-size: 0.8rem;
-    font-weight: bold;
+    font-size: 0.85rem;
     overflow: hidden;
 
     .btn {
       position: absolute;
-      top: 3px;
-      right: 3px;
+      top: 4px;
+      right: 2px;
       line-height: 1rem;
       padding: 0.3rem;
     }
@@ -88,6 +87,13 @@ fieldset {
       background-color: #a3e8fd;
       border-color: #81c2d6;
       color: #2f4d57;
+    }
+  }
+
+  &.success {
+    .typeahead-selection-inner {
+      background-color: #c9f597;
+      border: 1px solid #a8be8f;
     }
   }
 }
