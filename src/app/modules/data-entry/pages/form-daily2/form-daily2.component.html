@@ -175,6 +175,23 @@
 
   <fieldset class="form-group p-3 mt-2">
     <legend>Daily Data <span *ngIf="year && month">for {{getDateText(year, month)}}</span></legend>
+
+    <c-row *ngIf="element && formDaysGroups.length">
+      <c-col md="12 mt-3 mb-3">
+        <div class="form-info">
+          <img src="./assets/img/icons/info.png" alt="">
+          <h5>Please use the following information for data entry</h5>
+          <p *ngIf="element.lower_limit && element.upper_limit">
+            Values must be between <strong> {{element.lower_limit | number}} </strong> and <strong>{{element.upper_limit | number}} </strong>
+            <a class="p-0" color="link" cButton (click)="moreInfo()"> more... </a>
+          </p>
+          <p *ngIf="!element.lower_limit || !element.upper_limit">
+            No validation information available for the selected element. <button type="button" color="link" cButton (click)="moreInfo()"> more... </button>
+          </p>
+        </div>
+      </c-col>
+    </c-row>
+
     <c-row formArrayName="days" *ngIf="formDaysGroups.length">
       <c-col sm="12" md="6" lg="4" xl="3">
         <c-row class="daily-header">

@@ -3,7 +3,7 @@ import { INavData } from '@coreui/angular';
 
 export const navItems: INavData[] = [
   {
-    name: 'Dashboard',
+    name: 'dashboard',
     url: '/dashboard',
     iconComponent: { name: 'cil-speedometer' },
     badge: {
@@ -13,93 +13,93 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
-    name: 'Station Metadata'
+    name: 'title.station_metadata'
   },
   {
-    name: 'Stations',
+    name: 'stations',
     url: '/stations',
     iconComponent: { name: 'cil-location-pin' },
     badge: { color: 'info', text: '280' }
   },
   {
-    name: 'Elements',
+    name: 'elements',
     url: '/elements',
     iconComponent: { name: 'cil-puzzle' },
     badge: { color: 'info', text: '850' }
   },
   {
-    name: 'Station Elements',
+    name: 'station_elements',
     url: '/station-elements',
     iconComponent: { name: 'cil-puzzle' },
     badge: { color: 'info', text: '850' }
   },
   {
-    name: 'Instruments',
+    name: 'instruments',
     url: '/instruments',
     iconComponent: { name: 'cil-apps-settings' },
     badge: { color: 'info', text: '190' }
   },
   {
-    name: 'Location Histories',
+    name: 'location_histories',
     url: '/location-histories',
     iconComponent: { name: 'cil-puzzle' },
     badge: { color: 'info', text: '850' }
   },
   {
-    name: 'Qualifiers',
+    name: 'qualifiers',
     url: '/qualifiers',
     iconComponent: { name: 'cil-puzzle' },
     badge: { color: 'info', text: '850' }
   },
   {
-    name: 'Schedule Class',
+    name: 'schedule_class',
     url: '/schedule-classes',
     iconComponent: { name: 'cil-puzzle' },
     badge: { color: 'info', text: '120' }
   },
   {
-    name: 'Physical Features',
+    name: 'physical_features',
     url: '/physical-features',
     iconComponent: { name: 'cil-puzzle' },
     badge: { color: 'info', text: '850' }
   },
   {
-    name: 'Paper Archive',
+    name: 'paper_advice',
     url: '/paper-archive',
     iconComponent: { name: 'cil-puzzle' },
     badge: { color: 'info', text: '850' }
   },
   {
     title: true,
-    name: 'Data Entry'
+    name: 'title.data_entry'
   },
   {
-    name: 'Data Entry Forms',
+    name: 'data_entry_forms',
     url: '/data-entry',
     iconComponent: { name: 'cil-clipboard' },
     children: [
       {
-        name: 'Daily',
+        name: 'data_entry.daily',
         url: '/data-entry/daily'
       },
       {
-        name: 'Hourly',
+        name: 'data_entry.hourly',
         url: '/data-entry/hourly'
       },
       {
-        name: 'Hourly Wind',
+        name: 'data_entry.hourly_wind',
         url: '/data-entry/hourly-wind'
       },
       {
-        name: 'Monthly',
+        name: 'data_entry.monthly',
         url: '/data-entry/monthly'
       },
       {
-        name: 'Synoptic',
+        name: 'data_entry.synoptic',
         url: '/data-entry/synoptic'
       },
       {
-        name: 'Agroment',
+        name: 'data_entry.agroment',
         url: '/data-entry/agro'
       }
     ]

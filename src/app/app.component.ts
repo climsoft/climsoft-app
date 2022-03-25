@@ -1,12 +1,16 @@
-import { ScreenSize, ScreenSizes } from './data/enum/screen-size';
-import { ResponsiveService } from './shared/services/responsive.service';
+import { take } from 'rxjs/operators';
 import { Component, OnInit, ElementRef, HostListener } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-
+import { Title } from '@angular/platform-browser'
+import {TranslateService} from '@ngx-translate/core';
 import { IconSetService } from '@coreui/icons-angular';
-import { iconSubset } from './icons/icon-subset';
-import { Title } from '@angular/platform-browser';
+
+import { UserService } from './modules/user/services/user.service';
+import { ResponsiveService } from './shared/services/responsive.service';
+
+import { iconSubset } from './icons/icon-subset';;
 import { WiIconsService } from './shared/services/wi-icons.service';
+import { AppMode } from './data/enum/app-mode';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -18,6 +22,8 @@ import { WiIconsService } from './shared/services/wi-icons.service';
 })
 export class AppComponent implements OnInit {
   title = 'Climsoft Weather App';
+  /* @ts-ignore */
+  favIcon: HTMLLinkElement = document.querySelector('#appIcon');
 
   @HostListener("window:resize", ['event'])
   private onResize(e: Event) {
@@ -26,23 +32,29 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private elementRef: ElementRef,
+    private translate: TranslateService,
     private titleService: Title,
     private iconSetService: IconSetService,
     private wiIcons: WiIconsService,
-    private responsive: ResponsiveService
-  ) {
-    titleService.setTitle(this.title);
-    // iconSet singleton
-    iconSetService.icons = { ...iconSubset };
-  }
+    private responsive: ResponsiveService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
+    this.iconSetService.icons = { ...iconSubset };
+
     this.wiIcons.init();
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;
       }
+    });
+
+    this.userService.state$.subscribe((user) => {
+      this.translate.setDefaultLang(user.preferences.language);
+      const isClimsoft = +user.preferences.mode === AppMode.CLIMSOFT;
+      this.titleService.setTitle(isClimsoft ? 'Climsoft Weather App' : 'OpenCDMS Weather Data Management');
+      this.favIcon.href = isClimsoft ? `./assets/climsoft.ico` : `/assets/opencdms.ico`;
     });
   }
 }

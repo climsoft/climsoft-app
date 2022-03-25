@@ -1,6 +1,7 @@
 // Here you can add other styles
 
 // Climsoft Colors: Prefix cs-
+$bg-white: #fff;
 $bg-dark: #323b46;
 $alert-danger: #ffcece;
 $alert-danger-text: #e02525;
@@ -44,7 +45,7 @@ $btn-sm-color-hover: #f1b15d;
 // Form Elements Custom Styles
 fieldset {
   position: relative;
-  border: 1px solid $bg-dark;
+  border: 1px solid #999999;
   border-radius: 0.2rem;
 
   legend {
@@ -56,8 +57,8 @@ fieldset {
     position: absolute !important;
     top: -0.8rem !important;
     left: 1rem !important;
-    background-color: $bg-dark;
-    color: #fff;
+    background-color: $bg-white;
+    color: #131417;
   }
 }
 
@@ -95,6 +96,22 @@ fieldset {
       background-color: #c9f597;
       border: 1px solid #a8be8f;
     }
+  }
+}
+
+.typeahead-loading {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.9rem;
+
+  img {
+    width: 18px;
+    margin-right: 0.2rem;
+  }
+}
+
+typeahead-container {
+  .dropdown-item.active {
+    background-color: #277bc9 !important;
   }
 }
 

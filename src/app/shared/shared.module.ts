@@ -42,6 +42,7 @@ import { StationSelectionComponent } from './component/station-selection/station
 import { ElementSelectionComponent } from './component/element-selection/element-selection.component';
 import { DataTimeComponent } from './component/data-time-selection/date-time.component';
 import { NoValueComponent } from './component/no-value/no-value.component';
+import { InstrumentSelectionComponent } from './component/instrument-selection/instrument-selection.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { NoValueComponent } from './component/no-value/no-value.component';
     StationSelectionComponent,
     ElementSelectionComponent,
     DataTimeComponent,
-    NoValueComponent
+    NoValueComponent,
+    InstrumentSelectionComponent
   ],
   imports: [
     CommonModule,
@@ -129,6 +131,7 @@ import { NoValueComponent } from './component/no-value/no-value.component';
     PaginatorComponent,
     PromptComponent,
     ElementSelectionComponent,
+    InstrumentSelectionComponent,
     StationSelectionComponent,
 
     // Custom Form Components

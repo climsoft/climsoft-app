@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, delay, of, tap } from 'rxjs';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
@@ -25,6 +26,7 @@ export class UserService {
 
   constructor(private modalService: BsModalService,
               private cookieService: CookieService,
+              private translate: TranslateService,
               private http: HttpService) {
     this.initState();
   }
@@ -54,6 +56,9 @@ export class UserService {
   }
 
   updatePreferences(preferences: Partial<UserPreferences>) {
+    if(preferences.language) {
+      this.translate.use(preferences.language);
+    }
     this.updateState({
       preferences: { ...this.state.value.preferences, ...preferences },
       profile: this.state.value.profile

@@ -6,7 +6,6 @@ import * as moment from 'moment';
 
 import { getStationTypes, StationType } from './../../../../data/enum/station';
 import { StationLocationHistory } from 'src/app/data/interface/station';
-import { updateFor } from 'typescript/lib/tsserverlibrary';
 
 @Component({
   selector: 'app-location-history-dialog',

@@ -75,6 +75,10 @@ export class InstrumentService {
     );
   }
 
+  search(query: string) {
+    return this.http.GET(`${apiPrefix}/instruments/search?query=${query}`);
+  }
+
   updateState(state: { page?: number, limit?: number }) {
     if(state.page) {
       const limit = this.instruments$.getValue().limit;

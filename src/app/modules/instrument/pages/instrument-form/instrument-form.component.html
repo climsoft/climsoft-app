@@ -24,24 +24,6 @@
                 </div>
               </div>
             </c-col>
-          </c-row>
-          <c-row>
-            <c-col xs="12" md="5" xl="4">
-              <div class="mb-3">
-                <label cLabel for="inst_serial">Serial Number</label>
-                <input
-                  id="inst_serial"
-                  formControlName="serial_number"
-                  aria-label="default input"
-                  cFormControl
-                  [ngClass]="{ 'is-invalid': (submitted || f['serial_number'].touched) && f['serial_number'].invalid }"
-                  placeholder="Serial Number" />
-                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['serial_number'].errors">
-                    <div *ngIf="f['serial_number'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Serial Number is required.</div>
-                    <div *ngIf="f['serial_number'].errors['pattern']"> <svg cIcon name="cilXCircle"></svg> Value must be a number.</div>
-                  </div>
-              </div>
-            </c-col>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
                 <label cLabel for="inst_abbrev">Abbreviation</label>
@@ -63,21 +45,6 @@
           <c-row>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
-                <label cLabel for="inst_model">Model</label>
-                <input
-                  id="inst_model"
-                  formControlName="model"
-                  aria-label="Model"
-                  cFormControl
-                  [ngClass]="{ 'is-invalid': (submitted || f['model'].touched) && f['model'].invalid }"
-                  placeholder="Model" />
-                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['model'].errors">
-                    <div *ngIf="f['model'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Elevation is required.</div>
-                  </div>
-              </div>
-            </c-col>
-            <c-col xs="12" md="5" xl="4">
-              <div class="mb-3">
                 <label cLabel for="inst_man">Manufacturer</label>
                 <input
                   id="inst_man"
@@ -92,8 +59,39 @@
                 </div>
               </div>
             </c-col>
+            <c-col xs="12" md="5" xl="4">
+              <div class="mb-3">
+                <label cLabel for="inst_model">Model</label>
+                <input
+                  id="inst_model"
+                  formControlName="model"
+                  aria-label="Model"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['model'].touched) && f['model'].invalid }"
+                  placeholder="Model" />
+                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['model'].errors">
+                    <div *ngIf="f['model'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Elevation is required.</div>
+                  </div>
+              </div>
+            </c-col>
           </c-row>
           <c-row>
+            <c-col xs="12" md="5" xl="4">
+              <div class="mb-3">
+                <label cLabel for="inst_serial">Serial Number</label>
+                <input
+                  id="inst_serial"
+                  formControlName="serial_number"
+                  aria-label="default input"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['serial_number'].touched) && f['serial_number'].invalid }"
+                  placeholder="Serial Number" />
+                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['serial_number'].errors">
+                    <div *ngIf="f['serial_number'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Serial Number is required.</div>
+                    <div *ngIf="f['serial_number'].errors['pattern']"> <svg cIcon name="cilXCircle"></svg> Value must be a number.</div>
+                  </div>
+              </div>
+            </c-col>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
                 <label cLabel for="inst_uncert">Uncertainty</label>
@@ -109,53 +107,27 @@
                   </div>
               </div>
             </c-col>
+          </c-row>
+          <c-row>
+
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
                 <label cLabel for="inst_install">Installation Date/Time</label>
-                <input
-                  id="inst_install"
-                  formControlName="installation_datetime"
-                  aria-label="Installation DateTime"
-                  cFormControl
-                  [ngClass]="{ 'is-invalid': (submitted || f['installation_datetime'].touched) && f['installation_datetime'].invalid }"
-                  placeholder="Installation DateTime"
-                />
-                <div col="12" class="invalid-feedback" *ngIf="f['installation_datetime'].errors">
-                  <div *ngIf="f['installation_datetime'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Country is required.</div>
-                </div>
+                <app-data-time
+                    [current]="f['installation_datetime'].value"
+                    (onChange)="onInstallDateChange($event)"
+                    [submitted]="submitted"
+                    error="Installation datetime is required."></app-data-time>
               </div>
             </c-col>
-          </c-row>
-          <c-row>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
                 <label cLabel for="inst_deinstall">Deinstallation Date/Time</label>
-                <input
-                  id="inst_deinstall"
-                  formControlName="deinstallation_datetime"
-                  aria-label="Deinstallation DateTime"
-                  cFormControl
-                  [ngClass]="{ 'is-invalid': (submitted || f['deinstallation_datetime'].touched) && f['deinstallation_datetime'].invalid }"
-                  placeholder="Deinstallation DateTime" />
-                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['deinstallation_datetime'].errors">
-                    <div *ngIf="f['deinstallation_datetime'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Authority is required.</div>
-                  </div>
-              </div>
-            </c-col>
-            <c-col xs="12" md="5" xl="4">
-              <div class="mb-3">
-                <label cLabel for="inst_height">Height</label>
-                <input
-                  id="inst_height"
-                  formControlName="height"
-                  aria-label="Height"
-                  cFormControl
-                  [ngClass]="{ 'is-invalid': (submitted || f['height'].touched) && f['height'].invalid }"
-                  placeholder="Height"
-                />
-                <div col="12" class="invalid-feedback" *ngIf="f['height'].errors">
-                  <div *ngIf="f['height'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Admin region is required.</div>
-                </div>
+                <app-data-time
+                    [current]="f['deinstallation_datetime'].value"
+                    (onChange)="onDeinstallDateChange($event)"
+                    [submitted]="submitted"
+                    error="Deinstallation datetime is required."></app-data-time>
               </div>
             </c-col>
           </c-row>
@@ -176,6 +148,25 @@
                 </div>
               </div>
             </c-col>
+            <c-col xs="12" md="5" xl="4">
+              <div class="mb-3">
+                <label cLabel for="inst_height">Height</label>
+                <input
+                  id="inst_height"
+                  formControlName="height"
+                  aria-label="Height"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['height'].touched) && f['height'].invalid }"
+                  placeholder="Height"
+                />
+                <div col="12" class="invalid-feedback" *ngIf="f['height'].errors">
+                  <div *ngIf="f['height'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Admin region is required.</div>
+                </div>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row>
+
           </c-row>
           <c-row>
             <c-col xs="12" md="5" xl="4">

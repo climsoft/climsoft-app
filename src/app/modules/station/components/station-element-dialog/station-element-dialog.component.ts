@@ -1,3 +1,4 @@
+import { Instrument } from './../../../../data/interface/instrument';
 import { ObsElement } from './../../../../data/interface/element';
 import { StationElement } from './../../../../data/interface/station';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -19,7 +20,9 @@ export class StationElementDialogComponent implements OnInit {
   submitted = false;
   beginDate!: Date;
   endDate!: Date;
+
   descBy!: string;
+  instrument: Instrument | undefined;
 
   public onClose: Subject<boolean> = new Subject();
 
@@ -89,6 +92,17 @@ export class StationElementDialogComponent implements OnInit {
   onElementSelect(data: ObsElement) {
     this.descBy = data.element_name;
     this.form.controls['described_by'].setValue(data.element_id);
+  }
+
+
+  resetInst() {
+    this.instrument = undefined;
+    this.form.controls['instrument_code'].reset();
+  }
+
+  onInstSelect(data: Instrument) {
+    this.instrument = data;
+    this.form.controls['instrument_code'].setValue(data.serial_number);
   }
 
   onBeginDateChanged(data: Date) {

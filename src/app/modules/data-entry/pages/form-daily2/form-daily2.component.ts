@@ -53,7 +53,7 @@ export class FormDaily2Component implements OnInit {
   }
 
   resetStation() {
-    this.element = undefined;
+    this.station = undefined;
     this.form.controls['station'].reset();
   }
 
@@ -118,6 +118,10 @@ export class FormDaily2Component implements OnInit {
   getDateText(y: number, m: number) {
     const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     return `${months[m-1]} ${y}`;
+  }
+
+  moreInfo() {
+    console.log('more info');
   }
 
   get daysArray(): FormArray {

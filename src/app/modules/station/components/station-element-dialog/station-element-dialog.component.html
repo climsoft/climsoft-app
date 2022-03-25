@@ -37,7 +37,7 @@
             [ngClass]="{ 'is-invalid': (submitted || f['described_by'].touched) && f['described_by'].invalid }"
             placeholder="Station Name"
           />
-          <div class="typeahead-selection form-group" *ngIf="descBy">
+          <div class="typeahead-selection theme form-group" *ngIf="descBy">
             <div class="typeahead-selection-inner">
               <span>{{descBy}}</span>
               <a (click)="resetDescBy()" class="btn"> <svg cIcon name="cilX"></svg> </a>
@@ -111,15 +111,21 @@
     <c-row>
       <c-col xs="12" md="6">
         <div class="mb-2">
-          <label cLabel for="inst-code">Instrument Code</label>
+          <label cLabel for="inst-code">Instrument</label>
           <input
             id="inst-code"
+            type="hidden"
             formControlName="instrument_code"
             aria-label="default input"
-            cFormControl
             [ngClass]="{ 'is-invalid': (submitted || f['instrument_code'].touched) && f['instrument_code'].invalid }"
-            placeholder="Instrument Code"
           />
+          <div class="typeahead-selection theme form-group" *ngIf="instrument">
+            <div class="typeahead-selection-inner">
+              <span>{{instrument.instrument_name}}</span>
+              <a (click)="resetInst()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+            </div>
+          </div>
+          <app-instrument-selection *ngIf="!instrument" (onSelection)="onInstSelect($event)"></app-instrument-selection>
           <div col="12" class="invalid-feedback" *ngIf="f['instrument_code'].errors">
             <div *ngIf="f['instrument_code'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Instrument code is required.</div>
           </div>

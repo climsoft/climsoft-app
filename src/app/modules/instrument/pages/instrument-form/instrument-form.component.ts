@@ -87,6 +87,14 @@ export class InstrumentFormComponent implements OnInit, IDeactivateComponent {
     return this.form.controls;
   }
 
+  onInstallDateChange(data: Date) {
+    this.form.controls['installation_datetime'].setValue(data);
+  }
+
+  onDeinstallDateChange(data: Date) {
+    this.form.controls['deinstallation_datetime'].setValue(data);
+  }
+
   onSubmit(e: Event) {
     this.submitted = true;
     if(this.form.invalid) {
