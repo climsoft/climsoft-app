@@ -1,4 +1,5 @@
-import { ObsElement } from 'src/app/data/interface/element';
+import { Qualifier } from './qualifier';
+
 export interface Station {
   station_id?: number;
   station_name: string;
@@ -50,8 +51,8 @@ export interface StationElementsResponse {
 export interface StationLocationHistory {
   belongs_to: string;
   station_type: string;
-  geolocation_method: string;
-  geolocation_accuracy: number;
+  geoLocationMethod: string;
+  geoLocationAccuracy: number;
   opening_datetime: Date;
   closing_datetime: Date;
   latitude: 0;
@@ -63,7 +64,7 @@ export interface StationLocationHistory {
 }
 
 export interface StationLocationHistoryResponse {
-  history: StationLocationHistory[],
+  history: StationLocationHistory[];
   limit: number;
   page: number;
   pages: number;
@@ -82,4 +83,11 @@ export interface StationLocationHistoryPayload {
   authority: string;
   admin_region: string;
   drainage_basin: string
+}
+
+export interface StationQualifierResponse {
+  qualifiers: Qualifier[];
+  limit: number;
+  page: number;
+  pages: number;
 }

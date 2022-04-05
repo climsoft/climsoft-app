@@ -1,33 +1,45 @@
-import { StationLocationHistory } from 'src/app/data/interface/station';
-import { LocationHistoryDialogComponent } from './../../components/location-history-dialog/location-history-dialog.component';
-import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { filter, map, switchMap, take, tap } from 'rxjs/operators';
-import * as moment from 'moment';
+import { Station } from 'src/app/data/interface/station';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Observable } from "rxjs";
+import { filter, map, switchMap, take, tap } from "rxjs/operators";
+import { BsModalRef, BsModalService, ModalOptions } from "ngx-bootstrap/modal";
+import * as moment from "moment";
 
-import { StationElementDialogComponent } from './../../components/station-element-dialog/station-element-dialog.component';
-import { StationElement, StationElementsResponse, StationLocationHistoryResponse } from './../../../../data/interface/station';
-import { StationService } from './../../services/station.service';
+import {
+  StationElement,
+  StationElementsResponse,
+  StationLocationHistory,
+  StationLocationHistoryResponse,
+  StationQualifierResponse
+} from "@data/interface/station";
+import { Qualifier } from "@data/interface/qualifier";
+import { StationService } from "./../../services/station.service";
+import { QualifierService } from "./../../../qualifier/services/qualifier.service";
+import { LocationHistoryDialogComponent } from "./../../components/location-history-dialog/location-history-dialog.component";
+import { StationElementDialogComponent } from "./../../components/station-element-dialog/station-element-dialog.component";
+import { QualifierFormComponent } from "@qualifier/components/qualifier-form/qualifier-form.component";
 
 @Component({
-  selector: 'app-station',
-  templateUrl: './station.component.html',
-  styleUrls: ['./station.component.scss']
+  selector: "app-station",
+  templateUrl: "./station.component.html",
+  styleUrls: ["./station.component.scss"]
 })
 export class StationComponent implements OnInit {
   station: any;
   stationName: string | undefined;
   id: any;
+  raw!: Station | undefined;
 
   elements!: Observable<StationElementsResponse>;
   history!: Observable<StationLocationHistoryResponse>;
+  qualifiers!: Observable<StationQualifierResponse>;
 
   constructor(
       private route: ActivatedRoute,
       private modalService: BsModalService,
-      private stationService: StationService
+      private stationService: StationService,
+      private qualiferService: QualifierService
     ) { }
 
   ngOnInit(): void {
@@ -38,13 +50,17 @@ export class StationComponent implements OnInit {
       })
     ).pipe(
       filter(res => res.result && res.result[0]),
-      tap(res => { this.stationName = res.result[0].station_name }),
+      tap(res => {
+        this.raw = res.result[0];
+        this.stationName = res.result[0].station_name;
+      }),
       map(res => this.stationService.adapt(res.result[0])),
       take(1)
     ).subscribe(st =>{
       this.station = st;
       this.loadElements();
       this.loadLocationHist();
+      this.loadQualifiers();
     });
   }
 
@@ -134,6 +150,38 @@ export class StationComponent implements OnInit {
     });
   }
 
+  addQualifier() {
+    const dialogConfig: ModalOptions = {
+      initialState: { qualifier: undefined, fromStation: this.raw },
+      class: 'modal-lg',
+      backdrop: 'static',
+      keyboard: false
+    };
+    const dialogRef: BsModalRef | undefined = this.modalService.show(QualifierFormComponent, dialogConfig);
+    dialogRef.content.onClose.subscribe((payload: Partial<Qualifier>) => {
+      if(payload) {
+        this.qualiferService.addQualifier(payload).subscribe(() => {
+          this.loadQualifiers();
+        });
+      }
+    });
+  }
+
+  editQualifier(qualifier: Qualifier) {
+    const dialogConfig: ModalOptions = {
+      initialState: { qualifier },
+      class: 'modal-lg',
+      backdrop: 'static',
+      keyboard: false
+    };
+    const dialogRef: BsModalRef | undefined = this.modalService.show(QualifierFormComponent, dialogConfig);
+    dialogRef.content.onClose.subscribe((payload: Qualifier) => {
+      if(payload) {
+        this.qualiferService.updateQualifier(payload).subscribe();
+      }
+    });
+  }
+
   private loadElements() {
     this.elements = this.stationService.getStationElements(this.id).pipe(
       map(res => ({ elements: res.result, page: res.page, pages: res.pages, limit: res.limit }))
@@ -144,5 +192,11 @@ export class StationComponent implements OnInit {
     this.history = this.stationService.getStationLocHistory(this.id).pipe(
       map(res => ({ history: res.result, page: res.page, pages: res.pages, limit: res.limit }))
     );
+  }
+
+  private loadQualifiers() {
+    this.qualifiers = this.stationService.getStationQualifiers(this.id).pipe(
+      map(res => ({ qualifiers: res.result, page: res.page, pages: res.pages, limit: res.limit }))
+    )
   }
 }

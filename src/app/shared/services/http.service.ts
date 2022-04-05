@@ -57,4 +57,17 @@ export class HttpService {
       `${this.API_BASE}/${path}`
       );
   }
+
+  UPLOAD_TO_S3(image: File, attr: string) {
+    const path = `climsoft/v1/file-upload/image`;
+    var formData = new FormData();
+    formData.append('name', image.name);
+    formData.append('file', image);
+
+    return this.http.post(
+      `${this.API_BASE}/${path}`,
+      formData,
+      { reportProgress: true, observe: 'events' }
+    );
+  }
 }

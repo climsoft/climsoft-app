@@ -1,0 +1,32 @@
+.qualifiers {
+  padding: 0;
+
+  li {
+    list-style: none;
+    padding: 0.2rem 0.4rem;
+
+    .inner {
+      padding: 0.3rem 0.5rem;
+      background-color: #ecf1f5;
+      border: 1px solid #e1e1e1;
+      border-radius: 0.1rem;
+      transition: all ease-in-out 0.2s;
+
+      &:hover {
+        background-color: #cbd9e4;
+      }
+
+      .qual-key {
+        font-size: 0.8rem;
+      }
+
+      .qual-value {
+        font-size: 1rem;
+      }
+
+      a {
+        cursor: pointer;
+      }
+    }
+  }
+}

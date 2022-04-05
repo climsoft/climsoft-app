@@ -58,10 +58,22 @@ const routes: Routes = [
           import('./modules/instrument/instrument.module').then((m) => m.InstrumentModule)
       },
       {
+        path: 'location-histories',
+        canActivate: [AuthGuard],
+        loadChildren: () =>
+          import('./modules/location-history/location-history.module').then((m) => m.LocationHistoryModule)
+      },
+      {
         path: 'qualifiers',
         canActivate: [AuthGuard],
         loadChildren: () =>
           import('./modules/qualifier/qualifier.module').then((m) => m.QualifierModule)
+      },
+      {
+        path: 'physical-features',
+        canActivate: [AuthGuard],
+        loadChildren: () =>
+          import('./modules/physical-feature/physical-feature.module').then((m) => m.PhysicalFeatureModule)
       },
       {
         path: 'data-entry',

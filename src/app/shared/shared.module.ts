@@ -23,6 +23,7 @@ import {
   NavModule,
   OffcanvasModule,
   PaginationModule,
+  ProgressModule,
   SidebarModule,
   SpinnerModule,
   TableModule,
@@ -31,6 +32,7 @@ import {
   UtilitiesModule
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 import { AlertComponent } from './dialogs/alert/alert.component';
@@ -43,6 +45,8 @@ import { ElementSelectionComponent } from './component/element-selection/element
 import { DataTimeComponent } from './component/data-time-selection/date-time.component';
 import { NoValueComponent } from './component/no-value/no-value.component';
 import { InstrumentSelectionComponent } from './component/instrument-selection/instrument-selection.component';
+import { TimzoneSelectionComponent } from './component/timzone-selection/timzone-selection.component';
+import { ImageUploaderComponent } from './component/image-uploader/image-uploader.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +59,9 @@ import { InstrumentSelectionComponent } from './component/instrument-selection/i
     ElementSelectionComponent,
     DataTimeComponent,
     NoValueComponent,
-    InstrumentSelectionComponent
+    InstrumentSelectionComponent,
+    TimzoneSelectionComponent,
+    ImageUploaderComponent
   ],
   imports: [
     CommonModule,
@@ -78,6 +84,7 @@ import { InstrumentSelectionComponent } from './component/instrument-selection/i
     OffcanvasModule,
     PaginationModule,
     PerfectScrollbarModule,
+    ProgressModule,
     SpinnerModule,
     SidebarModule,
     TabsModule,
@@ -90,7 +97,8 @@ import { InstrumentSelectionComponent } from './component/instrument-selection/i
     TimepickerModule.forRoot(),
     TypeaheadModule.forRoot(),
 
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    NgxDropzoneModule
   ],
   exports: [
     FormsModule,
@@ -111,6 +119,7 @@ import { InstrumentSelectionComponent } from './component/instrument-selection/i
     NavModule,
     OffcanvasModule,
     PerfectScrollbarModule,
+    ProgressModule,
     SpinnerModule,
     SidebarModule,
     TabsModule,
@@ -133,6 +142,8 @@ import { InstrumentSelectionComponent } from './component/instrument-selection/i
     ElementSelectionComponent,
     InstrumentSelectionComponent,
     StationSelectionComponent,
+    TimzoneSelectionComponent,
+    ImageUploaderComponent,
 
     // Custom Form Components
     DataTimeComponent

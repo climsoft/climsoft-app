@@ -1,6 +1,6 @@
 {
   "*": {
-    "target": "https://api-latest.opencdms.org",
+    "target": "https://api.opencdms.org",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true

@@ -125,11 +125,11 @@ const APP_CONTAINERS = [
       provide: LocationStrategy,
       useClass: HashLocationStrategy,
     },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpInterceptorService,
-      multi: true
-    },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: HttpInterceptorService,
+    //   multi: true
+    // },
     { provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
@@ -149,3 +149,8 @@ export class AppModule {}
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
 }
+
+/*
+    "target": "https://api-latest.opencdms.org",
+    "target": "https://api.opencdms.org",
+*/

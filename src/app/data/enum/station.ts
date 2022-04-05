@@ -60,3 +60,10 @@ export function getStationTypes(): any[] {
 
   return result;
 }
+
+export function getStationTypeText(type: string) {
+  const obj: any = JSON.parse(JSON.stringify(StationType));
+  const key = Object.keys(obj).filter(k => obj[k] === type)[0];
+
+  return StationTypeValues[key];
+}

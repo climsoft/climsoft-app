@@ -140,7 +140,7 @@ export class StationService {
   }
 
   getStationElements(id: string): Observable<any> {
-    return this.http.GET(`${apiPrefix}/stations/${id}//station-elements`);
+    return this.http.GET(`${apiPrefix}/stations/${id}/station-elements`);
   }
 
   addStationElement(payload: any): Observable<any> {
@@ -161,5 +161,10 @@ export class StationService {
 
   updateStationLocHistory(belongsTo: string, opening_datetime: string, payload: any): Observable<any> {
     return this.http.PUT(`${apiPrefix}/station-location-histories/${belongsTo}/${opening_datetime}`, payload);
+  }
+
+  getStationQualifiers(id: string): Observable<any> {
+    return this.http.GET(`${apiPrefix}/station-qualifiers?belongs_to=${id}`);
+    // return this.http.GET(`${apiPrefix}/stations/${id}/station-elements`);
   }
 }

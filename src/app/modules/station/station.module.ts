@@ -11,6 +11,8 @@ import { StationElementsComponent } from './components/station-elements/station-
 import { LocationHistoryComponent } from './components/location-history/location-history.component';
 import { StationElementDialogComponent } from './components/station-element-dialog/station-element-dialog.component';
 import { LocationHistoryDialogComponent } from './components/location-history-dialog/location-history-dialog.component';
+import { StationPhysicalFeaturesComponent } from './components/station-physical-features/station-physical-features.component';
+import { StationQualifiersComponent } from './components/station-qualifiers/station-qualifiers.component';
 
 
 
@@ -22,7 +24,9 @@ import { LocationHistoryDialogComponent } from './components/location-history-di
     StationElementsComponent,
     LocationHistoryComponent,
     StationElementDialogComponent,
-    LocationHistoryDialogComponent
+    LocationHistoryDialogComponent,
+    StationPhysicalFeaturesComponent,
+    StationQualifiersComponent
   ],
   imports: [
     CommonModule,
