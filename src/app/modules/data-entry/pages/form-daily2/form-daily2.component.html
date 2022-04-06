@@ -73,12 +73,12 @@
                   placeholder="Select Year & Month"
                   cFormControl
                   bsDatepicker
-                  [disabled]="!element"
                   (bsValueChange)="onDateSelection($event)"
-                  [ngClass]="{ 'is-invalid': submitted && f['monthYear'].invalid }"
                   [bsConfig]="bsConfig"
+                  [bsValue]="monthYearValue"
                   (onShown)="onOpenCalendar($event)"
                   autocomplete="off"
+                  [ngClass]="{ 'is-invalid': submitted && f['monthYear'].invalid }"
                 >
                 <div sm="12" class="invalid-feedback" *ngIf="submitted && f['monthYear'].invalid">
                   <svg cIcon name="cilXCircle"></svg> Year and Month is required
@@ -228,28 +228,28 @@
       <c-col sm="12" md="6" lg="4" xl="3">
         <c-row>
           <c-col md="12" *ngFor="let g of formDaysGroups | slice: 0:8;">
-            <app-daily-day-form-group [group]="g"></app-daily-day-form-group>
+            <app-daily-day-form-group [disabled]="!isEditable" [group]="g"></app-daily-day-form-group>
           </c-col>
         </c-row>
       </c-col>
       <c-col sm="12" md="6" lg="4" xl="3">
         <c-row>
           <c-col md="12" *ngFor="let g of formDaysGroups | slice: 8:16;">
-            <app-daily-day-form-group [group]="g"></app-daily-day-form-group>
+            <app-daily-day-form-group [disabled]="!isEditable" [group]="g"></app-daily-day-form-group>
           </c-col>
         </c-row>
       </c-col>
       <c-col sm="12" md="6" lg="4" xl="3">
         <c-row>
           <c-col md="12" *ngFor="let g of formDaysGroups | slice: 16:24;">
-            <app-daily-day-form-group [group]="g"></app-daily-day-form-group>
+            <app-daily-day-form-group [disabled]="!isEditable" [group]="g"></app-daily-day-form-group>
           </c-col>
         </c-row>
       </c-col>
       <c-col sm="12" md="6" lg="4" xl="3">
         <c-row>
           <c-col md="12" *ngFor="let g of formDaysGroups | slice: 24:31;">
-            <app-daily-day-form-group [group]="g"></app-daily-day-form-group>
+            <app-daily-day-form-group [disabled]="!isEditable" [group]="g"></app-daily-day-form-group>
           </c-col>
         </c-row>
       </c-col>

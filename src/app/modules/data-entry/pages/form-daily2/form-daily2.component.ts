@@ -1,3 +1,4 @@
+import { IDataEntryForm } from './../../../../data/interface/data-entry-form';
 import { ResponsiveService } from './../../../../shared/services/responsive.service';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
@@ -15,7 +16,7 @@ import * as moment from 'moment';
   templateUrl: './form-daily2.component.html',
   styleUrls: ['./form-daily2.component.scss']
 })
-export class FormDaily2Component implements OnInit {
+export class FormDaily2Component implements OnInit, IDataEntryForm {
   form!: FormGroup;
   submitted = false;
   loading = false;
@@ -24,7 +25,7 @@ export class FormDaily2Component implements OnInit {
   station!: Station | undefined;
   element!: ObsElement | undefined;
 
-  bsValue!: Date;
+  monthYearValue: Date = new Date();
   bsConfig: Partial<BsDatepickerConfig> = {
     isAnimated: true,
     containerClass:'theme-blue',
@@ -35,7 +36,7 @@ export class FormDaily2Component implements OnInit {
   hour!: number;
 
   unitOptions = UnitOptions;
-  hoursList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+  hoursList = [24, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 
   constructor(private responsiveSvc: ResponsiveService) {}
 
@@ -50,6 +51,14 @@ export class FormDaily2Component implements OnInit {
 
   get f() {
     return this.form.controls;
+  }
+
+  get isEditable(): boolean {
+    return !!this.station && !!this.element;
+  }
+
+  get isModified(): boolean {
+    return false;
   }
 
   resetStation() {
