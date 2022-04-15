@@ -25,4 +25,8 @@ $block-error-border: #dd6868;
     background-color: $block-error-bg;
     border: 1px solid $block-error-border;
   }
+
+  .form-control:disabled {
+    cursor: not-allowed;
+  }
 }

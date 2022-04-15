@@ -13,7 +13,7 @@ export class ConfirmationComponent implements OnInit {
   @Input() confirm: string = 'Ok';
   @Input() cancel: string = 'Cancel';
 
-  public onClose: Subject<boolean> = new Subject();;
+  public onClose: Subject<boolean> = new Subject();
 
   constructor(private dialogRef: BsModalRef) { }
 

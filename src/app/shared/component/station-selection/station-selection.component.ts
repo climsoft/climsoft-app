@@ -37,13 +37,11 @@ export class StationSelectionComponent implements OnInit {
         this.loading = true;
       }),
       switchMap((query: string) => {
-        console.log(query);
         if(query) {
           return this.stationService.searchStation(query).pipe(
             tap(() => { this.loading = false; }),
             map((data: any) => data.result || []),
             tap(() => noop, err => {
-              console.log(err);
               this.loading = false;
               this.errorMessage = err && err.message || `station search failed`
             }),

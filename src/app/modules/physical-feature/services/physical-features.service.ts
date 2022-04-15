@@ -1,8 +1,12 @@
 import { HttpService } from './../../../shared/services/http.service';
-import { BehaviorSubject, Observable, catchError, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, tap, map } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-import { PhysicalFeature, PhysicalFeatureState } from './../../../data/interface/physical-features';
+import {
+  PhysicalFeature,
+  PhysicalFeatureState,
+  PhysicalFeatureClass
+} from '@data/interface/physical-features';
 
 const apiPrefix = `climsoft/v1`;
 
@@ -68,6 +72,11 @@ export class PhysicalFeaturesService {
     );
   }
 
+  getByStation(id: string): Observable<PhysicalFeatureState | any> {
+    const url = `${apiPrefix}/physical-features?associated_With=${id}`;
+    return this.http.GET(url);
+  }
+
   getFeature(f: PhysicalFeature): Observable<PhysicalFeature | any> {
     const url = `${apiPrefix}/physical-features/${f.associated_with}/${f.classified_into}/${f.description}`;
     return this.http.GET(url);
@@ -98,5 +107,20 @@ export class PhysicalFeaturesService {
       const { page, limit } = state;
       this.getFeatures(page, limit);
     });
+  }
+
+  getFeatureClasses(): Observable<PhysicalFeatureClass[]> {
+    return this.http.GET(`${apiPrefix}/physical-feature-class`)
+                    .pipe(
+                      map((res: any) => res.result)
+                    );
+  }
+
+  addFeatureClass(payload: PhysicalFeatureClass) {
+    return this.http.POST(`${apiPrefix}/physical-feature-class`, payload);
+  }
+
+  updateFeatureClass(payload: PhysicalFeatureClass) {
+    return this.http.PUT(`${apiPrefix}/physical-feature-class`, payload);
   }
 }

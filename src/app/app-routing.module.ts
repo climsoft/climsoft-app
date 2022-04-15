@@ -76,6 +76,12 @@ const routes: Routes = [
           import('./modules/physical-feature/physical-feature.module').then((m) => m.PhysicalFeatureModule)
       },
       {
+        path: 'paper-archives',
+        canActivate: [AuthGuard],
+        loadChildren: () =>
+          import('./modules/paper-archive/paper-archive.module').then((m) => m.PaperArchiveModule)
+      },
+      {
         path: 'data-entry',
         canActivate: [AuthGuard],
         loadChildren: () =>

@@ -21,6 +21,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
   submitted = false;
   loading = false;
   error = '';
+  monthModified: boolean = false;
 
   station!: Station | undefined;
   element!: ObsElement | undefined;
@@ -58,7 +59,11 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
   }
 
   get isModified(): boolean {
-    return false;
+    return this.monthModified;
+  }
+
+  onFormModified(val: boolean) {
+    this.monthModified = val;
   }
 
   resetStation() {

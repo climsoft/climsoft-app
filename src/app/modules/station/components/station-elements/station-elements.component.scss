@@ -26,6 +26,8 @@ $icon-hover-color: #39f;
     background-color: #d7dde2;
     border-top-left-radius: 0.3rem;
     border-top-right-radius: 0.3rem;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   &-icon {

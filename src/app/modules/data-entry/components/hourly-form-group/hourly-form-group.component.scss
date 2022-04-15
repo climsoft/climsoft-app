@@ -1,0 +1,32 @@
+$block-bg: #e5ecf2;
+$block-border: #cdd4da;
+$border-radius: 0.2rem;
+
+$block-error-bg: #ffe2e2;
+$block-error-border: #dd6868;
+
+
+.hourly-data-row {
+  padding: 0.1rem 0.3rem;
+  margin: 0.2rem 0;
+  background-color: $block-bg;
+  border: 1px solid $block-border;
+  border-radius: $border-radius;
+
+  .label {
+    text-align: center;
+  }
+
+  c-col {
+    padding: 0 0.2rem;
+  }
+
+  &.has-error {
+    background-color: $block-error-bg;
+    border: 1px solid $block-error-border;
+  }
+
+  .form-control:disabled {
+    cursor: not-allowed;
+  }
+}

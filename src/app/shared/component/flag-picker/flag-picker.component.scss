@@ -1,0 +1,83 @@
+.flag-picker {
+  position: relative;
+  display: inline-block;
+
+  ul {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 2.5rem;
+    padding: 0;
+    z-index: 10;
+    transition: all ease-in-out 0.3s;
+    padding: 0.4rem 0.1rem;
+    background-color: #edeefa;
+    border: 1px solid #cfd0dc;
+    border-radius: 1.5rem;
+    box-shadow: rgb(0, 0, 0, 0.25) 1px 1px 0px 1px;
+
+    li {
+      list-style: none;
+      padding: 0.2rem;
+    }
+  }
+
+  &.enabled {
+    ul {
+      display: block;
+
+      li {
+        display: inline-block;
+      }
+    }
+  }
+
+  .active-flag {
+    display: inline-block;
+    width: 2.5rem;
+    height: 2.3rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    bordeR: 1px solid #034566;
+    background-color: #5433a0;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+
+    &.btn-light {
+      color: #33434b;
+      background-color: #ebedef;
+    }
+
+    &.btn-dark {
+      background-color: #4f5d73;
+    }
+
+    &.btn-secondary {
+      color: #33434b;
+      background-color: #9da5b1;
+    }
+
+    &.btn-info {
+      background-color: #39f;
+    }
+
+    &.btn-warning {
+      background-color: #f9b115;
+    }
+  }
+}
+
+
+.btn-circle {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.3rem 0;
+  border-radius: 1.2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+  line-height: 0.5rem;
+}

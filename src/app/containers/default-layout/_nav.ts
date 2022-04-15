@@ -64,8 +64,8 @@ export const navItems: INavData[] = [
     badge: { color: 'info', text: '850' }
   },
   {
-    name: 'paper_advice',
-    url: '/paper-archive',
+    name: 'paper_archive',
+    url: '/paper-archives',
     iconComponent: { name: 'cil-puzzle' },
     badge: { color: 'info', text: '850' }
   },
@@ -79,20 +79,20 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-clipboard' },
     children: [
       {
-        name: 'data_entry.daily',
-        url: '/data-entry/daily'
-      },
-      {
         name: 'data_entry.hourly',
         url: '/data-entry/hourly'
       },
       {
-        name: 'data_entry.hourly_wind',
-        url: '/data-entry/hourly-wind'
+        name: 'data_entry.daily',
+        url: '/data-entry/daily'
       },
       {
         name: 'data_entry.monthly',
         url: '/data-entry/monthly'
+      },
+      {
+        name: 'data_entry.hourly_wind',
+        url: '/data-entry/hourly-wind'
       },
       {
         name: 'data_entry.synoptic',

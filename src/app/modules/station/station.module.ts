@@ -13,6 +13,7 @@ import { StationElementDialogComponent } from './components/station-element-dial
 import { LocationHistoryDialogComponent } from './components/location-history-dialog/location-history-dialog.component';
 import { StationPhysicalFeaturesComponent } from './components/station-physical-features/station-physical-features.component';
 import { StationQualifiersComponent } from './components/station-qualifiers/station-qualifiers.component';
+import { StationPaperArchiveComponent } from './components/station-paper-archive/station-paper-archive.component';
 
 
 
@@ -26,7 +27,8 @@ import { StationQualifiersComponent } from './components/station-qualifiers/stat
     StationElementDialogComponent,
     LocationHistoryDialogComponent,
     StationPhysicalFeaturesComponent,
-    StationQualifiersComponent
+    StationQualifiersComponent,
+    StationPaperArchiveComponent
   ],
   imports: [
     CommonModule,

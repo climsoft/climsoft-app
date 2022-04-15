@@ -25,14 +25,15 @@
     "paths": {
       "@data/*": [ "src/app/data/*" ],
       "@environment/*": [ "src/environments/*" ],
-      "@station/*": [ "src/app/modules/station/* "],
-      "@element/*": [ "src/app/modules/element/* "],
-      "@instrument/*": [ "src/app/modules/instrument/* "],
-      "@station-element/*": [ "src/app/modules/station-element/* "],
-      "@location-history/*": [ "src/app/modules/location-history/* "],
+      "@station/*": [ "src/app/modules/station/*" ],
+      "@element/*": [ "src/app/modules/element/*" ],
+      "@instrument/*": [ "src/app/modules/instrument/*" ],
+      "@station-element/*": [ "src/app/modules/station-element/*" ],
+      "@location-history/*": [ "src/app/modules/location-history/*" ],
       "@qualifier/*": [ "src/app/modules/qualifier/*" ],
-      "@physical-feature/*": [ "src/app/modules/physical-feature/* "],
-      "@shared/*": [ "src/app/shared/* "]
+      "@paper-archive/*": [ "src/app/modules/paper-archive/*" ],
+      "@physical-feature/*": [ "src/app/modules/physical-feature/*" ],
+      "@shared/*": [ "src/app/shared/*" ]
     }
   },
   "angularCompilerOptions": {

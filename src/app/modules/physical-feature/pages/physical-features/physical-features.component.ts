@@ -1,11 +1,13 @@
+import { FeatureClassesComponent } from './../../components/feature-classes/feature-classes.component';
 import { of, Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
 
-import { PhysicalFeature, PhysicalFeatureState } from './../../../../data/interface/physical-features';
+import { PhysicalFeature, PhysicalFeatureState, PhysicalFeatureClass } from './../../../../data/interface/physical-features';
 import { PhysicalFeaturesService } from './../../services/physical-features.service';
 import { ConfirmationComponent } from './../../../../shared/dialogs/confirmation/confirmation.component';
 import { PhysicalFeatureFormComponent } from '../../components/physical-feature-form/physical-feature-form.component';
+import { FeatureClassFormComponent } from '@physical-feature/components/feature-class-form/feature-class-form.component';
 
 
 @Component({
@@ -67,5 +69,44 @@ export class PhysicalFeaturesComponent implements OnInit {
         this.physicalFeature.removeFeature(feat);
       }
     });
+  }
+
+  viewClasses() {
+    const dialogConfig: ModalOptions = {
+      initialState: {},
+      class: 'modal-lg',
+      backdrop: 'static',
+      keyboard: false
+    };
+    const classesDialog: BsModalRef | undefined = this.modalService.show(FeatureClassesComponent, dialogConfig);
+    classesDialog.content.onClose.subscribe((action: { type: string, class?: PhysicalFeatureClass }) => {
+      // switch(action.type) {
+      //   case 'ADD_CLASS':
+      //     this.addFeatureClass();
+      //   break;
+      //   case 'UPDATE_CLASS':
+      //     if(action.class) {
+      //       this.updateFeatureClass(action.class);
+      //     }
+      //   break;
+      // }
+    });
+  }
+
+  private addFeatureClass() {
+    const dialogConfig: ModalOptions = {
+      initialState: {},
+      class: 'modal-md',
+      backdrop: 'static',
+      keyboard: false
+    };
+    const classesDialog: BsModalRef | undefined = this.modalService.show(FeatureClassFormComponent, dialogConfig);
+    classesDialog.content.onClose.subscribe((res: any) => {
+
+    });
+  }
+
+  private updateFeatureClass(fc: PhysicalFeatureClass) {
+
   }
 }

@@ -17,6 +17,13 @@ const routes: Routes = [
     component: DataEntryBaseComponent,
     children: [
       {
+        path: 'hourly',
+        component: FormHourlyComponent,
+        data: {
+          title: 'Hourly Data'
+        }
+      },
+      {
         path: '',
         redirectTo: 'daily',
         data: {
@@ -24,10 +31,10 @@ const routes: Routes = [
         }
       },
       {
-        path: 'hourly',
-        component: FormHourlyComponent,
+        path: 'monthly',
+        component: FormMonthlyComponent,
         data: {
-          title: 'Hourly Data'
+          title: 'Monthly Data'
         }
       },
       {
@@ -42,13 +49,6 @@ const routes: Routes = [
         component: FormDaily2Component,
         data: {
           title: 'Daily Data for Whole Month'
-        }
-      },
-      {
-        path: 'monthly',
-        component: FormMonthlyComponent,
-        data: {
-          title: 'Monthly Data'
         }
       },
       {

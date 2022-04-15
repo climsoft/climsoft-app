@@ -10,14 +10,14 @@ const routes: Routes = [
     path: '',
     component: QualifiersComponent,
     data: {
-      title: 'Stations'
+      title: 'Qualifiers'
     }
   },
   {
     path: ':id',
     component: QualifierComponent,
     data: {
-      title: 'Station'
+      title: 'Qualidier'
     }
   }
 ];

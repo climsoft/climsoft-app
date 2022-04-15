@@ -16,13 +16,13 @@
     "qualifiers": "Qualifiers",
     "schedule_class": "Schedule Class",
     "physical_features": "Physical Features",
-    "paper_advice": "Paper Advice",
+    "paper_archive": "Paper Archive",
     "data_entry_forms": "Data Entry Forms",
     "data_entry": {
+      "hourly": "Hourly",
       "daily": "Daily",
-      "hourly": "Monthly",
-      "hourly_wind": "Hourly Wind",
       "monthly": "Monthly",
+      "hourly_wind": "Hourly Wind",
       "synoptic": "Synoptic",
       "agromet": "Agromet"
     }

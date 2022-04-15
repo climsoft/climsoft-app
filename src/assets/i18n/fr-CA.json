@@ -15,14 +15,13 @@
     "qualifiers": "Qualificatifs",
     "schedule_class": "Liste de Classe",
     "physical_features": "Caractéristiques physiques",
-    "paper_advice": "Archives en papier",
+    "paper_archive": "Archives en papier",
     "data_entry_forms": "Formulaires de saisie",
     "data_entry": {
-      "forms": "Formulaires de saisie",
-      "daily": "Journalière",
       "hourly": "Mensuelle",
-      "hourly_wind": "Vent horaire",
+      "daily": "Journalière",
       "monthly": "Mensuelle",
+      "hourly_wind": "Vent horaire",
       "synoptic": "Synoptique",
       "agromet": "Agrométéo"
     }

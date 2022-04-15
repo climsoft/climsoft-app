@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Observable, of } from 'rxjs';
+
+import { PhysicalFeature, PhysicalFeatureState } from '@data/interface/physical-features';
 
 @Component({
   selector: 'app-station-physical-features',
@@ -6,10 +9,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./station-physical-features.component.scss']
 })
 export class StationPhysicalFeaturesComponent implements OnInit {
+  @Input() source: Observable<PhysicalFeatureState> = of({ features: [], page: 1, pages: 1, limit: 25 });
+  @Output() onSelect = new EventEmitter<PhysicalFeature>();
+
+  items!: PhysicalFeature[] | any[];
 
   constructor() { }
 
   ngOnInit(): void {
+    this.source.subscribe(data => {
+      console.log(data);
+      this.items = data.features;
+    })
   }
 
+  selectHist(h: PhysicalFeature) {
+    this.onSelect.emit(h);
+  }
 }

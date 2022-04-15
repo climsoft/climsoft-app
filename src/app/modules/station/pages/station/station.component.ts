@@ -1,10 +1,16 @@
-import { Station } from 'src/app/data/interface/station';
+import { PaperArchiveFormComponent } from './../../../paper-archive/components/paper-archive-form/paper-archive-form.component';
+import { PhysicalFeatureFormComponent } from './../../../physical-feature/components/physical-feature-form/physical-feature-form.component';
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { filter, map, switchMap, take, tap } from "rxjs/operators";
 import { BsModalRef, BsModalService, ModalOptions } from "ngx-bootstrap/modal";
 import * as moment from "moment";
+
+import { PaperArchiveService } from '@paper-archive/services/paper-archive.service';
+import { PhysicalFeaturesService } from '@physical-feature/services/physical-features.service';
+import { PhysicalFeature, PhysicalFeatureState } from '@data/interface/physical-features';
+import { Station } from '@data/interface/station';
 
 import {
   StationElement,
@@ -14,11 +20,13 @@ import {
   StationQualifierResponse
 } from "@data/interface/station";
 import { Qualifier } from "@data/interface/qualifier";
+import { PaperArchive, PaperArchivesState } from '@data/interface/paper-archive';
 import { StationService } from "./../../services/station.service";
-import { QualifierService } from "./../../../qualifier/services/qualifier.service";
+import { QualifierService } from "@qualifier/services/qualifier.service";
+import { QualifierFormComponent } from "@qualifier/components/qualifier-form/qualifier-form.component";
 import { LocationHistoryDialogComponent } from "./../../components/location-history-dialog/location-history-dialog.component";
 import { StationElementDialogComponent } from "./../../components/station-element-dialog/station-element-dialog.component";
-import { QualifierFormComponent } from "@qualifier/components/qualifier-form/qualifier-form.component";
+
 
 @Component({
   selector: "app-station",
@@ -34,12 +42,17 @@ export class StationComponent implements OnInit {
   elements!: Observable<StationElementsResponse>;
   history!: Observable<StationLocationHistoryResponse>;
   qualifiers!: Observable<StationQualifierResponse>;
+  physicalFeatures!: Observable<PhysicalFeatureState>;
+  paperArchives!: Observable<PaperArchivesState>;
 
   constructor(
+      private router: Router,
       private route: ActivatedRoute,
       private modalService: BsModalService,
       private stationService: StationService,
-      private qualiferService: QualifierService
+      private qualiferService: QualifierService,
+      private physFeatureService: PhysicalFeaturesService,
+      private archiveService: PaperArchiveService
     ) { }
 
   ngOnInit(): void {
@@ -61,7 +74,13 @@ export class StationComponent implements OnInit {
       this.loadElements();
       this.loadLocationHist();
       this.loadQualifiers();
+      this.loadPhysicalFeatures();
+      this.loadPaperArchive();
     });
+  }
+
+  edit() {
+    this.router.navigateByUrl(`/station/${this.id}/update`);
   }
 
   addElement() {
@@ -182,6 +201,66 @@ export class StationComponent implements OnInit {
     });
   }
 
+  addPhysicalFeature() {
+    const dialogConfig: ModalOptions = {
+      initialState: { feature: undefined },
+      class: 'modal-lg',
+      backdrop: 'static',
+      keyboard: false
+    };
+    const dialogRef: BsModalRef | undefined = this.modalService.show(PhysicalFeatureFormComponent, dialogConfig);
+    dialogRef.content.onClose.subscribe((payload: Partial<PhysicalFeature>) => {
+      if(payload) {
+        this.physFeatureService.addFeature(payload).subscribe();
+      }
+    });
+  }
+
+  editPhysicalFeature(pf: PhysicalFeature) {
+    const dialogConfig: ModalOptions = {
+      initialState: { feature: pf },
+      class: 'modal-lg',
+      backdrop: 'static',
+      keyboard: false
+    };
+    const dialogRef: BsModalRef | undefined = this.modalService.show(PhysicalFeatureFormComponent, dialogConfig);
+    dialogRef.content.onClose.subscribe((payload: Partial<PhysicalFeature>) => {
+      if(payload) {
+        this.physFeatureService.updateFeature(pf, payload).subscribe();
+      }
+    });
+  }
+
+  addPaperArchive() {
+    const dialogConfig: ModalOptions = {
+      initialState: { archive: undefined },
+      class: 'modal-sm',
+      backdrop: 'static',
+      keyboard: false
+    };
+    const dialogRef: BsModalRef | undefined = this.modalService.show(PaperArchiveFormComponent, dialogConfig);
+    dialogRef.content.onClose.subscribe((payload: Partial<PaperArchive>) => {
+      if(payload) {
+        this.archiveService.addArchive(payload).subscribe();
+      }
+    });
+  }
+
+  editPaperArchive(pa: PaperArchive) {
+    const dialogConfig: ModalOptions = {
+      initialState: { archive: pa },
+      class: 'modal-sm',
+      backdrop: 'static',
+      keyboard: false
+    };
+    const dialogRef: BsModalRef | undefined = this.modalService.show(PaperArchiveFormComponent, dialogConfig);
+    dialogRef.content.onClose.subscribe((payload: Partial<PaperArchive>) => {
+      if(payload) {
+        this.archiveService.updateArchive(pa, payload).subscribe();
+      }
+    });
+  }
+
   private loadElements() {
     this.elements = this.stationService.getStationElements(this.id).pipe(
       map(res => ({ elements: res.result, page: res.page, pages: res.pages, limit: res.limit }))
@@ -198,5 +277,13 @@ export class StationComponent implements OnInit {
     this.qualifiers = this.stationService.getStationQualifiers(this.id).pipe(
       map(res => ({ qualifiers: res.result, page: res.page, pages: res.pages, limit: res.limit }))
     )
+  }
+
+  private loadPhysicalFeatures() {
+    this.physicalFeatures = this.physFeatureService.getByStation(this.id);
+  }
+
+  private loadPaperArchive() {
+    this.archiveService.getStationArchives(this.id);
   }
 }

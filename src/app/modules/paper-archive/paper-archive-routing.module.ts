@@ -1,12 +1,19 @@
+import { PaperArchivesComponent } from './pages/paper-archives/paper-archives.component';
+import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
-
+const routes: Routes = [
+  {
+    path: '',
+    component: PaperArchivesComponent,
+    data: {
+      title: 'Paper Archives'
+    }
+  }
+];
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule
-  ]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
-export class LocationHistoryModule { }
+export class PaperArchiveRoutingModule { }

@@ -47,21 +47,23 @@ import { NoValueComponent } from './component/no-value/no-value.component';
 import { InstrumentSelectionComponent } from './component/instrument-selection/instrument-selection.component';
 import { TimzoneSelectionComponent } from './component/timzone-selection/timzone-selection.component';
 import { ImageUploaderComponent } from './component/image-uploader/image-uploader.component';
+import { FlagPickerComponent } from './component/flag-picker/flag-picker.component';
 
 @NgModule({
   declarations: [
     ConfirmationComponent,
     AlertComponent,
-    PromptComponent,
-    InfoBlockComponent,
-    PaginatorComponent,
-    StationSelectionComponent,
-    ElementSelectionComponent,
     DataTimeComponent,
-    NoValueComponent,
+    ElementSelectionComponent,
+    FlagPickerComponent,
+    ImageUploaderComponent,
+    InfoBlockComponent,
     InstrumentSelectionComponent,
+    PromptComponent,
+    PaginatorComponent,
+    NoValueComponent,
+    StationSelectionComponent,
     TimzoneSelectionComponent,
-    ImageUploaderComponent
   ],
   imports: [
     CommonModule,
@@ -137,6 +139,7 @@ import { ImageUploaderComponent } from './component/image-uploader/image-uploade
     //Shared Dialog Components
     AlertComponent,
     ConfirmationComponent,
+    FlagPickerComponent,
     PaginatorComponent,
     PromptComponent,
     ElementSelectionComponent,
