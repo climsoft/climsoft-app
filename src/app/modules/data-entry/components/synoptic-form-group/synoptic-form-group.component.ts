@@ -1,18 +1,17 @@
-import { filter } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
-
-const patternRegex = ``;
+import { Component, OnInit, Input, EventEmitter, Output, SimpleChanges } from '@angular/core';
+import { filter } from 'rxjs';
 
 @Component({
-  selector: 'app-hourly-form-group',
-  templateUrl: './hourly-form-group.component.html',
-  styleUrls: ['./hourly-form-group.component.scss']
+  selector: 'app-synoptic-form-group',
+  templateUrl: './synoptic-form-group.component.html',
+  styleUrls: ['./synoptic-form-group.component.scss']
 })
-export class HourlyFormGroupComponent implements OnInit {
+export class SynopticFormGroupComponent implements OnInit {
   @Input() modified: boolean = false;
   @Input() group: FormGroup = new FormGroup({
-    hour:    new FormControl(1),
+    key:    new FormControl(''),
+    label:  new FormControl(''),
     value:  new FormControl(null, Validators.required),
     flag:   new FormControl(null)
   });
@@ -38,21 +37,12 @@ export class HourlyFormGroupComponent implements OnInit {
     }
   }
 
+  selectFlag(f: string) {
+    this.group.controls['flag'].setValue(f);
+  }
+
   get fg() {
     return this.group.controls;
   }
 
-  hourVal(n: number): string {
-    if(!n) {
-      return '00';
-    }
-    if(n && n < 10) {
-      return `0${n}`;
-    }
-    return `${n}`;
-  }
-
-  selectFlag(c: string) {
-    this.group.controls['flag'].setValue(c);
-  }
 }

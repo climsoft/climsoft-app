@@ -53,6 +53,10 @@ export class DailyDayFormGroupComponent implements OnInit, OnChanges {
     }
   }
 
+  selectFlag(f: string) {
+    this.group.controls['flag'].setValue(f);
+  }
+
   get fg() {
     return this.group.controls;
   }

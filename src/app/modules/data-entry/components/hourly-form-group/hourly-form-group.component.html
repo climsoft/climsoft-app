@@ -7,6 +7,6 @@
   </c-col>
   <c-col class="py-1 text-center">
     <input type="hidden" formControlName="flag" aria-label="flag" cFormControl />
-    <app-flag-picker (onSelect)="selectFlag($event)"></app-flag-picker>
+    <app-flag-picker [flag]="fg['flag'].value" [disabled]="disabled" (onSelect)="selectFlag($event)"></app-flag-picker>
   </c-col>
 </c-row>

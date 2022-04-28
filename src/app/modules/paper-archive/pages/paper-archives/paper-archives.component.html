@@ -8,6 +8,7 @@
           </c-col>
           <c-col xs="6" class="text-end">
             <a (click)="add()" class="btn btn-sm cs-btn-sm btn-outline"> <svg cIcon name="cilPlus"></svg> Add New </a>
+            <a (click)="viewDefinitions()" class="btn btn-sm cs-btn-sm btn-outline"> <svg cIcon name="cilPlus"></svg> Definitions </a>
           </c-col>
         </c-row>
       </c-card-header>
@@ -22,16 +23,14 @@
             <th scope="col">Station</th>
             <th scope="col">Form Date/Time</th>
             <th scope="col">Classified Into</th>
-            <th scope="col">Image</th>
             <th></th>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor="let pa of state.archives">
-            <th scope="row">{{pa.belongs_to}</th>
-            <td scope="col">{{pa.form_datetime}</td>
+            <th scope="row">{{pa.belongs_to}}</th>
+            <td scope="col">{{pa.form_datetime | date: 'dd MMM YYYY hh:mm a'}}</td>
             <td scope="col">{{pa.classified_into}}</td>
-            <td scope="col">{{pa.image}}</td>
             <td>
               <button cButton
                       size="sm"

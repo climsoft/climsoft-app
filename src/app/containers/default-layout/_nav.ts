@@ -103,7 +103,17 @@ export const navItems: INavData[] = [
         url: '/data-entry/agro'
       }
     ]
-  }
+  },
+  {
+    title: true,
+    name: 'title.paper_archive'
+  },
+  {
+    name: 'paper_archive',
+    url: '/paper-archives',
+    iconComponent: { name: 'cil-puzzle' },
+    badge: { color: 'info', text: '850' }
+  },
   /*
   {
     title: true,

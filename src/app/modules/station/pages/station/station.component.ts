@@ -284,6 +284,8 @@ export class StationComponent implements OnInit {
   }
 
   private loadPaperArchive() {
-    this.archiveService.getStationArchives(this.id);
+    this.paperArchives = this.archiveService.getStationArchives(this.id).pipe(
+      map(res => ({ archives: res.result, page: res.page, pages: res.pages, limit: res.limit }))
+    );
   }
 }

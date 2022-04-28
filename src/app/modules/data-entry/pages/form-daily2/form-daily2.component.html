@@ -2,8 +2,11 @@
 <hr>
 <form [formGroup]="form" *ngIf="form" novalidate (ngSubmit)="onSubmit($event)">
   <c-row>
+    <c-col sm="12" class="text-end">
+      <app-flag-legend></app-flag-legend>
+    </c-col>
     <c-col sm="12">
-      <fieldset class="form-group p-3 mt-4">
+      <fieldset class="form-group p-3 mt-2">
         <legend>Form Selector</legend>
         <c-row>
           <c-col xs="12" md="6" xl="3">

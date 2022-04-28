@@ -18,13 +18,13 @@ export class StationPaperArchiveComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.source.subscribe(data => {
-      console.log(data);
-      this.items = data.archives;
+    this.source.subscribe(res => {
+      console.log(res);
+      this.items = res.archives;
     })
   }
 
-  selectHist(pa: PaperArchive) {
+  selectArch(pa: PaperArchive) {
     this.onSelect.emit(pa);
   }
 }

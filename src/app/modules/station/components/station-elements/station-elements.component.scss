@@ -3,8 +3,6 @@ $icon-bg-hover: #54668b;
 $icon-hover-color: #39f;
 
 .el {
-  border: 1px solid #d7dde2;
-  border-radius: 0.3rem;
   padding: 0;
   cursor: pointer;
   transition: box-shadow .3s;
@@ -16,18 +14,6 @@ $icon-hover-color: #39f;
       background-color: $icon-bg-hover;
       border-color: $icon-hover-color;
     }
-  }
-
-  &-head {
-    text-align: center;
-    padding: 0.15rem 0.3rem;
-    width: 100%;
-    font-size: 0.7rem;
-    background-color: #d7dde2;
-    border-top-left-radius: 0.3rem;
-    border-top-right-radius: 0.3rem;
-    white-space: nowrap;
-    overflow: hidden;
   }
 
   &-icon {
@@ -47,5 +33,10 @@ $icon-hover-color: #39f;
         color: #fff;
       }
     }
+  }
+
+  &-body {
+    text-align: center;
+    font-size: 0.8rem;
   }
 }

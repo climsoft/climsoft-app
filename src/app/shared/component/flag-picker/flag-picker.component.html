@@ -1,7 +1,10 @@
 <div class="flag-picker" [ngClass]="{ 'enabled': toggled }">
   <div class="inner">
-    <a [cTooltip]="activeLabel" class="active-flag btn {{flagConfig[activeFlag].class}}" (click)="toggleActive()">
-      {{activeFlag}}
+    <a [cTooltip]="activeLabel"
+       [ngClass]="{ 'disabled': disabled }"
+       class="active-flag btn {{flagConfig[activeFlag].class}}"
+       (click)="toggleActive()">
+       {{activeFlag}}
     </a>
   </div>
   <ul>

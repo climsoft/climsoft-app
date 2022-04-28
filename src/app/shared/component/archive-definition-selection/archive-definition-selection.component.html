@@ -1,0 +1,21 @@
+<input [(ngModel)]="search"
+       [typeahead]="definitions$"
+       typeaheadOptionField="station_name"
+       [typeaheadAsync]="true"
+       (typeaheadLoading)="changeTypeaheadLoading($event)"
+       (typeaheadOnSelect)="onSelect($event)"
+       [typeaheadOptionsLimit]="7"
+       [typeaheadItemTemplate]="itemTemplate"
+       class="form-control"
+       [ngClass]="{loading: typeaheadLoading}"
+       autocomplete="off"
+       autocorrect="off"
+       [placeholder]="placeholder">
+<div *ngIf="loading" class="typeahead-loading"><img src="./assets/img/gif/spinner.gif" alt=""> searching...</div>
+<div ngClass="typeahead-error" *ngIf="!loading && errorMessage" class="typeahead-loading">
+  <div class="typeahead-error-inner">{{errorMessage}}</div>
+</div>
+
+<ng-template let-item="item" #itemTemplate>
+  <div class="item-heading">{{item.form_id}}</div>
+</ng-template>

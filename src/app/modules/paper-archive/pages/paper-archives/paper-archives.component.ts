@@ -1,3 +1,4 @@
+import { ArchiveDefinitionsComponent } from './../../components/archive-definitions/archive-definitions.component';
 import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { BsModalService, ModalOptions, BsModalRef } from 'ngx-bootstrap/modal';
@@ -77,5 +78,15 @@ export class PaperArchivesComponent implements OnInit {
         this.paperArchService.removeArchive(feat);
       }
     });
+  }
+
+  viewDefinitions() {
+    const dialogConfig: ModalOptions = {
+      initialState: {},
+      class: 'modal-lg',
+      backdrop: 'static',
+      keyboard: false
+    };
+    const dialogRef: BsModalRef | undefined = this.modalService.show(ArchiveDefinitionsComponent, dialogConfig);
   }
 }

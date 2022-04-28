@@ -1,0 +1,45 @@
+<div class="modal-header">
+  <h5 class="modal-title pull-left">Paper Archive Definitions</h5>
+</div>
+<div class="modal-body">
+  <c-row>
+    <c-col md="12"></c-col>
+    <c-col md="12">
+      <table cTable>
+        <thead>
+        <tr>
+          <th scope="col">Feature Class</th>
+          <th scope="col">Description</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let d of definitions">
+          <th scope="row">{{d.form_id}}</th>
+          <td scope="col">{{d.description}}</td>
+          <td>
+            <button cButton
+                    type="button"
+                    size="sm"
+                    color="light"
+                    shape="rounded-pill"
+                    (click)="updateDef(d)"
+                    cTooltip="Update Station">
+              <svg cIcon name="cilPencil" size="sm"></svg>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="!definitions?.length">
+          <td colspan="4">
+            <c-alert color="primary">No archive definitions available.</c-alert>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </c-col>
+  </c-row>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="onNew()">New Definition</button>
+  <button type="button" class="btn btn-dark" (click)="onCancel()">Close</button>
+</div>

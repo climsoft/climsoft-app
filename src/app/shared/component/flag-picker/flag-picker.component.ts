@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, HostListener, ElementRef, Input } from '@angular/core';
+import { Flag, Flags, FlagsConfig } from '@data/enum/flag';
 
 @Component({
   selector: 'app-flag-picker',
@@ -6,17 +7,13 @@ import { Component, OnInit, Output, EventEmitter, HostListener, ElementRef } fro
   styleUrls: ['./flag-picker.component.scss']
 })
 export class FlagPickerComponent implements OnInit {
+  @Input() flag!: string;
+  @Input() disabled: boolean = false;
   @Output() onSelect: EventEmitter<string> = new EventEmitter;
 
-  flags: string[] = ['M', 'T', 'E', 'G', 'D'];
-  flagConfig: any = {
-    M: { label: 'Missing', class: 'btn-light' },
-    T: { label: 'Trace', class: 'btn-dark' },
-    E: { label: 'Estimated', class: 'btn-secondary' },
-    G: { label: 'Generated', class: 'btn-info' },
-    D: { label: 'Dubious', class: 'btn-warning' }
-  };
-  activeFlag: string = this.flags[0];
+  flags: string[] = Flags;
+  flagConfig: any = FlagsConfig;
+  activeFlag: string = Flag.M;
   toggled: boolean = false;
 
   constructor(private _eref: ElementRef) { }
@@ -32,7 +29,9 @@ export class FlagPickerComponent implements OnInit {
   }
 
   toggleActive() {
-    this.toggled = !this.toggled;
+    if(!this.disabled) {
+      this.toggled = !this.toggled;
+    }
   }
 
   get activeLabel(): string {

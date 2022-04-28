@@ -48,6 +48,8 @@ import { InstrumentSelectionComponent } from './component/instrument-selection/i
 import { TimzoneSelectionComponent } from './component/timzone-selection/timzone-selection.component';
 import { ImageUploaderComponent } from './component/image-uploader/image-uploader.component';
 import { FlagPickerComponent } from './component/flag-picker/flag-picker.component';
+import { FlagLegendComponent } from './component/flag-legend/flag-legend.component';
+import { ArchiveDefinitionSelectionComponent } from './component/archive-definition-selection/archive-definition-selection.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +66,8 @@ import { FlagPickerComponent } from './component/flag-picker/flag-picker.compone
     NoValueComponent,
     StationSelectionComponent,
     TimzoneSelectionComponent,
+    FlagLegendComponent,
+    ArchiveDefinitionSelectionComponent,
   ],
   imports: [
     CommonModule,
@@ -139,10 +143,17 @@ import { FlagPickerComponent } from './component/flag-picker/flag-picker.compone
     //Shared Dialog Components
     AlertComponent,
     ConfirmationComponent,
-    FlagPickerComponent,
-    PaginatorComponent,
     PromptComponent,
+
+    //Utility Components
+    FlagLegendComponent,
+    PaginatorComponent,
+
+
+    // Custom Selector Components
+    ArchiveDefinitionSelectionComponent,
     ElementSelectionComponent,
+    FlagPickerComponent,
     InstrumentSelectionComponent,
     StationSelectionComponent,
     TimzoneSelectionComponent,

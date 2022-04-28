@@ -1,3 +1,4 @@
+import { HourlyRecord } from './../../../../data/interface/data-entry-form';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
@@ -9,6 +10,7 @@ import { Station } from '@data/interface/station';
 import { IDataEntryForm } from '@data/interface/data-entry-form';
 
 import * as moment from 'moment';
+import { Flag } from '@data/enum/flag';
 
 @Component({
   selector: 'app-form-hourly',
@@ -133,18 +135,24 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
     return this.hoursArray.controls as FormGroup[];
   }
 
-  private getHourGroup(hour: number, value?: number, flag?: string, period?: number): FormGroup {
-    return new FormGroup({
-      hour:    new FormControl(hour),
-      value:  new FormControl(value, [Validators.min(0), Validators.max(70)]),
-      flag:   new FormControl(flag)
+  private getHourGroup(data: HourlyRecord): FormGroup {
+    const formGroup = new FormGroup({
+      hour:    new FormControl(null),
+      value:  new FormControl(null, [Validators.min(0), Validators.max(70)]),
+      flag:   new FormControl(null)
     });
+
+    if(data) {
+      formGroup.patchValue(data);
+    }
+
+    return formGroup;
   }
 
   private renderFormHours(date: Date) {
     this.resetHours();
     for(let i=0; i <= this.hoursList.length; i++) {
-      this.hoursArray.push(this.getHourGroup(i));
+      this.hoursArray.push(this.getHourGroup({ hour: i, value: 0, flag: Flag.M }));
     }
   }
 

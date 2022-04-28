@@ -1,0 +1,54 @@
+<div class="modal-header">
+  <h5 class="modal-title pull-left">{{update? 'Update' : 'Add'}} Archive Definition</h5>
+</div>
+<div class="modal-body">
+  <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
+    <c-row>
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="form_id">Form ID</label>
+          <input
+            id="form_id"
+            formControlName="form_id"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['form_id'].touched) && f['form_id'].invalid }"
+            placeholder="Form ID"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['form_id'].errors">
+            <div *ngIf="f['form_id'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Form ID is required.</div>
+          </div>
+        </div>
+      </c-col>
+
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="description">Description</label>
+          <textarea
+            id="description"
+            formControlName="description"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['description'].touched) && f['description'].invalid }"
+            placeholder="Description"
+            rows="3"
+          ></textarea>
+          <div col="12" class="invalid-feedback" *ngIf="f['description'].errors">
+            <div *ngIf="f['description'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Description not selected.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12">
+        <hr>
+      </c-col>
+
+      <c-col xs="12" class="text-end pt-3">
+        <button type="submit" class="btn btn-dark mx-1">{{update? 'Update' : 'Add'}}</button>
+        <button type="button" class="btn btn-dark" (click)="onCancel()">Cancel</button>
+      </c-col>
+    </c-row>
+  </form>
+</div>

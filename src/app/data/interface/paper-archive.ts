@@ -11,3 +11,9 @@ export interface PaperArchivesState {
   page: number;
   pages: number;
 }
+
+
+export interface PaperArchiveDefinition {
+  form_id: string;
+  description: string;
+}

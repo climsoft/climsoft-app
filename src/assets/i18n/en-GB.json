@@ -5,7 +5,8 @@
   "nav": {
     "title": {
       "station_metadata": "Station MetaData",
-      "data_entry": "Data Entry"
+      "data_entry": "Data Entry",
+      "paper_archive": "Paper Archive"
     },
     "dashboard": "Dashboard",
     "stations": "Stations",
@@ -16,7 +17,7 @@
     "qualifiers": "Qualifiers",
     "schedule_class": "Schedule Class",
     "physical_features": "Physical Features",
-    "paper_archive": "Paper Archive",
+    "paper_archive": "Archive Definition",
     "data_entry_forms": "Data Entry Forms",
     "data_entry": {
       "hourly": "Hourly",

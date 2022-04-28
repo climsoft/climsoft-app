@@ -1,3 +1,10 @@
+$light: #ebedef;
+$dark: #4f5d73;
+$secondary: #9da5b1;
+$info: #39f;
+$warning: #f9b115;
+$text-dark: #33434b;
+
 .flag-picker {
   position: relative;
   display: inline-block;
@@ -46,26 +53,30 @@
     cursor: pointer;
     text-decoration: none;
 
+    &.disabled {
+      cursor: not-allowed;
+    }
+
     &.btn-light {
-      color: #33434b;
-      background-color: #ebedef;
+      color: $text-dark;
+      background-color: $light;
     }
 
     &.btn-dark {
-      background-color: #4f5d73;
+      background-color: $dark;
     }
 
     &.btn-secondary {
-      color: #33434b;
-      background-color: #9da5b1;
+      color: $text-dark;
+      background-color: $secondary;
     }
 
     &.btn-info {
-      background-color: #39f;
+      background-color: $info;
     }
 
     &.btn-warning {
-      background-color: #f9b115;
+      background-color: $warning;
     }
   }
 }

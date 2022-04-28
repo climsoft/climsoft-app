@@ -48,12 +48,20 @@
           <label cLabel for="classified_into">Classified Into</label>
           <input
             id="classified_into"
+            type="hidden"
             formControlName="classified_into"
             aria-label="default input"
             cFormControl
             [ngClass]="{ 'is-invalid': (submitted || f['classified_into'].touched) && f['classified_into'].invalid }"
-            placeholder="Refers To"
+            placeholder="Classified Into"
           />
+          <div class="typeahead-selection theme form-group" *ngIf="definition">
+            <div class="typeahead-selection-inner">
+              <span>{{definition.form_id}}</span>
+              <a (click)="resetDefinition()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+            </div>
+          </div>
+          <app-archive-definition-selection *ngIf="!definition" (onSelection)="onDefinitionSelect($event)"></app-archive-definition-selection>
           <div col="12" class="invalid-feedback" *ngIf="f['classified_into'].errors">
             <div *ngIf="f['classified_into'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Element not selected.</div>
           </div>
@@ -63,7 +71,16 @@
       <c-col xs="12">
         <div class="mb-2">
           <label cLabel for="classified_into">Image</label>
-          <app-image-uploader></app-image-uploader>
+          <input
+            id="image"
+            type="hidden"
+            formControlName="image"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['image'].touched) && f['image'].invalid }"
+            placeholder="Network Type"
+          />
+          <app-image-uploader #imageUploader [feature]="'feature'" (onImgSelect)="onImage($event)"></app-image-uploader>
           <div col="12" class="invalid-feedback" *ngIf="f['classified_into'].errors">
             <div *ngIf="f['classified_into'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Element not selected.</div>
           </div>
