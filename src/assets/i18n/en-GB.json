@@ -17,7 +17,8 @@
     "qualifiers": "Qualifiers",
     "schedule_class": "Schedule Class",
     "physical_features": "Physical Features",
-    "paper_archive": "Archive Definition",
+    "paper_archive": "Paper Archives",
+    "paper_archive_definitions": "Archive Definitions",
     "data_entry_forms": "Data Entry Forms",
     "data_entry": {
       "hourly": "Hourly",

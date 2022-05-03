@@ -64,8 +64,8 @@ export const navItems: INavData[] = [
     badge: { color: 'info', text: '850' }
   },
   {
-    name: 'paper_archive',
-    url: '/paper-archives',
+    name: 'paper_archive_definitions',
+    url: '/paper-archive-definitions',
     iconComponent: { name: 'cil-puzzle' },
     badge: { color: 'info', text: '850' }
   },

@@ -92,21 +92,7 @@ export class PaperArchiveService {
     });
   }
 
-  getDefinitions(page: number, limit: number): Observable<any> {
-    console.log(page, limit);
-    const offset = (page - 1) * limit;
-    return this.http.GET(`${apiPrefix}/paper-archive-definitions`);
-  }
-
   searchDefinitions(query: string) {
     return this.http.GET(`${apiPrefix}/paper-archive-definitions/search?query=${query}`);
-  }
-
-  addDefinition(payload: PaperArchiveDefinition): Observable<any> {
-    return this.http.POST(`${apiPrefix}/paper-archive-definitions`, payload);
-  }
-
-  updateDefinition(form_id: string, description: string): Observable<any> {
-    return this.http.PUT(`${apiPrefix}/paper-archive-definitions/${form_id}`, description);
   }
 }

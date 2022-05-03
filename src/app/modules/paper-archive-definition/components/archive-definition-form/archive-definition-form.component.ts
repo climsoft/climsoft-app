@@ -44,7 +44,7 @@ export class ArchiveDefinitionFormComponent implements OnInit {
     if(this.form.invalid) {
       return;
     }
-    this.onClose.next(this.form.value);
+    this.onClose.next(this.update? this.f['description'].value : this.form.value);
     this.dialogRef.hide();
   }
 

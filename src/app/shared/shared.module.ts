@@ -11,6 +11,7 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgxMaskModule } from 'ngx-mask';
 import {
   AlertModule,
+  BadgeModule,
   BreadcrumbModule,
   ButtonGroupModule,
   ButtonModule,
@@ -75,6 +76,7 @@ import { ArchiveDefinitionSelectionComponent } from './component/archive-definit
     FormsModule,
 
     AlertModule,
+    BadgeModule,
     BreadcrumbModule,
     ButtonModule,
     ButtonGroupModule,
@@ -112,6 +114,7 @@ import { ArchiveDefinitionSelectionComponent } from './component/archive-definit
     NgxMaskModule,
 
     AlertModule,
+    BadgeModule,
     BreadcrumbModule,
     ButtonModule,
     ButtonGroupModule,

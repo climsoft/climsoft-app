@@ -1,3 +1,4 @@
+import { PaperArchiveDefinitionModule } from './modules/paper-archive-definition/paper-archive-definition.module';
 import { ForgotPasswordComponent } from './modules/auth/components/forgot-password/forgot-password.component';
 import { AuthGuard } from './modules/auth/guards/auth.guard';
 import { NgModule } from '@angular/core';
@@ -70,6 +71,12 @@ const routes: Routes = [
           import('./modules/qualifier/qualifier.module').then((m) => m.QualifierModule)
       },
       {
+        path: 'schedule-classes',
+        canActivate: [AuthGuard],
+        loadChildren: () =>
+          import('./modules/schedule-class/schedule-class.module').then((m) => m.ScheduleClassModule)
+      },
+      {
         path: 'physical-features',
         canActivate: [AuthGuard],
         loadChildren: () =>
@@ -80,6 +87,12 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         loadChildren: () =>
           import('./modules/paper-archive/paper-archive.module').then((m) => m.PaperArchiveModule)
+      },
+      {
+        path: 'paper-archive-definitions',
+        canActivate: [AuthGuard],
+        loadChildren: () =>
+          import('./modules/paper-archive-definition/paper-archive-definition.module').then((m) => m.PaperArchiveDefinitionModule)
       },
       {
         path: 'data-entry',

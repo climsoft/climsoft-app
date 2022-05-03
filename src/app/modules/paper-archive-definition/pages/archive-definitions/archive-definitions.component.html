@@ -4,7 +4,7 @@
       <c-card-header>
         <c-row>
           <c-col xs="6">
-            <strong class="col-6">Physical Features</strong>
+            <strong class="col-6">Paper Archive Definitions</strong>
           </c-col>
           <c-col xs="6" class="text-end">
             <a (click)="add()" class="btn btn-sm cs-btn-sm btn-outline"> <svg cIcon name="cilPlus"></svg> Add New </a>
@@ -19,31 +19,21 @@
         <table cTable>
           <thead>
           <tr>
-            <th scope="col">Station</th>
-            <th scope="col">Form Date/Time</th>
-            <th scope="col">Classified Into</th>
+            <th scope="col">Form ID</th>
+            <th scope="col">Description</th>
             <th></th>
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let pa of state.archives">
-            <th scope="row">{{pa.belongs_to}}</th>
-            <td scope="col">{{pa.form_datetime | date: 'dd MMM YYYY hh:mm a'}}</td>
-            <td scope="col">{{pa.classified_into}}</td>
+          <tr *ngFor="let def of state.definitions">
+            <th scope="row">{{def.form_id}}</th>
+            <th scope="row">{{def.description}}</th>
             <td>
               <button cButton
                       size="sm"
                       color="light"
                       shape="rounded-pill"
-                      (click)="view(pa)"
-                      cTooltip="View Archive">
-                <svg cIcon name="cilMagnifyingGlass" size="sm"></svg>
-              </button>
-              <button cButton
-                      size="sm"
-                      color="light"
-                      shape="rounded-pill"
-                      (click)="update(pa)"
+                      (click)="update(def)"
                       cTooltip="Update Archive">
                 <svg cIcon name="cilPencil" size="sm"></svg>
               </button>
@@ -51,7 +41,7 @@
                       size="sm"
                       color="light"
                       shape="rounded-pill"
-                      (click)="remove(pa)"
+                      (click)="remove(def)"
                       cTooltip="Remove Archive">
                 <svg cIcon name="cilTrash" size="sm" class="text-danger"></svg>
               </button>
@@ -59,7 +49,7 @@
           </tr>
           </tbody>
         </table>
-        <c-alert *ngIf="!state.archives.length" color="primary"><strong>Info</strong> No paper archive records available to show. </c-alert>
+        <c-alert *ngIf="!state.definitions.length" color="primary"><strong>Info</strong> No paper archive records available to show. </c-alert>
       </c-card-body>
     </c-card>
   </c-col>

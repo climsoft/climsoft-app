@@ -17,3 +17,10 @@ export interface PaperArchiveDefinition {
   form_id: string;
   description: string;
 }
+
+export interface PaperArchiveDefinitionState {
+  definitions: PaperArchiveDefinition[];
+  limit: number;
+  page: number;
+  pages: number;
+}
