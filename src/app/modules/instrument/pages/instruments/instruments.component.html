@@ -22,27 +22,26 @@
             <th scope="col">ID</th>
             <th scope="col">Name</th>
             <th scope="col">Serial</th>
-            <th scope="col">Abbreviation</th>
             <th scope="col">Model</th>
             <th scope="col">Manufacturer</th>
             <th scope="col">Height</th>
             <th scope="col">Uncertainty</th>
-            <th scope="col">Instrallation</th>
-            <th scope="col">De-Instrallation</th>
+            <th scope="col">Installation</th>
+            <th scope="col">De-Installation</th>
             <th></th>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor="let inst of state.instruments">
             <th scope="row">{{inst.instrument_id}}</th>
-            <td scope="col">{{inst.instrument_name}}</td>
-            <td scope="col">{{inst.abbreviation}}</td>
+            <td scope="col">[{{inst.abbreviation}}] {{inst.instrument_name}}</td>
+            <td scope="col">{{inst.serial_number}}</td>
             <td scope="col">{{inst.model}}</td>
             <td scope="col">{{inst.manufacturer}}</td>
             <td scope="col">{{inst.height}}</td>
             <td scope="col">{{inst.instrument_uncertainty}}</td>
-            <td scope="col">{{inst.installation_datetime}}</td>
-            <td scope="col">{{inst.deinstallation_datetime}}</td>
+            <td scope="col">{{inst.installation_datetime | date : 'dd MMM YYYY hh:mm'}}</td>
+            <td scope="col">{{inst.deinstallation_datetime | date : 'dd MMM YYYY hh:mm'}}</td>
             <td>
               <button cButton
                       size="sm"

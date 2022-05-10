@@ -4,7 +4,14 @@ export interface IDataEntryForm {
 }
 
 export interface HourlyRecord {
-  hour:    number,
-  value:  number,
-  flag:   string
+  hour:    number;
+  value:  number;
+  flag:   string;
+}
+
+export interface MonthlyRecord {
+  month: string;
+  value:  number;
+  flag:   string;
+  period: number;
 }

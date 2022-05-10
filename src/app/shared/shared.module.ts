@@ -51,6 +51,8 @@ import { ImageUploaderComponent } from './component/image-uploader/image-uploade
 import { FlagPickerComponent } from './component/flag-picker/flag-picker.component';
 import { FlagLegendComponent } from './component/flag-legend/flag-legend.component';
 import { ArchiveDefinitionSelectionComponent } from './component/archive-definition-selection/archive-definition-selection.component';
+import { ArchiveViewerComponent } from './component/archive-viewer/archive-viewer.component';
+import { YearSelectorComponent } from './component/year-selector/year-selector.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +71,8 @@ import { ArchiveDefinitionSelectionComponent } from './component/archive-definit
     TimzoneSelectionComponent,
     FlagLegendComponent,
     ArchiveDefinitionSelectionComponent,
+    ArchiveViewerComponent,
+    YearSelectorComponent,
   ],
   imports: [
     CommonModule,
@@ -163,6 +167,7 @@ import { ArchiveDefinitionSelectionComponent } from './component/archive-definit
     ImageUploaderComponent,
 
     // Custom Form Components
+    YearSelectorComponent,
     DataTimeComponent
   ]
 })

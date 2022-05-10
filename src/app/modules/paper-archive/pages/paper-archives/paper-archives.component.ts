@@ -1,3 +1,4 @@
+import { ArchiveViewerComponent } from './../../../../shared/component/archive-viewer/archive-viewer.component';
 import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { BsModalService, ModalOptions, BsModalRef } from 'ngx-bootstrap/modal';
@@ -45,8 +46,18 @@ export class PaperArchivesComponent implements OnInit {
     });
   }
 
-  view(f: PaperArchive) {
+  view(archive: PaperArchive) {
+    const dialogConfig: ModalOptions = {
+      initialState: { archive },
+      class: 'modal-xl'
+    };
 
+    const dialogRef: BsModalRef | undefined = this.modalService.show(ArchiveViewerComponent, dialogConfig);
+    dialogRef.content.onClose.subscribe((data: { action: string }) => {
+      if(data.action && data.action === 'UPDATE_ARCHIVE') {
+        console.log('Update Archive to be implemented here');
+      }
+    })
   }
 
   update(pa: PaperArchive) {

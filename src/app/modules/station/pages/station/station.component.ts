@@ -1,3 +1,4 @@
+import { ArchiveViewerComponent } from './../../../../shared/component/archive-viewer/archive-viewer.component';
 import { PaperArchiveFormComponent } from './../../../paper-archive/components/paper-archive-form/paper-archive-form.component';
 import { PhysicalFeatureFormComponent } from './../../../physical-feature/components/physical-feature-form/physical-feature-form.component';
 import { Component, OnInit } from "@angular/core";
@@ -233,7 +234,7 @@ export class StationComponent implements OnInit {
 
   addPaperArchive() {
     const dialogConfig: ModalOptions = {
-      initialState: { archive: undefined },
+      initialState: { archive: undefined, fromStation: this.raw },
       class: 'modal-sm',
       backdrop: 'static',
       keyboard: false
@@ -241,9 +242,25 @@ export class StationComponent implements OnInit {
     const dialogRef: BsModalRef | undefined = this.modalService.show(PaperArchiveFormComponent, dialogConfig);
     dialogRef.content.onClose.subscribe((payload: Partial<PaperArchive>) => {
       if(payload) {
-        this.archiveService.addArchive(payload).subscribe();
+        this.archiveService.addArchive(payload).subscribe(() => {
+          this.loadPaperArchive();
+        });
       }
     });
+  }
+
+  viewPaperArchive(archive: PaperArchive) {
+    const dialogConfig: ModalOptions = {
+      initialState: { archive },
+      class: 'modal-xl'
+    };
+
+    const dialogRef: BsModalRef | undefined = this.modalService.show(ArchiveViewerComponent, dialogConfig);
+    dialogRef.content.onClose.subscribe((data: { action: string }) => {
+      if(data.action && data.action === 'UPDATE_ARCHIVE') {
+        console.log('Update Archive to be implemented here');
+      }
+    })
   }
 
   editPaperArchive(pa: PaperArchive) {

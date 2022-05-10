@@ -9,6 +9,23 @@
         <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
           <c-row>
             <c-col xs="12" md="5" xl="4">
+              <div class="mb-2">
+                <label cLabel for="instrument_id">Instrument ID</label>
+                <input
+                  id="instrument_id"
+                  formControlName="instrument_id"
+                  aria-label="default input"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['instrument_id'].touched) && f['instrument_id'].invalid }"
+                />
+                <div col="12" class="invalid-feedback" *ngIf="f['instrument_id'].errors">
+                  <div *ngIf="f['instrument_id'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Instrument is required.</div>
+                </div>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
                 <label cLabel for="inst_name">Instrument Name</label>
                 <input
@@ -94,22 +111,30 @@
             </c-col>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
-                <label cLabel for="inst_uncert">Uncertainty</label>
+                <label cLabel for="inst_install_at">Installed At</label>
                 <input
-                  id="inst_uncert"
-                  formControlName="instrument_uncertainty"
-                  aria-label="Instrument Uncertainty"
+                  id="inst_install_at"
+                  type="hidden"
+                  formControlName="installed_at"
+                  aria-label="Installed At"
                   cFormControl
-                  [ngClass]="{ 'is-invalid': (submitted || f['instrument_uncertainty'].touched) && f['instrument_uncertainty'].invalid }"
-                  placeholder="Instrument Uncertainty" />
-                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['instrument_uncertainty'].errors">
-                    <div *ngIf="f['instrument_uncertainty'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Icao id is required.</div>
+                  [ngClass]="{ 'is-invalid': (submitted || f['installed_at'].touched) && f['installed_at'].invalid }"
+                  placeholder="Installed At"
+                />
+                <div class="typeahead-selection theme form-group" *ngIf="station">
+                  <div class="typeahead-selection-inner">
+                    <span>{{station.station_name}}</span>
+                    <a (click)="resetStation()" class="btn"> <svg cIcon name="cilX"></svg> </a>
                   </div>
+                </div>
+                <app-station-selection *ngIf="!station" (onSelection)="onStationSelect($event)"></app-station-selection>
+                <div col="12" class="invalid-feedback" *ngIf="f['installed_at'].errors">
+                  <div *ngIf="f['installed_at'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Station is required.</div>
+                </div>
               </div>
             </c-col>
           </c-row>
           <c-row>
-
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
                 <label cLabel for="inst_install">Installation Date/Time</label>
@@ -134,18 +159,17 @@
           <c-row>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
-                <label cLabel for="inst_install_at">Installed At</label>
+                <label cLabel for="inst_uncert">Uncertainty</label>
                 <input
-                  id="inst_install_at"
-                  formControlName="installed_at"
-                  aria-label="Installed At"
+                  id="inst_uncert"
+                  formControlName="instrument_uncertainty"
+                  aria-label="Instrument Uncertainty"
                   cFormControl
-                  [ngClass]="{ 'is-invalid': (submitted || f['installed_at'].touched) && f['installed_at'].invalid }"
-                  placeholder="Installed At"
-                />
-                <div col="12" class="invalid-feedback" *ngIf="f['installed_at'].errors">
-                  <div *ngIf="f['installed_at'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Qualifier is required.</div>
-                </div>
+                  [ngClass]="{ 'is-invalid': (submitted || f['instrument_uncertainty'].touched) && f['instrument_uncertainty'].invalid }"
+                  placeholder="Instrument Uncertainty" />
+                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['instrument_uncertainty'].errors">
+                    <div *ngIf="f['instrument_uncertainty'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Icao id is required.</div>
+                  </div>
               </div>
             </c-col>
             <c-col xs="12" md="5" xl="4">
@@ -172,21 +196,11 @@
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
                 <label cLabel for="inst_pic">Instrument Picture</label>
-                <input
-                  type="file"
-                  id="inst_pic"
-                  formControlName="instrument_picture"
-                  aria-label="Instrument Picture"
-                  cFormControl
-                  [ngClass]="{ 'is-invalid': (submitted || f['instrument_picture'].touched) && f['instrument_picture'].invalid }"
-                  placeholder="Instrument Picture" />
-                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['instrument_picture'].errors">
-                    <div *ngIf="f['instrument_picture'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Drainage basin is required.</div>
-                  </div>
+                <app-image-uploader #imageUploader [feature]="'feature'"></app-image-uploader>
               </div>
             </c-col>
           </c-row>
-          <c-row [ngClass]="{ 'mt-3': !error }">
+          <c-row [ngClass]="{ 'mt-4': !error }">
             <c-col xs="12">
               <button type="submit" cButton class="px-4" color="dark">
                 <c-spinner *ngIf="loading" aria-hidden="true" size="sm"></c-spinner> Submit </button>

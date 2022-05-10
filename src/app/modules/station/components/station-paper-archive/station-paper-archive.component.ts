@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 import { PaperArchive, PaperArchivesState } from '@data/interface/paper-archive';
@@ -9,7 +9,7 @@ import { PaperArchive, PaperArchivesState } from '@data/interface/paper-archive'
   templateUrl: './station-paper-archive.component.html',
   styleUrls: ['./station-paper-archive.component.scss']
 })
-export class StationPaperArchiveComponent implements OnInit {
+export class StationPaperArchiveComponent implements OnInit, OnChanges {
   @Input() source: Observable<PaperArchivesState> = of({ archives: [], page: 1, pages: 1, limit: 25 });
   @Output() onSelect = new EventEmitter<PaperArchive>();
 
@@ -18,6 +18,9 @@ export class StationPaperArchiveComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
     this.source.subscribe(res => {
       console.log(res);
       this.items = res.archives;

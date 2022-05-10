@@ -15,6 +15,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 })
 export class PaperArchiveFormComponent implements OnInit {
   @Input() archive!: PaperArchive;
+  @Input() fromStation!: Station;
   @ViewChild('imageUploader') imageUploader!: ImageUploaderComponent;
 
   public onClose: Subject<any> = new Subject();
@@ -34,6 +35,11 @@ export class PaperArchiveFormComponent implements OnInit {
       classified_into:  new FormControl('', Validators.required),
       image:            new FormControl(null)
     });
+
+    if(this.fromStation) {
+      this.station = this.fromStation;
+      this.f['belongs_to'].setValue(this.fromStation.station_id);
+    }
   }
 
   get update(): boolean {

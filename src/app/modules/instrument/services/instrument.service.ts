@@ -24,7 +24,7 @@ export class InstrumentService {
 
   adapt(obj: Instrument | any): any {
     const keyMaps: any = {
-      "instrument_id": "Instrument ID",
+      "instrument_id": "",
       "instrument_name": "Instrument Name",
       "serial_number": "Serial Number",
       "abbreviation": "Abbreviation",
@@ -62,7 +62,7 @@ export class InstrumentService {
   }
 
   addInstrument(payload: Instrument): Observable<any> {
-    return this.http.POST(`${apiPrefix}/instruments`, { ...payload }).pipe(
+    return this.http.POST(`${apiPrefix}/instruments`, { ...payload, installation_datetime: payload.installation_datetime.toISOString(), deinstallation_datetime: payload.deinstallation_datetime.toISOString() }).pipe(
       catchError((err) => {
         throw new Error(err.error.message);
       }),

@@ -13,6 +13,7 @@ import { DataEntryRoutingModule } from './data-entry-routing.module';
 import { DailyDayFormGroupComponent } from './components/daily-day-form-group/daily-day-form-group.component';
 import { HourlyFormGroupComponent } from './components/hourly-form-group/hourly-form-group.component';
 import { SynopticFormGroupComponent } from './components/synoptic-form-group/synoptic-form-group.component';
+import { MonthFormGroupComponent } from './components/month-form-group/month-form-group.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SynopticFormGroupComponent } from './components/synoptic-form-group/syn
     FormSynoptic2CaribbeanComponent,
     DailyDayFormGroupComponent,
     HourlyFormGroupComponent,
-    SynopticFormGroupComponent
+    SynopticFormGroupComponent,
+    MonthFormGroupComponent
   ],
   imports: [
     CommonModule,

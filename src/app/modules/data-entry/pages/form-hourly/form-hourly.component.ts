@@ -1,12 +1,11 @@
-import { HourlyRecord } from './../../../../data/interface/data-entry-form';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
-
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 
 import { ResponsiveService } from '@shared/services/responsive.service';
 import { ObsElement } from '@data/interface/element';
 import { Station } from '@data/interface/station';
+import { HourlyRecord } from '@data/interface/data-entry-form';
 import { IDataEntryForm } from '@data/interface/data-entry-form';
 
 import * as moment from 'moment';

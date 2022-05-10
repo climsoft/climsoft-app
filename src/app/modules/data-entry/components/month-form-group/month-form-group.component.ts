@@ -1,19 +1,19 @@
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit, Input, EventEmitter, Output, SimpleChanges } from '@angular/core';
-import { filter } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-synoptic-form-group',
-  templateUrl: './synoptic-form-group.component.html',
-  styleUrls: ['./synoptic-form-group.component.scss']
+  selector: 'app-month-form-group',
+  templateUrl: './month-form-group.component.html',
+  styleUrls: ['./month-form-group.component.scss']
 })
-export class SynopticFormGroupComponent implements OnInit {
+export class MonthFormGroupComponent implements OnInit {
   @Input() modified: boolean = false;
   @Input() group: FormGroup = new FormGroup({
-    key:    new FormControl(''),
-    label:  new FormControl(''),
+    month:    new FormControl(''),
     value:  new FormControl(null, Validators.required),
-    flag:   new FormControl(null)
+    flag:   new FormControl(null),
+    priod:  new FormControl(''),
   });
   @Input() disabled: boolean = false;
   @Output() onDirty: EventEmitter<boolean> = new EventEmitter;

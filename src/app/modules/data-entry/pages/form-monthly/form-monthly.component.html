@@ -1,6 +1,131 @@
-<h5>Monthly Form Sample Content</h5>
-<p>
-  This is some placeholder content the <strong>Home</strong> tab's associated content. Clicking another tab
-  will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the
-  content visibility and styling. You can use it with tabs, pills, and any other .nav-powered navigation.
-</p>
+<h5> Monthly data for selected year </h5>
+<hr>
+<form [formGroup]="form" *ngIf="form" novalidate (ngSubmit)="onSubmit($event)">
+  <c-row>
+    <c-col sm="12" class="text-end">
+      <app-flag-legend></app-flag-legend>
+    </c-col>
+    <c-col sm="12">
+      <fieldset class="form-group p-3 mt-4">
+        <legend>Form Selector</legend>
+        <c-row>
+          <c-col xs="12" md="6" xl="3">
+            <div class="mb-2">
+              <label cLabel for="station">Station</label>
+              <input
+                id="station"
+                type="hidden"
+                formControlName="station"
+                aria-label="default input"
+                cFormControl
+                [ngClass]="{ 'is-invalid': (submitted || f['station'].touched) && f['station'].invalid }"
+              />
+              <div class="typeahead-selection theme form-group" *ngIf="station">
+                <div class="typeahead-selection-inner">
+                  <span>{{station.station_name}}</span>
+                  <a (click)="resetStation()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+                </div>
+              </div>
+              <app-station-selection *ngIf="!station" (onSelection)="onStationSelect($event)"></app-station-selection>
+              <div col="12" class="invalid-feedback" *ngIf="f['station'].errors">
+                <div *ngIf="f['station'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Station selection required.</div>
+              </div>
+            </div>
+          </c-col>
+
+          <c-col xs="12" md="6" xl="3">
+            <div class="mb-2">
+              <label cLabel for="element">Element</label>
+              <input
+                id="element"
+                type="hidden"
+                formControlName="element"
+                aria-label="default input"
+                cFormControl
+                [ngClass]="{ 'is-invalid': (submitted || f['element'].touched) && f['element'].invalid }"
+              />
+              <div class="typeahead-selection theme form-group" *ngIf="element">
+                <div class="typeahead-selection-inner">
+                  <span>{{element.element_name}}</span>
+                  <a (click)="resetElement()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+                </div>
+              </div>
+              <app-element-selection *ngIf="!element" (onSelection)="onElementSelect($event)"></app-element-selection>
+              <div col="12" class="invalid-feedback" *ngIf="f['element'].errors">
+                <div *ngIf="f['element'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Element selection is required.</div>
+              </div>
+            </div>
+          </c-col>
+
+          <c-col xs="12" md="6" xl="3">
+            <app-year-selector [value]="yearValue" (onSelect)="yearSelect($event)"></app-year-selector>
+          </c-col>
+        </c-row>
+      </fieldset>
+    </c-col>
+  </c-row>
+
+  <fieldset class="form-group p-3 mt-2">
+    <legend>Monthly Data <span *ngIf="date">for {{getDateText()}}</span></legend>
+
+    <c-row *ngIf="element && formMonthGroups.length">
+      <c-col md="12 mt-3 mb-3">
+        <div class="form-info">
+          <img src="./assets/img/icons/info.png" alt="">
+          <h5>Please use the following information for data entry</h5>
+          <p *ngIf="element.lower_limit && element.upper_limit">
+            Values must be between <strong> {{element.lower_limit | number}} </strong> and <strong>{{element.upper_limit | number}} </strong>
+          </p>
+          <p *ngIf="!element.lower_limit || !element.upper_limit">
+
+          </p>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row formArrayName="months" *ngIf="formMonthGroups.length">
+      <c-col sm="12" md="6" lg="5">
+        <c-row class="hourly-header">
+          <c-col md="5" class="py-1">Month</c-col>
+          <c-col md="2" class="py-1">Value</c-col>
+          <c-col md="2" class="py-1">Flag</c-col>
+          <c-col md="3" class="py-1">Period</c-col>
+        </c-row>
+      </c-col>
+      <c-col sm="12" md="6" lg="5" class="d-none d-lg-block">
+        <c-row class="hourly-header">
+          <c-col md="5" class="py-1">Month</c-col>
+          <c-col md="2" class="py-1">Value</c-col>
+          <c-col md="2" class="py-1">Flag</c-col>
+          <c-col md="3" class="py-1">Period</c-col>
+        </c-row>
+      </c-col>
+    </c-row>
+    <c-row formArrayName="months" *ngIf="formMonthGroups.length">
+      <c-col sm="12" md="6" lg="5">
+        <c-row>
+          <c-col md="12" *ngFor="let g of formMonthGroups | slice: 0:6;">
+            <app-month-form-group [disabled]="!isEditable" [modified]="isModified" (onDirty)="onFormModified($event)" [group]="g"></app-month-form-group>
+          </c-col>
+        </c-row>
+      </c-col>
+      <c-col sm="12" md="6" lg="5">
+        <c-row>
+          <c-col md="12" *ngFor="let g of formMonthGroups | slice: 6:12;">
+            <app-month-form-group [disabled]="!isEditable" [modified]="isModified" (onDirty)="onFormModified($event)" [group]="g"></app-month-form-group>
+          </c-col>
+        </c-row>
+      </c-col>
+    </c-row>
+    <c-alert *ngIf="!formMonthGroups.length" color="info" class="mt-4">Please select a date to view form.</c-alert>
+  </fieldset>
+  <hr class="my-4">
+  <c-row>
+    <c-col xs="12 py-4">
+      <button type="submit" cButton class="px-3" color="dark">
+        <c-spinner *ngIf="loading" aria-hidden="true" size="sm"></c-spinner> Submit </button>
+      <button type="button" cButton class="px-3 mx-1" color="dark" (click)="onReset()"> Reset </button>
+      <button type="button" cButton class="px-3" color="dark" (click)="onCancel()"> Cancel </button>
+    </c-col>
+  </c-row>
+</form>

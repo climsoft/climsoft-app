@@ -1,5 +1,5 @@
 export interface Instrument {
-  instrument_id?: string;
+  instrument_id: string;
   instrument_name: string;
   serial_number: string;
   abbreviation: string;
