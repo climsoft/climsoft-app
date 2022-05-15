@@ -1,15 +1,14 @@
-import { StationService } from './../../../station/services/station.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { filter, switchMap, tap, catchError, delay } from 'rxjs/operators';
+import { FormGroup, Validators, FormControl, AsyncValidatorFn, AbstractControl } from '@angular/forms';
+import { Observable, of, timer, map } from 'rxjs';
+import { filter, switchMap, tap, catchError, delay, debounceTime, take } from 'rxjs/operators';
 
+import { StationService } from './../../../station/services/station.service';
 import { InstrumentService } from './../../services/instrument.service';
-import { Instrument } from '@data/interface/instrument';
-import { Station } from '@data/interface/station';
 import { IDeactivateComponent } from '@data/interface/deactivate-component';
+import { Station } from '@data/interface/station';
 import { ImageUploaderComponent } from '@shared/component/image-uploader/image-uploader.component';
-import { of } from 'rxjs';
 
 const numberRegex = /^-?(0|[1-9]\d*)?$/;
 
@@ -21,7 +20,7 @@ const numberRegex = /^-?(0|[1-9]\d*)?$/;
 export class InstrumentFormComponent implements OnInit, IDeactivateComponent {
   @ViewChild('imageUploader') imageUploader!: ImageUploaderComponent;
   form: FormGroup = new FormGroup({
-    instrument_id: new FormControl('', Validators.required),
+    instrument_id: new FormControl('', Validators.required, [this.instrumentValidator()]),
     instrument_name: new FormControl('', Validators.required),
     serial_number: new FormControl('', Validators.required),
     abbreviation: new FormControl(''),
@@ -35,6 +34,7 @@ export class InstrumentFormComponent implements OnInit, IDeactivateComponent {
     installed_at: new FormControl(null, Validators.required)
   });
   error = '';
+  instValidated = false;
 
   station: Station | undefined;
 
@@ -81,6 +81,7 @@ export class InstrumentFormComponent implements OnInit, IDeactivateComponent {
           switchMap(p => {
             this.id = p['id'];
             this.isUpdate = true;
+            this.form.removeControl('instrument_id');
             return this.instService.getInstrument(p['id']);
           })
         )
@@ -144,6 +145,7 @@ export class InstrumentFormComponent implements OnInit, IDeactivateComponent {
       }),
       switchMap((data) => this.instService.addInstrument(this.form.value))
     ).subscribe((res: any) => {
+      this.form.markAsPristine();
       this.router.navigateByUrl('/instruments');
     });
   }
@@ -155,6 +157,7 @@ export class InstrumentFormComponent implements OnInit, IDeactivateComponent {
     }
     this.instService.updateInstrument(this.id, updatePayload).subscribe((res) => {
       of(true).pipe(delay(300)).subscribe(() => {
+        this.form.markAsPristine();
         this.router.navigateByUrl('/instruments');
       });
     });
@@ -164,5 +167,31 @@ export class InstrumentFormComponent implements OnInit, IDeactivateComponent {
     this.stationService.getStation(id).subscribe((res) => {
       this.station = res.result[0];
     });
+  }
+
+  instrumentValidator(): AsyncValidatorFn {
+    let ctrlVal = '';
+    return (control: AbstractControl): Observable<any> => {
+      return control.valueChanges.pipe(
+        debounceTime(500),
+        filter(value => value.trim().length > 0),
+        take(1),
+        tap((val) => {
+          ctrlVal = val;
+          this.instValidated = false;
+        }),
+        switchMap((val) => this.instService.search(val))
+      ).pipe(
+        map((res: any) => {
+          this.instValidated = true;
+          if(res.result.length > 1) {
+            const exists = res.result.filter((ins: any) => ins.id === ctrlVal).length > 0;
+            return exists ? { instrumentExists: true } : null;
+          }
+          return res.result.length === 1 ? { instrumentExists: true } : null
+        }),
+        catchError((error => of(null)))
+      )
+    }
   }
 }

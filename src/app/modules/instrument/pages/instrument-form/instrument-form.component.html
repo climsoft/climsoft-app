@@ -6,8 +6,8 @@
       </c-card-header>
       <c-card-body>
         <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Error(s)</strong> Please correct the following erros before you proceed.</c-alert>
-        <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
-          <c-row>
+        <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)" autocomplete="off">
+          <c-row *ngIf="!isUpdate">
             <c-col xs="12" md="5" xl="4">
               <div class="mb-2">
                 <label cLabel for="instrument_id">Instrument ID</label>
@@ -16,10 +16,15 @@
                   formControlName="instrument_id"
                   aria-label="default input"
                   cFormControl
-                  [ngClass]="{ 'is-invalid': (submitted || f['instrument_id'].touched) && f['instrument_id'].invalid }"
+                  [ngClass]="{
+                    'is-invalid': (f['instrument_id'].touched) && f['instrument_id'].invalid,
+                    'is-valid': instValidated && !f['instrument_id'].hasError('instrumentExists')
+                  }"
+                  class="{{ instValidated && f['instrument_id'].hasError('instrumentExists')? 'is-invalid' : '' }}"
                 />
                 <div col="12" class="invalid-feedback" *ngIf="f['instrument_id'].errors">
                   <div *ngIf="f['instrument_id'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Instrument is required.</div>
+                  <div *ngIf="instValidated && f['instrument_id'].hasError('instrumentExists')"> <svg cIcon name="cilXCircle"></svg> Instrument id already exists.</div>
                 </div>
               </div>
             </c-col>

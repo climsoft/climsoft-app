@@ -14,6 +14,7 @@ import { DailyDayFormGroupComponent } from './components/daily-day-form-group/da
 import { HourlyFormGroupComponent } from './components/hourly-form-group/hourly-form-group.component';
 import { SynopticFormGroupComponent } from './components/synoptic-form-group/synoptic-form-group.component';
 import { MonthFormGroupComponent } from './components/month-form-group/month-form-group.component';
+import { HourlyWindFormGroupComponent } from './components/hourly-wind-form-group/hourly-wind-form-group.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { MonthFormGroupComponent } from './components/month-form-group/month-for
     DailyDayFormGroupComponent,
     HourlyFormGroupComponent,
     SynopticFormGroupComponent,
-    MonthFormGroupComponent
+    MonthFormGroupComponent,
+    HourlyWindFormGroupComponent
   ],
   imports: [
     CommonModule,

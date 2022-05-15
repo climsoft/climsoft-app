@@ -10,19 +10,21 @@ import { Subscription } from 'rxjs';
 export class YearSelectorComponent implements OnInit, OnDestroy {
   @Input() disabled: boolean = false;
   @Input() tabIndex: number = 0;
+  @Input() value: number = new Date().getFullYear();
 
-  formControl = new FormControl('');
+  formControl!: FormControl;
   @Output() onSelect: EventEmitter<number> = new EventEmitter();
 
   subscription!: Subscription;
 
   years: number[] = [];
   selectedIndex: any;
-  @Input() value: number = new Date().getFullYear();
+
 
   constructor() {}
 
   ngOnInit(): void {
+    this.formControl = new FormControl(this.value);
     const yr = new Date().getFullYear();
     for(let i = yr; i > yr-50; i--) {
       this.years.push(i);

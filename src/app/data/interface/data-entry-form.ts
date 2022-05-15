@@ -9,6 +9,14 @@ export interface HourlyRecord {
   flag:   string;
 }
 
+export interface HourlyWindRecord {
+  hour:   number;
+  ddff:   number;
+  dd:     number;
+  ff:     number;
+  flag:   string;
+}
+
 export interface MonthlyRecord {
   month: string;
   value:  number;

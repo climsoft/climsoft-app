@@ -1,0 +1,18 @@
+<c-row class="hourly-data-row" [formGroup]="group">
+  <c-col class="py-2 label">
+    <span>{{hourVal(fg['hour'].value)}}</span>
+  </c-col>
+  <c-col class="py-1">
+    <input formControlName="ddff" aria-label="ddff" cFormControl />
+  </c-col>
+  <c-col class="py-1">
+    <input formControlName="dd" aria-label="dd" cFormControl />
+  </c-col>
+  <c-col class="py-1">
+    <input formControlName="ff" aria-label="ff" cFormControl />
+  </c-col>
+  <c-col class="py-1 text-center">
+    <input type="hidden" formControlName="flag" aria-label="flag" cFormControl />
+    <app-flag-picker [flag]="fg['flag'].value" [disabled]="disabled" (onSelect)="selectFlag($event)"></app-flag-picker>
+  </c-col>
+</c-row>
