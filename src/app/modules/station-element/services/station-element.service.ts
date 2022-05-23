@@ -1,7 +1,8 @@
 import { StationElementsState } from './../../../data/interface/station-element';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, catchError, tap } from 'rxjs';
 import { HttpService } from './../../../shared/services/http.service';
 import { Injectable } from '@angular/core';
+import { StationElement } from '@data/interface/station';
 
 const apiPrefix = `climsoft/v1`;
 
@@ -38,6 +39,35 @@ export class StationElementService {
       this.stationElements.next({ elements: res.result, limit, page: res.page, pages: res.pages });
       this.init = true;
     });
+  }
+
+  addStElement(payload: Partial<StationElement>): Observable<any> {
+    return this.http.POST(`${apiPrefix}/station-elements`, payload).pipe(
+      catchError((err) => {
+        throw new Error(err.error.message);
+      }),
+      tap(res => {
+        console.log(res);
+        const state = this.stationElements.getValue();
+        const { page, limit } = state;
+        this.getElements(page, limit);
+      })
+    );
+  }
+
+  updateStElement(payload: Partial<StationElement>) {
+    const url = `${apiPrefix}/station-elements/${payload.recorded_from}/${payload.described_by}/${payload.recorded_with}/${payload.begin_date}`;
+    return this.http.POST(url, payload).pipe(
+      catchError((err) => {
+        throw new Error(err.error.message);
+      }),
+      tap(res => {
+        console.log(res);
+        const state = this.stationElements.getValue();
+        const { page, limit } = state;
+        this.getElements(page, limit);
+      })
+    );
   }
 
   remove(sel: any) {

@@ -1,0 +1,41 @@
+$icon-bg-color: #475778;
+$icon-bg-hover: #54668b;
+$icon-hover-color: #39f;
+
+.loc {
+  padding: 0;
+  cursor: pointer;
+  transition: box-shadow .3s;
+
+  &:hover {
+    box-shadow: 0 0 11px rgba(33,33,33,.2);
+
+    .icon-wrap {
+      background-color: $icon-bg-hover;
+      border-color: $icon-hover-color;
+    }
+  }
+
+  &-icon {
+    padding: 0.3rem;
+    width: 100%;
+    text-align: center;
+
+    &-wrap {
+      margin: 0 auto;
+      padding: 0.6rem 0.5rem;
+      width: 70px;
+      border: 1px solid #286422;
+
+      img {
+        position: relative;
+        width: 50px;
+      }
+    }
+  }
+
+  &-label {
+    text-align: center;
+    font-size: 0.85rem;
+  }
+}

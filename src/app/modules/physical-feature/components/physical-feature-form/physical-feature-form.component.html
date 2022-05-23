@@ -11,8 +11,7 @@
           <label cLabel for="station">Station</label>
           <input
             id="station"
-            [type]="update ? 'text' : 'hidden'"
-            [attr.disabled]="update"
+            type="hidden"
             formControlName="associated_with"
             aria-label="default input"
             cFormControl
@@ -23,7 +22,7 @@
               <a (click)="resetStation()" class="btn"> <svg cIcon name="cilX"></svg> </a>
             </div>
           </div>
-          <app-station-selection *ngIf="!station && !update" (onSelection)="onStationSelect($event)"></app-station-selection>
+          <app-station-selection *ngIf="!station" (onSelection)="onStationSelect($event)"></app-station-selection>
           <div col="12" class="invalid-feedback" *ngIf="f['associated_with'].errors">
             <div *ngIf="f['associated_with'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Station selection required.</div>
           </div>
@@ -53,6 +52,7 @@
                   (bsValueChange)="onBeginDateChanged($event)"
                   [ngClass]="{ 'is-invalid': submitted && f['begin_date'].invalid }"
                   [bsConfig]="bsConfig"
+                  [bsValue]="beginDate"
                   autocomplete="off"
                 >
             <div sm="12" class="invalid-feedback" *ngIf="submitted && f['begin_date'].invalid">
@@ -82,6 +82,7 @@
               (bsValueChange)="onEndDateChanged($event)"
               [ngClass]="{ 'is-invalid': submitted && f['end_date'].invalid }"
               [bsConfig]="bsConfig"
+              [bsValue]="endDate"
               autocomplete="off"
             >
             <div sm="12" class="invalid-feedback" *ngIf="submitted && f['end_date'].invalid">
@@ -95,13 +96,15 @@
       <c-col xs="12" md="6" lg="5">
         <div class="mb-3">
           <label cLabel for="classified">Classified Into</label>
-          <input
-            id="classified"
-            formControlName="classified_into"
-            aria-label="classified_into"
-            cFormControl
-            placeholder="Timezone"
-          />
+          <select
+              id="classified"
+              formControlName="classified_into"
+              aria-label="Classified Into"
+              cSelect
+              [ngClass]="{ 'is-invalid': (submitted || f['classified_into'].touched) && f['classified_into'].invalid }">
+            <option value>Select Feature Class</option>
+            <option *ngFor="let pfc of featureClasses" [value]="pfc.feature_class">{{pfc.feature_class}}</option>
+          </select>
           <div col="12" class="invalid-feedback" *ngIf="submitted && f['classified_into'].errors">
             <div *ngIf="f['classified_into'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Classified into is required.</div>
           </div>
@@ -130,7 +133,14 @@
     </c-row>
 
     <c-row>
-      <c-col xs="12" md="10" lg="8" xl="6">
+      <c-col xs="12" md="6" lg="7" xl="6" class="p-3" *ngIf="update && !updateImg">
+        <div class="image-wrapper">
+          <img [src]="imageSrc" alt="">
+        </div>
+        <button type="button" (click)="replaceImage()" cButton color="danger" shape="rounded-pill" size="sm" class="mt-2 text-white"> <svg cIcon name="cilX"></svg> remove</button>
+      </c-col>
+
+      <c-col xs="12" md="10" lg="8" xl="6" *ngIf="!update || updateImg">
         <div class="mb-3">
           <label cLabel for="image">Image</label>
           <input

@@ -1,8 +1,10 @@
+import { StationElementFormComponent } from './../../components/station-element-form/station-element-form.component';
 import { StationElementsState } from './../../../../data/interface/station-element';
 import { Observable, of } from 'rxjs';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService, ModalOptions, BsModalRef } from 'ngx-bootstrap/modal';
 import { StationElementService } from './../../services/station-element.service';
 import { Component, OnInit } from '@angular/core';
+import { StationElement } from '@data/interface/station';
 
 @Component({
   selector: 'app-station-elements',
@@ -27,9 +29,37 @@ export class StationElementsComponent implements OnInit {
     return [ ...Array(count).keys() ].map(k => k+1);
   }
 
+  addNew() {
+    const dialogConfig: ModalOptions = {
+      initialState: { stationElement: undefined },
+      class: 'modal-lg',
+      backdrop: 'static',
+      keyboard: false
+    };
+    const dialogRef: BsModalRef | undefined = this.modalService.show(StationElementFormComponent, dialogConfig);
+    dialogRef.content.onClose.subscribe((payload: Partial<StationElement>) => {
+      if(payload) {
+        this.stElementsService.addStElement(payload).subscribe();
+      }
+    });
+  }
+
   preview(sel: any) {}
 
-  edit(sel: any) {}
+  edit(stationElement: StationElement) {
+    const dialogConfig: ModalOptions = {
+      initialState: { stationElement },
+      class: 'modal-lg',
+      backdrop: 'static',
+      keyboard: false
+    };
+    const dialogRef: BsModalRef | undefined = this.modalService.show(StationElementFormComponent, dialogConfig);
+    dialogRef.content.onClose.subscribe((payload: Partial<StationElement>) => {
+      if(payload) {
+        this.stElementsService.updateStElement(payload).subscribe();
+      }
+    });
+  }
 
   remove(sel: any) {}
 }

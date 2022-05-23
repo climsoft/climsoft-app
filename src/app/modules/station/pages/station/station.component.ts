@@ -1,10 +1,11 @@
+import { PhysicalFeatureComponent } from './../../../physical-feature/components/physical-feature/physical-feature.component';
 import { ArchiveViewerComponent } from './../../../../shared/component/archive-viewer/archive-viewer.component';
 import { PaperArchiveFormComponent } from './../../../paper-archive/components/paper-archive-form/paper-archive-form.component';
 import { PhysicalFeatureFormComponent } from './../../../physical-feature/components/physical-feature-form/physical-feature-form.component';
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Observable } from "rxjs";
-import { filter, map, switchMap, take, tap } from "rxjs/operators";
+import { filter, map, switchMap, take, tap, delay } from "rxjs/operators";
 import { BsModalRef, BsModalService, ModalOptions } from "ngx-bootstrap/modal";
 import * as moment from "moment";
 
@@ -45,6 +46,8 @@ export class StationComponent implements OnInit {
   qualifiers!: Observable<StationQualifierResponse>;
   physicalFeatures!: Observable<PhysicalFeatureState>;
   paperArchives!: Observable<PaperArchivesState>;
+
+  loading = true;
 
   constructor(
       private router: Router,
@@ -232,6 +235,20 @@ export class StationComponent implements OnInit {
     });
   }
 
+  viewPhysicalFeature(feature: PhysicalFeature) {
+    const dialogConfig: ModalOptions = {
+      initialState: { feature },
+      class: 'modal-xl'
+    };
+
+    const dialogRef: BsModalRef | undefined = this.modalService.show(PhysicalFeatureComponent, dialogConfig);
+    dialogRef.content.onClose.subscribe((data: { action: string }) => {
+      if(data.action && data.action === 'UPDATE_FEATURE') {
+        this.editPhysicalFeature(feature);
+      }
+    });
+  }
+
   addPaperArchive() {
     const dialogConfig: ModalOptions = {
       initialState: { archive: undefined, fromStation: this.raw },
@@ -297,12 +314,17 @@ export class StationComponent implements OnInit {
   }
 
   private loadPhysicalFeatures() {
-    this.physicalFeatures = this.physFeatureService.getByStation(this.id);
+    this.physicalFeatures = this.physFeatureService.getByStation(this.id).pipe(
+      map(res => ({ features: res.result, page: res.page, pages: res.pages, limit: res.limit }))
+    );
   }
 
   private loadPaperArchive() {
     this.paperArchives = this.archiveService.getStationArchives(this.id).pipe(
-      map(res => ({ archives: res.result, page: res.page, pages: res.pages, limit: res.limit }))
+      map(res => ({ archives: res.result, page: res.page, pages: res.pages, limit: res.limit })),
+      tap(() => {
+        this.loading = false;
+      })
     );
   }
 }

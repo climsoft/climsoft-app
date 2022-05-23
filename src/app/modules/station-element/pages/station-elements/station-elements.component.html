@@ -7,7 +7,7 @@
             <strong class="col-6">Station Elements</strong>
           </c-col>
           <c-col xs="6" class="text-end">
-            <a [routerLink]="['/station-elements', 'new']" class="btn btn-sm cs-btn-sm btn-outline"> <svg cIcon name="cilPlus"></svg> Add New </a>
+            <a (click)="addNew()" class="btn btn-sm cs-btn-sm btn-outline"> <svg cIcon name="cilPlus"></svg> Add New </a>
           </c-col>
         </c-row>
       </c-card-header>
@@ -19,7 +19,7 @@
         <table cTable>
           <thead>
           <tr>
-            <th scope="col">Described By</th>
+            <th scope="col">Element</th>
             <th scope="col">Instrument Code</th>
             <th scope="col">Height</th>
             <th scope="col">Begin Date</th>

@@ -40,10 +40,16 @@ export class PhysicalFeaturesComponent implements OnInit {
       backdrop: 'static',
       keyboard: false
     };
-    const confirmDialogRef: BsModalRef | undefined = this.modalService.show(PhysicalFeatureFormComponent, dialogConfig);
-    confirmDialogRef.content.onClose.subscribe((payload: Partial<PhysicalFeature>) => {
+    const dialogRef: BsModalRef | undefined = this.modalService.show(PhysicalFeatureFormComponent, dialogConfig);
+    dialogRef.content.onClose.subscribe((payload: Partial<PhysicalFeature>) => {
       if(payload) {
-        this.physicalFeature.addFeature(payload).subscribe();
+        this.physicalFeature.addFeature(payload).subscribe((res) => {
+          if(!res.success && res.error) {
+            dialogRef.content.error = res.message;
+          } else {
+            dialogRef.hide();
+          }
+        });
       }
     });
   }

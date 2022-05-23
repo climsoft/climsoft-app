@@ -116,6 +116,13 @@ export class PhysicalFeaturesService {
                     );
   }
 
+  getStationFeatureClasses(id: number): Observable<PhysicalFeatureClass[]> {
+    return this.http.GET(`${apiPrefix}/physical-feature-class?refersto=${id}`)
+                    .pipe(
+                      map((res: any) => res.result)
+                    );
+  }
+
   addFeatureClass(payload: PhysicalFeatureClass) {
     return this.http.POST(`${apiPrefix}/physical-feature-class`, payload);
   }

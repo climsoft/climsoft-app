@@ -53,6 +53,7 @@ import { FlagLegendComponent } from './component/flag-legend/flag-legend.compone
 import { ArchiveDefinitionSelectionComponent } from './component/archive-definition-selection/archive-definition-selection.component';
 import { ArchiveViewerComponent } from './component/archive-viewer/archive-viewer.component';
 import { YearSelectorComponent } from './component/year-selector/year-selector.component';
+import { InfiniteLoadingComponent } from './component/infinite-loading/infinite-loading.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { YearSelectorComponent } from './component/year-selector/year-selector.c
     ArchiveDefinitionSelectionComponent,
     ArchiveViewerComponent,
     YearSelectorComponent,
+    InfiniteLoadingComponent,
   ],
   imports: [
     CommonModule,
@@ -155,6 +157,7 @@ import { YearSelectorComponent } from './component/year-selector/year-selector.c
     //Utility Components
     FlagLegendComponent,
     PaginatorComponent,
+    InfiniteLoadingComponent,
 
 
     // Custom Selector Components

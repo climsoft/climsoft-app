@@ -25,18 +25,16 @@
             <th scope="col">Classified Into</th>
             <th scope="col">Begin Date</th>
             <th scope="col">End Date</th>
-            <th scope="col">Image</th>
             <th></th>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor="let feat of state.features">
-            <th scope="row">{{feat.associated_with}</th>
-            <td scope="col">{{feat.description}</td>
+            <th scope="row">{{feat.associated_with}}</th>
+            <td scope="col">{{feat.description}}</td>
             <td scope="col">{{feat.classified_into}}</td>
-            <td scope="col">{{feat.begin_date}}</td>
-            <td scope="col">{{feat.end_date}}</td>
-            <td scope="col">{{feat.image}}</td>
+            <td scope="col">{{feat.begin_date | date}}</td>
+            <td scope="col">{{feat.end_date | date}}</td>
             <td>
               <button cButton
                       size="sm"

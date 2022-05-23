@@ -23,7 +23,7 @@ export class StationPhysicalFeaturesComponent implements OnInit {
     })
   }
 
-  selectHist(h: PhysicalFeature) {
+  viewFeature(h: PhysicalFeature) {
     this.onSelect.emit(h);
   }
 }

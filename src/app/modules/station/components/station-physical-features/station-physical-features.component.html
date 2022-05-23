@@ -1,15 +1,15 @@
 <c-row ngPreserveWhitespaces>
   <c-col *ngFor="let h of items" xs="6" sm="4" md="3" lg="2" xl="2" class="p-1">
-    <div class="loc" (click)="selectHist(h)">
+    <div class="loc" (click)="viewFeature(h)">
       <div class="loc-head">
         {{h.admin_region}}
       </div>
-      <div class="loc-icon" [cTooltip]="h.admin_region">
+      <div class="loc-icon">
         <div class="loc-icon-wrap">
-          <img src="./assets/img/icons/location_hist.png" alt="">
+          <img src="./assets/img/icons/terrain.png" alt="">
         </div>
       </div>
-      <div class="loc-body"></div>
+      <div class="loc-label">{{h.classified_into}}</div>
     </div>
   </c-col>
   <c-col xs="12">
