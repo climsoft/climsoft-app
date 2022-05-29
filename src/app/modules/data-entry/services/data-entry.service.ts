@@ -36,4 +36,8 @@ export class DataEntryService {
   updateDailyState(newVal: DailyState) {
     this.dailyState$.next(newVal);
   }
+
+  resetDailyState() {
+    this.dailyState$.next(false);
+  }
 }

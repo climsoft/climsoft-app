@@ -133,6 +133,9 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
 
   onReset() {
     this.form.reset();
+    this.station = undefined;
+    this.element = undefined;
+    this.dataEntryService.resetDailyState();
     this.initForm();
   }
 
@@ -180,7 +183,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
     });
   }
 
-  private renderFormDays(date: Date) {
+  private renderFormDays(date: Date, load: boolean = true) {
     let selDate = moment(date);
     this.year = selDate.year();
     this.month = selDate.month() + 1;
@@ -189,7 +192,9 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
     for(let i=1; i <= days; i++) {
       this.daysArray.push(this.getDayGroup(i));
     }
-    this.loadDailyData();
+    if(load) {
+      this.loadDailyData();
+    }
   }
 
   private initForm() {
@@ -230,11 +235,15 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
 
   private loadDailyData() {
     if(this.station && this.element && this.year && this.month && this.hour) {
+      this.loading = true;
       this.dataEntryService.getDailyEntry(this.station.station_id, this.element.element_id, this.year, this.month, this.hour).subscribe((res) => {
         console.log(res);
         this.hasRecord = res.result.length > 0;
         if(res.result.length) {
           this.patchForm(res.result[0]);
+        } else {
+          this.resetDays();
+          this.renderFormDays(this.monthYearValue, false);
         }
         this.loading = false;
       });
