@@ -40,7 +40,6 @@ export class DailyDayFormGroupComponent implements OnInit, OnChanges {
     this.group.valueChanges.pipe(
       filter((val) => !this.modified)
     ).subscribe((val) => {
-      console.log(val);
       this.onDirty.emit(true);
     });
   }

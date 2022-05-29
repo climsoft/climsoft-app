@@ -23,16 +23,16 @@ export class ElementService {
 
   adapt(obj: ObsElement | any): any {
     const keyMaps: any = {
-      "elementId": "Element ID",
+      "element_id": "Element ID",
       "abbreviation": "Abbreviation",
-      "elementName": "Element Name",
+      "element_name": "Element Name",
       "description": "Description",
-      "elementScale": "Element Scale",
-      "upperLimit": "Upper Limit",
-      "lowerLimit": "Lower Limit",
+      "element_scale": "Element Scale",
+      "upper_limit": "Upper Limit",
+      "lower_limit": "Lower Limit",
       "units": "Units",
-      "elementtype": "Element Type",
-      "qcTotalRequired": "QC Total Required",
+      "element_type": "Element Type",
+      "qc_total_required": "QC Total Required",
       "selected": "Selected"
     };
 

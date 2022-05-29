@@ -137,7 +137,7 @@
         <div class="image-wrapper">
           <img [src]="imageSrc" alt="">
         </div>
-        <button type="button" (click)="replaceImage()" cButton color="danger" shape="rounded-pill" size="sm" class="mt-2 text-white"> <svg cIcon name="cilX"></svg> remove</button>
+        <button type="button" (click)="replaceImage()" cButton color="danger" variant="outline" size="sm" class="mt-2"> <svg cIcon name="cilX"></svg> remove</button>
       </c-col>
 
       <c-col xs="12" md="10" lg="8" xl="6" *ngIf="!update || updateImg">
@@ -150,7 +150,6 @@
             aria-label="default input"
             cFormControl
             [ngClass]="{ 'is-invalid': (submitted || f['image'].touched) && f['image'].invalid }"
-            placeholder="Network Type"
           />
           <app-image-uploader #imageUploader [feature]="'feature'" (onImgSelect)="onImage($event)"></app-image-uploader>
           <div col="12" class="invalid-feedback" *ngIf="f['image'].errors">

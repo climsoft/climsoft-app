@@ -122,6 +122,7 @@ export class PhysicalFeatureFormComponent implements OnInit {
     const dialogRef: BsModalRef | undefined = this.modalService.show(ConfirmationComponent, { initialState: config });
     dialogRef.content.onClose.subscribe((opt: boolean) => {
       this.updateImg = opt;
+      this.f['image'].setValue(null);
     });
   }
 
@@ -155,9 +156,22 @@ export class PhysicalFeatureFormComponent implements OnInit {
   }
 
   private updateFeature() {
-    const payload = { ...this.form.value };
-    delete payload.image;
-    this.onClose.next(payload);
+    if(this.updateImg) {
+      this.imageUploader.upload().pipe(
+        catchError((err) => {
+          this.error = 'Image upload failed';
+          throw new Error(err.nessage);
+        }),
+        filter((body: any) => body.result && body.result.length)
+      ).subscribe((res: any) => {
+        this.form.controls['image'].setValue(res.result[0].filepath);
+        this.onClose.next(this.form.value);
+      });
+    } else {
+      const payload = { ...this.form.value };
+      delete payload.image;
+      this.onClose.next(payload);
+    }
   }
 
   private loadFeatureClasses(station_id: number) {

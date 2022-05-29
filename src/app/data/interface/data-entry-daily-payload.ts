@@ -1,3 +1,10 @@
+export interface DailyState {
+  station: number,
+  element: number,
+  monthYear: string,
+  hour: number
+}
+
 export interface FormDailyPayload {
   station_id: string,
   element_id: number,

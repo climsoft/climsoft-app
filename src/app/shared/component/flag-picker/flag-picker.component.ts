@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, HostListener, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, HostListener, ElementRef, Input, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Flag, Flags, FlagsConfig } from '@data/enum/flag';
 
 @Component({
@@ -6,7 +6,7 @@ import { Flag, Flags, FlagsConfig } from '@data/enum/flag';
   templateUrl: './flag-picker.component.html',
   styleUrls: ['./flag-picker.component.scss']
 })
-export class FlagPickerComponent implements OnInit {
+export class FlagPickerComponent implements OnInit, OnChanges {
   @Input() flag!: string;
   @Input() disabled: boolean = false;
   @Output() onSelect: EventEmitter<string> = new EventEmitter;
@@ -25,7 +25,12 @@ export class FlagPickerComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: any): void {
+    if(changes.flag && changes.flag.currentValue) {
+      this.activeFlag = changes.flag.currentValue;
+    }
   }
 
   toggleActive() {
@@ -39,7 +44,6 @@ export class FlagPickerComponent implements OnInit {
   }
 
   selectFlag(char: string) {
-    console.log(char);
     this.activeFlag = char;
     this.toggled = false;
   }

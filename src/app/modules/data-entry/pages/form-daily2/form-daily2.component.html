@@ -5,6 +5,9 @@
     <c-col sm="12" class="text-end">
       <app-flag-legend></app-flag-legend>
     </c-col>
+    <c-col sm="12" class="text-end" *ngIf="loading">
+      <app-infinite-loading></app-infinite-loading>
+    </c-col>
     <c-col sm="12">
       <fieldset class="form-group p-3 mt-2">
         <legend>Form Selector</legend>
@@ -266,7 +269,7 @@
   <c-row>
     <c-col xs="12 py-4">
       <button type="submit" cButton class="px-3" color="dark">
-        <c-spinner *ngIf="loading" aria-hidden="true" size="sm"></c-spinner> Submit </button>
+        <c-spinner *ngIf="loading" aria-hidden="true" size="sm"></c-spinner> {{ hasRecord ? 'Update' : 'Save'}} </button>
       <button type="button" cButton class="px-3 mx-1" color="dark" (click)="onReset()"> Reset </button>
       <button type="button" cButton class="px-3" color="dark" (click)="onCancel()"> Cancel </button>
     </c-col>

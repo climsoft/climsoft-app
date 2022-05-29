@@ -54,6 +54,7 @@ import { ArchiveDefinitionSelectionComponent } from './component/archive-definit
 import { ArchiveViewerComponent } from './component/archive-viewer/archive-viewer.component';
 import { YearSelectorComponent } from './component/year-selector/year-selector.component';
 import { InfiniteLoadingComponent } from './component/infinite-loading/infinite-loading.component';
+import { StationElementSelectionComponent } from './component/station-element-selection/station-element-selection.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { InfiniteLoadingComponent } from './component/infinite-loading/infinite-
     ArchiveViewerComponent,
     YearSelectorComponent,
     InfiniteLoadingComponent,
+    StationElementSelectionComponent,
   ],
   imports: [
     CommonModule,

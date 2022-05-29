@@ -1,17 +1,20 @@
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { filter, switchMap, take, tap } from 'rxjs/operators';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import * as moment from 'moment';
 
-import { DataEntryService } from './../../services/data-entry.service';
-import { IDataEntryForm } from '@data/interface/data-entry-form';
-import { ResponsiveService } from '@shared/services/responsive.service';
-import { UnitOptions } from '@data/enum/units';
 import { Station } from '@data/interface/station';
 import { ObsElement } from '@data/interface/element';
+import { IDataEntryForm } from '@data/interface/data-entry-form';
 import { Flag } from '@data/enum/flag';
+import { UnitOptions } from '@data/enum/units';
 
-import * as moment from 'moment';
+import { ElementService } from '@element/services/element.service';
+import { StationService } from '@station/services/station.service';
+import { DataEntryService } from './../../services/data-entry.service';
+
+import { ResponsiveService } from '@shared/services/responsive.service';
 
 @Component({
   selector: 'app-form-daily2',
@@ -21,7 +24,7 @@ import * as moment from 'moment';
 export class FormDaily2Component implements OnInit, IDataEntryForm {
   form!: FormGroup;
   submitted = false;
-  loading = false;
+  loading = true;
   error = '';
   monthModified: boolean = false;
 
@@ -43,7 +46,12 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
 
   hasRecord = false;
 
-  constructor(private responsiveSvc: ResponsiveService, private dataEntryService: DataEntryService) {}
+  constructor(
+      private responsiveSvc: ResponsiveService,
+      private dataEntryService: DataEntryService,
+      private stationService: StationService,
+      private elementService: ElementService
+    ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -52,6 +60,17 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
       console.log(x);
       // this.size = x;
     });
+
+    this.dataEntryService.dailyState
+        .pipe(
+          tap((st) => this.loading = !!st),
+          filter(st => !!st),
+          take(1)
+        )
+        .subscribe((st) => {
+          console.log(st);
+          this.setFormState(+st.station, +st.element, st.monthYear, st.hour);
+        });
   }
 
   get f() {
@@ -101,6 +120,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
   }
 
   onDateSelection(data: Date) {
+    console.log(data);
     if(data) {
       this.renderFormDays(data);
     }
@@ -188,6 +208,26 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
     });
   }
 
+  private setFormState(station: number, element: number, date: string, hour: number) {
+    this.stationService.getStation(station)
+        .pipe(
+          tap((res) => {
+            this.station = res.result[0]
+          }),
+          switchMap((res) => this.elementService.getElement(element))
+        )
+        .subscribe((res) => {
+          this.element = res.result[0];
+          this.loadDailyData();
+        });
+
+    this.f['station'].setValue(station);
+    this.f['element'].setValue(element);
+    this.f['monthYear'].setValue(date);
+    this.monthYearValue = new Date(date);
+    this.f['dayHour'].setValue(hour);
+  }
+
   private loadDailyData() {
     if(this.station && this.element && this.year && this.month && this.hour) {
       this.dataEntryService.getDailyEntry(this.station.station_id, this.element.element_id, this.year, this.month, this.hour).subscribe((res) => {
@@ -196,6 +236,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
         if(res.result.length) {
           this.patchForm(res.result[0]);
         }
+        this.loading = false;
       });
     }
   }
@@ -236,6 +277,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
   }
 
   private updateRecord() {
+    console.log(this.form.value);
     // this.dataEntryService.updateDailyEntry(this.station?.station_id, this.element?.element_id, this.year, this.month, this.hour, formVal)
   }
 }
