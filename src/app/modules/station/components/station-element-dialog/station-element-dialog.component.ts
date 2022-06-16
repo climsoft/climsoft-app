@@ -1,3 +1,5 @@
+import { Station } from 'src/app/data/interface/station';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Instrument } from './../../../../data/interface/instrument';
 import { ObsElement } from './../../../../data/interface/element';
 import { StationElement } from './../../../../data/interface/station';
@@ -6,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Subject, Observable } from 'rxjs';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-station-element-dialog',
@@ -13,13 +16,19 @@ import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
   styleUrls: ['./station-element-dialog.component.scss']
 })
 export class StationElementDialogComponent implements OnInit {
-  @Input() station!: string;
+  @Input() station!: Station;
   @Input() stationElement?: StationElement;
   form!: FormGroup;
 
   submitted = false;
   beginDate!: Date;
   endDate!: Date;
+  minDate!: Date;
+  bsConfig: Partial<BsDatepickerConfig> = {
+    isAnimated: true,
+    containerClass:'theme-blue',
+    dateInputFormat: 'DD/MM/YYYY'
+  };
 
   descBy!: string;
   instrument: Instrument | undefined;
@@ -29,6 +38,8 @@ export class StationElementDialogComponent implements OnInit {
   constructor(private dialogRef: BsModalRef) { }
 
   ngOnInit(): void {
+    console.log(this.station);
+
     //   this.form = new FormGroup({
     //     recorded_from:  new FormControl(this.station),
     //     recorded_with:  new FormControl(''),
@@ -86,34 +97,36 @@ export class StationElementDialogComponent implements OnInit {
 
   resetDescBy() {
     this.descBy = '';
-    this.form.controls['described_by'].reset();
+    this.f['described_by'].reset();
   }
 
   onElementSelect(data: ObsElement) {
     this.descBy = data.element_name;
-    this.form.controls['described_by'].setValue(data.element_id);
+    this.f['described_by'].setValue(data.element_id);
   }
 
 
   resetInst() {
     this.instrument = undefined;
-    this.form.controls['instrument_code'].reset();
+    this.f['instrument_code'].reset();
   }
 
   onInstSelect(data: Instrument) {
     this.instrument = data;
-    this.form.controls['instrument_code'].setValue(data.serial_number);
+    this.f['instrument_code'].setValue(data.serial_number);
   }
 
   onBeginDateChanged(data: Date) {
     if(data) {
-      this.form.controls['begin_date'].setValue(data);
+      console.log(data);
+      this.f['begin_date'].setValue(data);
+      this.minDate = moment(data).add(1, 'day').toDate();
     }
   }
 
   onEndDateChanged(data: Date) {
     if(data) {
-      this.form.controls['end_date'].setValue(data);
+      this.f['end_date'].setValue(data);
     }
   }
 

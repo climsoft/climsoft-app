@@ -1,4 +1,5 @@
 export enum Flag {
+  X = ' ',
   M = 'M',
   T = 'T',
   E = 'E',

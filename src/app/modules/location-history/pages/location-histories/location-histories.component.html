@@ -7,7 +7,7 @@
             <strong class="col-6">Location History List</strong>
           </c-col>
           <c-col xs="6" class="text-end">
-            <a [routerLink]="['/instruments', 'new']" class="btn btn-sm cs-btn-sm btn-outline"> <svg cIcon name="cilPlus"></svg> Add New </a>
+            <a (click)="add()" class="btn btn-sm cs-btn-sm btn-outline"> <svg cIcon name="cilPlus"></svg> Add New </a>
           </c-col>
         </c-row>
       </c-card-header>
@@ -57,7 +57,7 @@
                       size="sm"
                       color="light"
                       shape="rounded-pill"
-                      [routerLink]="['/station-location-histories', '3294873', 'update']"
+                      (click)="update(lh)"
                       cTooltip="Update Station">
                 <svg cIcon name="cilPencil" size="sm"></svg>
               </button>

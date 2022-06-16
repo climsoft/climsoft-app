@@ -9,6 +9,7 @@ import { InstrumentService } from './../../services/instrument.service';
 import { IDeactivateComponent } from '@data/interface/deactivate-component';
 import { Station } from '@data/interface/station';
 import { ImageUploaderComponent } from '@shared/component/image-uploader/image-uploader.component';
+import * as moment from 'moment';
 
 const numberRegex = /^-?(0|[1-9]\d*)?$/;
 
@@ -58,6 +59,10 @@ export class InstrumentFormComponent implements OnInit, IDeactivateComponent {
   id: any;
   isUpdate = false;
 
+  install!: Date;
+  deInstall!: Date;
+  minDate!: Date;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -75,7 +80,7 @@ export class InstrumentFormComponent implements OnInit, IDeactivateComponent {
     this.route.params
         .pipe(
           tap(p => {
-            this.loading = p['id'];
+            this.loading = p['id']? true : false;
           }),
           filter(p => p['id']),
           switchMap(p => {
@@ -86,12 +91,17 @@ export class InstrumentFormComponent implements OnInit, IDeactivateComponent {
           })
         )
         .pipe(
-          filter(res => res.result && res.result.length)
-        ).subscribe(res => {
-          console.log(res);
-          this.form.patchValue(res.result[0]);
+          filter(res => res.result && res.result.length),
+          map(res => res.result[0]),
+          delay(1000)
+        ).subscribe(inst => {
+          console.log(inst);
           this.loading = false;
-          this.loadStation(res.result[0].installed_at);
+          this.form.patchValue(inst);
+          this.loadStation(inst.installed_at);
+          this.install = new Date(inst.installation_datetime);
+          this.deInstall = new Date(inst.deinstallation_datetime);
+          this.minDate = moment(this.install).add(1, 'day').toDate();
         });
   }
 
@@ -110,7 +120,10 @@ export class InstrumentFormComponent implements OnInit, IDeactivateComponent {
   }
 
   onInstallDateChange(data: Date) {
-    this.form.controls['installation_datetime'].setValue(data);
+    if(data) {
+      this.form.controls['installation_datetime'].setValue(data);
+      this.minDate = moment(data).add(1, 'day').toDate();
+    }
   }
 
   onDeinstallDateChange(data: Date) {
@@ -169,7 +182,7 @@ export class InstrumentFormComponent implements OnInit, IDeactivateComponent {
     });
   }
 
-  instrumentValidator(): AsyncValidatorFn {
+  private instrumentValidator(): AsyncValidatorFn {
     let ctrlVal = '';
     return (control: AbstractControl): Observable<any> => {
       return control.valueChanges.pipe(

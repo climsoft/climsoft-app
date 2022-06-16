@@ -46,5 +46,6 @@ export class FlagPickerComponent implements OnInit, OnChanges {
   selectFlag(char: string) {
     this.activeFlag = char;
     this.toggled = false;
+    this.onSelect.emit(char);
   }
 }

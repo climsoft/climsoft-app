@@ -57,6 +57,11 @@ $text-dark: #33434b;
       cursor: not-allowed;
     }
 
+    &.btn-empty {
+      border: 1px solid $dark;
+      background-color: $light;
+    }
+
     &.btn-light {
       color: $text-dark;
       background-color: $light;

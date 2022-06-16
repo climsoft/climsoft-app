@@ -33,6 +33,10 @@ export class ScheduleClassService {
     });
   }
 
+  getByStation(id: any) {
+    return this.http.GET(`${apiPrefix}/obs-schedule-class?limit=50&offset=0&refers_to=${id}`);
+  }
+
   addClass(payload: ScheduleClass): Observable<any> {
     return this.http.POST(`${apiPrefix}/obs-schedule-class`, payload).pipe(
       tap(() => {

@@ -10,6 +10,7 @@ import { ImageUploaderComponent } from './../../../../shared/component/image-upl
 import { Station } from 'src/app/data/interface/station';
 import { PhysicalFeature, PhysicalFeatureClass } from './../../../../data/interface/physical-features';
 import { PhysicalFeaturesService } from '@physical-feature/services/physical-features.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-physical-feature-form',
@@ -18,6 +19,7 @@ import { PhysicalFeaturesService } from '@physical-feature/services/physical-fea
 })
 export class PhysicalFeatureFormComponent implements OnInit {
   @Input() feature!: PhysicalFeature | undefined;
+  @Input() fromStation!: number;
   @ViewChild('imageUploader') imageUploader!: ImageUploaderComponent;
 
   public onClose: Subject<boolean> = new Subject();
@@ -28,6 +30,7 @@ export class PhysicalFeatureFormComponent implements OnInit {
 
   beginDate!: Date;
   endDate!: Date;
+  minDate!: Date;
 
   bsConfig: Partial<BsDatepickerConfig> = {
     isAnimated: true,
@@ -76,6 +79,12 @@ export class PhysicalFeatureFormComponent implements OnInit {
       this.endDate = new Date(this.feature.end_date);
       this.initStation(+this.feature.associated_with);
     }
+
+    if(this.fromStation) {
+      this.form.controls['associated_with'].setValue(+this.fromStation);
+      this.initStation(+this.fromStation);
+      this.loadFeatureClasses(+this.fromStation);
+    }
   }
 
   resetStation() {
@@ -99,6 +108,7 @@ export class PhysicalFeatureFormComponent implements OnInit {
   onBeginDateChanged(data: Date) {
     if(data) {
       this.form.controls['begin_date'].setValue(data.toISOString());
+      this.minDate = moment(data).add(1, 'days').toDate();
     }
   }
 

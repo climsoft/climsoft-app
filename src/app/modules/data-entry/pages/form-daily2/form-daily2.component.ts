@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ConfirmationComponent } from '@shared/dialogs/confirmation/confirmation.component';
+import { NavigationEnd, Router } from '@angular/router';
+import { IDeactivateComponent } from '@data/interface/deactivate-component';
+import { DailyDayFormGroupComponent } from './../../components/daily-day-form-group/daily-day-form-group.component';
+import { Component, OnInit, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
@@ -21,7 +26,7 @@ import { ResponsiveService } from '@shared/services/responsive.service';
   templateUrl: './form-daily2.component.html',
   styleUrls: ['./form-daily2.component.scss']
 })
-export class FormDaily2Component implements OnInit, IDataEntryForm {
+export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateComponent {
   form!: FormGroup;
   submitted = false;
   loading = true;
@@ -45,8 +50,13 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
   hoursList = [24, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 
   hasRecord = false;
+  raw: any;
+
+  @ViewChildren('dailyGroup') dailyGroup!: QueryList<DailyDayFormGroupComponent>;
 
   constructor(
+      private router: Router,
+      private modalService: BsModalService,
       private responsiveSvc: ResponsiveService,
       private dataEntryService: DataEntryService,
       private stationService: StationService,
@@ -73,6 +83,11 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
         });
   }
 
+  public canExit(): boolean {
+    const question = 'You have unsaved changes. Are you sure you want to leave the page?';
+    return this.hasChanges ? window.confirm(question) : true;
+  };
+
   get f() {
     return this.form.controls;
   }
@@ -83,6 +98,10 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
 
   get isModified(): boolean {
     return this.monthModified;
+  }
+
+  get hasChanges(): boolean {
+    return this.dailyGroup.toArray().filter((gp) => gp.isDirty === true).length > 0;
   }
 
   onFormModified(val: boolean) {
@@ -113,9 +132,9 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
 
   onSubmit(e: Event) {
     this.submitted = true;
-    // if(this.form.invalid) {
-    //   return false;
-    // }
+    if(this.form.invalid) {
+      return;
+    }
     this.hasRecord ? this.updateRecord() : this.addRecord();
   }
 
@@ -132,14 +151,29 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
   }
 
   onReset() {
-    this.form.reset();
-    this.station = undefined;
-    this.element = undefined;
-    this.dataEntryService.resetDailyState();
-    this.initForm();
+    // TODO: Whether there is a record available or not on reset should attampt the reload from backend and set the status of form back to original
+    // TODO: Except if there are any dirty values then do below.
+    const config = {
+      title: `Confirm Reset`,
+      message: `You have changes in the form below, are you sure you want to reset?`,
+      confirm: 'Go Ahead',
+      cancel: 'Cancel'
+    };
+    const dialogRef: BsModalRef | undefined = this.modalService.show(ConfirmationComponent, { initialState: config });
+    dialogRef.content.onClose.subscribe((opt: boolean) => {
+      if(opt) {
+        this.form.reset();
+        this.station = undefined;
+        this.element = undefined;
+        this.dataEntryService.resetDailyState();
+        this.initForm();
+      }
+    });
   }
 
-  onCancel() {}
+  onCancel() {
+    this.router.navigateByUrl('/');
+  }
 
   onOpenCalendar(container: any) {
     container.monthSelectHandler = (event: any): void => {
@@ -170,6 +204,29 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
     return this.daysArray.controls as FormGroup[];
   }
 
+  revertDay(day: number) {
+    const config = {
+      title: `Confirm Revert`,
+      message: `Are you sure you want to revert to original values?`,
+      confirm: 'Go Ahead',
+      cancel: 'Cancel'
+    };
+    const dialogRef: BsModalRef | undefined = this.modalService.show(ConfirmationComponent, { initialState: config });
+    dialogRef.content.onClose.subscribe((opt: boolean) => {
+      if(opt) {
+        if(this.hasRecord) {
+          const postFix = (day<10? '0' : '') + day;
+          const dVal = this.raw[`day${postFix}`];
+          const fVal = this.raw[`flag${postFix}`];
+          const pVal = this.raw[`period${postFix}`];
+          this.formDaysGroups[day-1] = this.getDayGroup(day, dVal, fVal, pVal);
+        } else {
+          this.formDaysGroups[day-1] = this.getDayGroup(day);
+        }
+      }
+    });
+  }
+
   private resetDays() {
     this.form.controls['days'] = new FormArray([]);
   }
@@ -178,7 +235,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
     return new FormGroup({
       day:    new FormControl(day),
       value:  new FormControl(value, [Validators.min(0), Validators.max(70)]),
-      flag:   new FormControl(Flag.M),
+      flag:   new FormControl(flag || Flag.M),
       period: new FormControl(period)
     });
   }
@@ -204,10 +261,10 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
       element_seq:    new FormControl(false),
       monthYear:      new FormControl(new Date(), Validators.required),
       dayHour:        new FormControl(6, [Validators.min(0), Validators.max(24)]),
-      temperature:    new FormControl('', Validators.required),
-      precip:         new FormControl('', Validators.required),
-      cloud_height:   new FormControl('', Validators.required),
-      visibility:     new FormControl('', Validators.required),
+      temperature:    new FormControl(''),
+      precip:         new FormControl(''),
+      cloud_height:   new FormControl(''),
+      visibility:     new FormControl(''),
       days:           new FormArray([]),
       total:          new FormControl(null)
     });
@@ -240,6 +297,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
         console.log(res);
         this.hasRecord = res.result.length > 0;
         if(res.result.length) {
+          this.raw = res.result[0];
           this.patchForm(res.result[0]);
         } else {
           this.resetDays();
@@ -251,6 +309,11 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
   }
 
   private patchForm(data: any) {
+    this.f['temperature'].setValue(data['temperature_units']);
+    this.f['precip'].setValue(data['precip_units']);
+    this.f['cloud_height'].setValue(data['cloud_height_units']);
+    this.f['visibility'].setValue(data['vis_units']);
+
     this.formDaysGroups.forEach((g, i) => {
       const num = (i+1 < 10) ? `0${i+1}` : (i+1);
       const patchValue = { day: i+1, value: data[`day${num}`], flag: data[`flag${num}`], period: data[`period${num}`] };
@@ -259,6 +322,8 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
   }
 
   private addRecord() {
+
+    // TODO: Apply relevant validation for all records
     let formVal: any = {
       station_id: this.station?.station_id,
       element_id: this.element?.element_id,
@@ -287,6 +352,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm {
 
   private updateRecord() {
     console.log(this.form.value);
+    // TODO: For any dirty records if any of the value, flag or period are same as original, ignore the property and do not send in update payload.
     // this.dataEntryService.updateDailyEntry(this.station?.station_id, this.element?.element_id, this.year, this.month, this.hour, formVal)
   }
 }

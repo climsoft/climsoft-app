@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { of, Observable } from 'rxjs';
 
 import { StationLocationHistory, StationLocationHistoryResponse } from './../../../../data/interface/station';
@@ -8,7 +8,7 @@ import { StationLocationHistory, StationLocationHistoryResponse } from './../../
   templateUrl: './location-history.component.html',
   styleUrls: ['./location-history.component.scss']
 })
-export class LocationHistoryComponent implements OnInit {
+export class LocationHistoryComponent implements OnInit, OnChanges {
   @Input() source: Observable<StationLocationHistoryResponse> = of({ history: [], page: 1, pages: 1, limit: 25 });
   @Output() onSelect = new EventEmitter<StationLocationHistory>();
 
@@ -16,11 +16,13 @@ export class LocationHistoryComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
     this.source.subscribe(data => {
       console.log(data);
       this.items = data.history;
-    })
+    });
   }
 
   selectHist(h: any) {

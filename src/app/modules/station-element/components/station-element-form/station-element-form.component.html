@@ -5,13 +5,16 @@
   <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Error(s)!</strong> Please correct the following errors.</c-alert>
   <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
     <c-row>
+      <c-col xs="12" *ngIf="loading">
+        <app-infinite-loading></app-infinite-loading>
+      </c-col>
+
       <c-col xs="12" md="6" lg="5">
         <div class="mb-2">
           <label cLabel for="station">Station</label>
           <input
             id="station"
-            [type]="update ? 'text' : 'hidden'"
-            [attr.disabled]="update"
+            type="hidden"
             formControlName="recorded_from"
             aria-label="default input"
             cFormControl
@@ -76,6 +79,24 @@
           </div>
         </div>
       </c-col>
+
+      <c-col xs="12" md="6" lg="5">
+        <div class="mb-3">
+          <label cLabel for="scheduled_for">Classified Into</label>
+          <select
+              id="scheduled_for"
+              formControlName="scheduled_for"
+              [ngClass]="{ 'is-invalid': (submitted || f['scheduled_for'].touched) && f['scheduled_for'].invalid }"
+              cSelect
+              [ngClass]="{ 'is-invalid': (submitted || f['scheduled_for'].touched) && f['scheduled_for'].invalid }">
+            <option value>Select Schedule For</option>
+            <option *ngFor="let sc of scheduleClasses" [value]="sc.schedule_class">{{sc.schedule_class}}</option>
+          </select>
+          <div col="12" class="invalid-feedback" *ngIf="submitted && f['scheduled_for'].errors">
+            <div *ngIf="f['scheduled_for'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Schedule Class is required.</div>
+          </div>
+        </div>
+      </c-col>
     </c-row>
 
     <c-row>
@@ -98,9 +119,9 @@
               cFormControl
               bsDatepicker
               (bsValueChange)="onBeginDateChanged($event)"
+              [bsValue]="bsBegin"
               [ngClass]="{ 'is-invalid': submitted && f['begin_date'].invalid }"
               [bsConfig]="bsConfig"
-              [bsValue]="bsBegin"
               autocomplete="off"
             >
             <div sm="12" class="invalid-feedback" *ngIf="submitted && f['begin_date'].invalid">
@@ -109,7 +130,7 @@
         </c-input-group>
       </c-col>
       <c-col xs="12" md="6" lg="5">
-        <label cLabel for="end_date">End Date-Time</label>
+        <label cLabel for="end_date">End Date</label>
         <c-input-group class="mb-3">
           <span cInputGroupText>
             <svg cIcon name="cilCalendar"></svg>
@@ -127,9 +148,10 @@
               cFormControl
               bsDatepicker
               (bsValueChange)="onEndDateChanged($event)"
+              [bsValue]="bsEnd"
               [ngClass]="{ 'is-invalid': submitted && f['end_date'].invalid }"
               [bsConfig]="bsConfig"
-              [bsValue]="bsEnd"
+              [minDate]="minDate"
               autocomplete="off"
             >
             <div sm="12" class="invalid-feedback" *ngIf="submitted && f['end_date'].invalid">
@@ -153,22 +175,6 @@
           />
           <div col="12" class="invalid-feedback" *ngIf="f['height'].errors">
             <div *ngIf="f['height'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Height is required.</div>
-          </div>
-        </div>
-      </c-col>
-      <c-col xs="12" md="6" lg="5">
-        <div class="mb-2">
-          <label cLabel for="scheduled_for">Scheduled For</label>
-          <input
-            id="scheduled_for"
-            formControlName="scheduled_for"
-            aria-label="default input"
-            cFormControl
-            [ngClass]="{ 'is-invalid': (submitted || f['scheduled_for'].touched) && f['scheduled_for'].invalid }"
-            placeholder="Scheduled For"
-          />
-          <div col="12" class="invalid-feedback" *ngIf="f['scheduled_for'].errors">
-            <div *ngIf="f['scheduled_for'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Schedules for is required.</div>
           </div>
         </div>
       </c-col>

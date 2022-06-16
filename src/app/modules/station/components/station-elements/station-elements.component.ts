@@ -1,5 +1,5 @@
 import { Observable, of } from 'rxjs';
-import { Component, Input, OnInit, AfterViewInit, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
 
 import { StationElement, StationElementsResponse } from './../../../../data/interface/station';
 import { WiIconsService } from 'src/app/shared/services/wi-icons.service';
@@ -9,7 +9,7 @@ import { WiIconsService } from 'src/app/shared/services/wi-icons.service';
   templateUrl: './station-elements.component.html',
   styleUrls: ['./station-elements.component.scss']
 })
-export class StationElementsComponent implements OnInit, AfterViewInit {
+export class StationElementsComponent implements OnInit, OnChanges {
   @Input() source: Observable<StationElementsResponse> = of({ elements: [], page: 1, pages: 1, limit: 25 });
   elements!: StationElement[];
 
@@ -19,11 +19,11 @@ export class StationElementsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {}
 
-  ngAfterViewInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.source.subscribe(data => {
       console.log(data);
       this.elements = data.elements;
-    })
+    });
   }
 
   getIcon(abbr: string): string {

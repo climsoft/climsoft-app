@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 
@@ -27,20 +27,27 @@ export class ScheduleClassesComponent implements OnInit {
     this.state$ = this.schClassService.definitions;
   }
 
-  add() {
+  add(repeatPayload?: any, error?: string) {
     const dialogConfig: ModalOptions = {
-      initialState: {},
-      class: 'modal-sm',
+      initialState: { repeatPayload, error },
+      class: 'modal-md',
       backdrop: 'static',
       keyboard: false
     };
     const formDialog: BsModalRef | undefined = this.modalService.show(ScheduleClassFormComponent, dialogConfig);
+    let payload: any = null;
     formDialog.content.onClose
             .pipe(
-              filter((payload) => !!payload),
+              filter((data) => !!data),
+              tap((data) => payload = data),
               switchMap((payload: ScheduleClass) => this.schClassService.addClass(payload))
             )
-            .subscribe();
+            .subscribe((res: any) => {
+              console.log(res);
+              if(res.status === 'error') {
+                this.add(payload, res.message);
+              }
+            });
   }
 
   update(scheduleClass: ScheduleClass) {

@@ -73,7 +73,7 @@ export class PhysicalFeaturesService {
   }
 
   getByStation(id: string): Observable<PhysicalFeatureState | any> {
-    const url = `${apiPrefix}/physical-features?associated_With=${id}`;
+    const url = `${apiPrefix}/physical-features?associated_with=${id}`;
     return this.http.GET(url);
   }
 

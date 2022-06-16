@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Observable, of, map } from 'rxjs';
 
 import { PhysicalFeature, PhysicalFeatureState } from '@data/interface/physical-features';
 
@@ -8,7 +8,7 @@ import { PhysicalFeature, PhysicalFeatureState } from '@data/interface/physical-
   templateUrl: './station-physical-features.component.html',
   styleUrls: ['./station-physical-features.component.scss']
 })
-export class StationPhysicalFeaturesComponent implements OnInit {
+export class StationPhysicalFeaturesComponent implements OnInit, OnChanges {
   @Input() source: Observable<PhysicalFeatureState> = of({ features: [], page: 1, pages: 1, limit: 25 });
   @Output() onSelect = new EventEmitter<PhysicalFeature>();
 
@@ -16,9 +16,10 @@ export class StationPhysicalFeaturesComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: any): void {
     this.source.subscribe(data => {
-      console.log(data);
       this.items = data.features;
     })
   }

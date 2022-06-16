@@ -4,6 +4,9 @@
 <div class="modal-body">
   <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
     <c-row>
+      <c-col xs="12" *ngIf="error">
+        <c-alert color="danger"> <svg cIcon name="cilXCircle"></svg> {{error}}</c-alert>
+      </c-col>
       <c-col xs="12">
         <div class="mb-2">
           <label cLabel for="schedule_class">Schedule Class</label>

@@ -99,6 +99,7 @@
               [ngClass]="{ 'is-invalid': submitted && f['qualifier_end_date'].invalid }"
               [bsConfig]="bsConfig"
               [bsValue]="bsEnd"
+              [minDate]="minDate"
               autocomplete="off"
             >
             <div sm="12" class="invalid-feedback" *ngIf="submitted && f['qualifier_end_date'].invalid">

@@ -20,9 +20,10 @@ export class HttpService {
   constructor(protected http: HttpClient) { }
 
   public createDefaultOptions(): Options {
-    return {
+    let defaults = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    };
+    }
+    return defaults;
   }
 
   POST<T, R>(path: string, data: T): Observable<R> {
@@ -35,8 +36,6 @@ export class HttpService {
   }
 
   PUT<T, R>(path: string, data: T): Observable<R> {
-    console.log(`${this.API_BASE}/${path}`);
-
     return this.http
       .put<R>(
         `${this.API_BASE}/${path}`,

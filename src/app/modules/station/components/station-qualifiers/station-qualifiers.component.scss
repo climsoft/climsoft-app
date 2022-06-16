@@ -1,32 +1,42 @@
-.qualifiers {
+$icon-bg-color: #475778;
+$icon-bg-hover: #54668b;
+$icon-hover-color: #39f;
+
+.qual {
   padding: 0;
+  cursor: pointer;
+  transition: box-shadow .3s;
 
-  li {
-    list-style: none;
-    padding: 0.2rem 0.4rem;
+  &:hover {
+    box-shadow: 0 0 11px rgba(33,33,33,.2);
 
-    .inner {
-      padding: 0.3rem 0.5rem;
-      background-color: #ecf1f5;
-      border: 1px solid #e1e1e1;
-      border-radius: 0.1rem;
-      transition: all ease-in-out 0.2s;
+    .icon-wrap {
+      background-color: $icon-bg-hover;
+      border-color: $icon-hover-color;
+    }
+  }
 
-      &:hover {
-        background-color: #cbd9e4;
-      }
+  &-icon {
+    padding: 0.3rem;
+    width: 100%;
+    text-align: center;
 
-      .qual-key {
-        font-size: 0.8rem;
-      }
+    &-wrap {
+      margin: 0 auto;
+      padding: 0.6rem 0.5rem;
+      width: 70px;
+      border: 1px solid #e65754;
+      border-radius: 35px;
 
-      .qual-value {
-        font-size: 1rem;
-      }
-
-      a {
-        cursor: pointer;
+      img {
+        position: relative;
+        width: 50px;
       }
     }
+  }
+
+  &-label {
+    text-align: center;
+    font-size: 0.85rem;
   }
 }

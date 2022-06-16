@@ -11,7 +11,8 @@ export enum PrecipitationUnit {
 
 export enum CloudHeightUnit {
   Foot = 'Feet',
-  Metre = 'Metre'
+  Metre = 'Metre',
+  Kilometres = 'Kilometres'
 }
 
 export enum VisibilityUnit {
@@ -21,25 +22,27 @@ export enum VisibilityUnit {
 }
 
 export const TemperatureUnits = [
-  { key: 'Celsius', value: TemperatureUnit.Celsius, symbol: '°C' },
-  { key: 'DegreeF', value: TemperatureUnit.DegreeF, symbol: '°F' }
+  { key: 'DEGREE CELSIUS', value: TemperatureUnit.Celsius, symbol: '°C' },
+  { key: 'DEGREE CELCIUS', value: TemperatureUnit.Celsius, symbol: '°C' },
+  { key: 'DEGREE FAHRENHEIT', value: TemperatureUnit.DegreeF, symbol: '°F' }
 ];
 
 export const PrecepitationUnits = [
-  { key: 'mm', value: PrecipitationUnit.mm, symbol: 'mm' },
-  { key: 'cm', value: PrecipitationUnit.cm, symbol: 'mm' },
-  { key: 'in', value: PrecipitationUnit.in, symbol: 'in' }
+  { key: 'MILIMETER', value: PrecipitationUnit.mm, symbol: 'mm' },
+  { key: 'CENTIMETER', value: PrecipitationUnit.cm, symbol: 'mm' },
+  { key: 'INCHE', value: PrecipitationUnit.in, symbol: 'in' }
 ];
 
 export const CloudHeightUnits = [
-  { key: 'Feet', value: CloudHeightUnit.Foot, symbol: 'ft' },
-  { key: 'Metre', value: CloudHeightUnit.Metre, symbol: 'M' }
+  { key: 'FEET', value: CloudHeightUnit.Foot, symbol: 'ft' },
+  { key: 'METRE', value: CloudHeightUnit.Metre, symbol: 'M' },
+  { key: 'KILOMETERS', value: CloudHeightUnit.Kilometres, symbol: 'M' }
 ];
 
 export const VisibilityUnits = [
-  { key: 'Metres', value: VisibilityUnit.Metres, symbol: 'M' },
-  { key: 'Metres', value: VisibilityUnit.Kilometres, symbol: 'Km' },
-  { key: 'Metres', value: VisibilityUnit.StatuteMiles, symbol: 'M' }
+  { key: 'METRES', value: VisibilityUnit.Metres, symbol: 'M' },
+  { key: 'KILOMETRES', value: VisibilityUnit.Kilometres, symbol: 'Km' },
+  { key: 'STATUTE MILES', value: VisibilityUnit.StatuteMiles, symbol: 'M' }
 ];
 
 export const UnitOptions = {

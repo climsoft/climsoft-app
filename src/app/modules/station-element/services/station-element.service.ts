@@ -57,7 +57,7 @@ export class StationElementService {
 
   updateStElement(payload: Partial<StationElement>) {
     const url = `${apiPrefix}/station-elements/${payload.recorded_from}/${payload.described_by}/${payload.recorded_with}/${payload.begin_date}`;
-    return this.http.POST(url, payload).pipe(
+    return this.http.PUT(url, payload).pipe(
       catchError((err) => {
         throw new Error(err.error.message);
       }),

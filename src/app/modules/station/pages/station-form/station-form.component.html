@@ -8,6 +8,26 @@
         <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Error(s) Found!</strong> Please correct the following erros before you proceed.</c-alert>
         <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
           <c-row>
+            <c-col xs="12" md="5" xl="4" *ngIf="!isUpdate">
+              <div class="mb-3">
+                <label cLabel for="st_id">Station ID</label>
+                <input
+                  id="st_id"
+                  formControlName="station_id"
+                  aria-label="default input"
+                  cFormControl
+                  [ngClass]="{
+                    'is-invalid': (submitted || f['station_id'].touched) && f['station_id'].invalid,
+                    'is-valid': stValidated && !f['station_id'].hasError('stationExists')
+                  }"
+                  placeholder="Station ID"
+                />
+                <div col="12" class="invalid-feedback" *ngIf="f['station_id'].errors">
+                  <div *ngIf="f['station_id'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Station id is required.</div>
+                  <div *ngIf="stValidated && f['station_id'].hasError('stationExists')"> <svg cIcon name="cilXCircle"></svg> Station id already exists.</div>
+                </div>
+              </div>
+            </c-col>
             <c-col xs="12" md="5" xl="4">
               <div class="mb-3">
                 <label cLabel for="st_name">Name</label>
@@ -194,35 +214,63 @@
           </c-row>
           <c-row>
             <c-col xs="12" md="5" xl="4">
-              <div class="mb-3">
-                <label cLabel for="st-open-dt">Opening Date</label>
+              <label cLabel for="st-open-dt">Opening Date</label>
+              <c-input-group class="mb-3">
+                <span cInputGroupText>
+                  <svg cIcon name="cilCalendar"></svg>
+                </span>
                 <input
-                  id="st-open-dt"
+                  id="st-opem-dt"
+                  type="hidden"
                   formControlName="opening_datetime"
                   aria-label="default input"
                   cFormControl
-                  [ngClass]="{ 'is-invalid': (submitted || f['opening_datetime'].touched) && f['opening_datetime'].invalid }"
-                  placeholder="Opening Date Time" />
-                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['opening_datetime'].errors">
-                    <div *ngIf="f['opening_datetime'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Opering date time is required.</div>
+                />
+                <input
+                    name="monthYear"
+                    placeholder="Select End Date"
+                    cFormControl
+                    bsDatepicker
+                    (bsValueChange)="onOpeningChanged($event)"
+                    [ngClass]="{ 'is-invalid': submitted && f['opening_datetime'].invalid }"
+                    [bsConfig]="bsConfig"
+                    [bsValue]="bsEnd"
+                    autocomplete="off"
+                  >
+                  <div sm="12" class="invalid-feedback" *ngIf="submitted && f['opening_datetime'].invalid">
+                    <div> <svg cIcon name="cilXCircle"></svg> Opening date time is required.</div>
                   </div>
-              </div>
+              </c-input-group>
             </c-col>
             <c-col xs="12" md="5" xl="4">
-              <div class="mb-3">
-                <label cLabel for="st-clos-dt">Closing Date</label>
+              <label cLabel for="st-close-dt">Closing Date</label>
+              <c-input-group class="mb-3">
+                <span cInputGroupText>
+                  <svg cIcon name="cilCalendar"></svg>
+                </span>
                 <input
-                  id="st-clos-dt"
+                  id="st-close-dt"
+                  type="hidden"
                   formControlName="closing_datetime"
                   aria-label="default input"
                   cFormControl
-                  [ngClass]="{ 'is-invalid': (submitted || f['closing_datetime'].touched) && f['closing_datetime'].invalid }"
-                  placeholder="Closing Date Time"
                 />
-                <div col="12" class="invalid-feedback" *ngIf="f['closing_datetime'].errors">
-                  <div *ngIf="f['closing_datetime'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Closing date time is required.</div>
-                </div>
-              </div>
+                <input
+                    name="closingDate"
+                    placeholder="Select Closing Date"
+                    cFormControl
+                    bsDatepicker
+                    (bsValueChange)="onOpeningChanged($event)"
+                    [ngClass]="{ 'is-invalid': submitted && f['closing_datetime'].invalid }"
+                    [bsConfig]="bsConfig"
+                    [bsValue]="bsEnd"
+                    [minDate]="minDate"
+                    autocomplete="off"
+                  >
+                  <div sm="12" class="invalid-feedback" *ngIf="submitted && f['closing_datetime'].invalid">
+                    <div> <svg cIcon name="cilXCircle"></svg> Opening date time is required.</div>
+                  </div>
+              </c-input-group>
             </c-col>
           </c-row>
           <c-row>

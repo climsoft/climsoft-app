@@ -19,6 +19,7 @@ const routes: Routes = [
       {
         path: 'hourly',
         component: FormHourlyComponent,
+        canDeactivate: [FormDirtyGuard],
         data: {
           title: 'Hourly Data'
         }
@@ -33,6 +34,7 @@ const routes: Routes = [
       {
         path: 'monthly',
         component: FormMonthlyComponent,
+        canDeactivate: [FormDirtyGuard],
         data: {
           title: 'Monthly Data'
         }
@@ -40,6 +42,7 @@ const routes: Routes = [
       {
         path: 'hourly-wind',
         component: FormHourlyWindComponent,
+        canDeactivate: [FormDirtyGuard],
         data: {
           title: 'Hourly Wind Data'
         }
@@ -47,6 +50,7 @@ const routes: Routes = [
       {
         path: 'daily',
         component: FormDaily2Component,
+        canDeactivate: [FormDirtyGuard],
         data: {
           title: 'Daily Data for Whole Month'
         }
@@ -54,6 +58,7 @@ const routes: Routes = [
       {
         path: 'synoptic',
         component: FormSynoptic2CaribbeanComponent,
+        canDeactivate: [FormDirtyGuard],
         data: {
           title: 'Caribbean Synoptic Data'
         }
@@ -61,6 +66,7 @@ const routes: Routes = [
       {
         path: 'agro',
         component: FormAgro1Component,
+        canDeactivate: [FormDirtyGuard],
         data: {
           title: 'Kenya Agromet Data'
         }

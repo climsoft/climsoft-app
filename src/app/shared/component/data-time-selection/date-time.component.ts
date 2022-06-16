@@ -12,6 +12,7 @@ export class DataTimeComponent implements OnInit {
   @Input() submitted: boolean = false;
   @Input() current!: Date;
   @Input() error!: string;
+  @Input() minDate!: Date;
 
   @Output() onChange = new EventEmitter<any>();
 

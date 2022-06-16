@@ -7,6 +7,11 @@
       <c-card-body>
         <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Error(s)</strong> Please correct the following erros before you proceed.</c-alert>
         <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)" autocomplete="off">
+          <c-row *ngIf="loading">
+            <c-col xs="12" lg="8" class="py-2">
+              <app-infinite-loading></app-infinite-loading>
+            </c-col>
+          </c-row>
           <c-row *ngIf="!isUpdate">
             <c-col xs="12" md="5" xl="4">
               <div class="mb-2">
@@ -157,6 +162,7 @@
                     [current]="f['deinstallation_datetime'].value"
                     (onChange)="onDeinstallDateChange($event)"
                     [submitted]="submitted"
+                    [minDate]="minDate"
                     error="Deinstallation datetime is required."></app-data-time>
               </div>
             </c-col>

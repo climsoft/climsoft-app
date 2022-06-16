@@ -6,6 +6,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, Input, OnInit } from '@angular/core';
 import { Qualifier } from 'src/app/data/interface/qualifier';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-qualifier-form',
@@ -28,6 +29,7 @@ export class QualifierFormComponent implements OnInit {
     containerClass:'theme-blue',
     dateInputFormat: 'DD/MM/YYYY'
   };
+  minDate!: Date;
 
   station!: Station | undefined;
 
@@ -57,6 +59,7 @@ export class QualifierFormComponent implements OnInit {
       console.log(this.qualifier);
       this.form.patchValue({ ...this.qualifier });
       this.bsBegin = new Date(this.qualifier.qualifier_begin_date);
+      this.minDate = moment(this.qualifier.qualifier_begin_date).startOf('day').add(1, 'day').toDate();
       this.bsEnd = new Date(this.qualifier.qualifier_end_date);
     }
   }
@@ -74,6 +77,7 @@ export class QualifierFormComponent implements OnInit {
   onBeginDateChanged(data: Date) {
     if(data) {
       this.form.controls['qualifier_begin_date'].setValue(data.toISOString());
+      this.minDate = moment(data).startOf('day').add(1, 'day').toDate();
     }
   }
 

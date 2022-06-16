@@ -35,7 +35,7 @@
             <th scope="row">{{sel.described_by}}</th>
             <td scope="col">{{sel.instrument_code}} <app-no-value *ngIf="!sel.instrument_code"></app-no-value> </td>
             <td scope="col">{{sel.height}} <app-no-value *ngIf="!sel.height"></app-no-value></td>
-            <td scope="col">{{sel.begin_date}}</td>
+            <td scope="col">{{sel.begin_date | date}}</td>
             <td scope="col">{{sel.end_date}} <app-no-value *ngIf="!sel.end_date"></app-no-value></td>
             <td scope="col">{{sel.recorded_from}} <app-no-value *ngIf="!sel.recorded_from"></app-no-value></td>
             <td scope="col">{{sel.recorded_with}} <app-no-value *ngIf="!sel.recorded_with"></app-no-value></td>

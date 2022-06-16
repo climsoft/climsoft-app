@@ -6,6 +6,29 @@
   <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Error(s)!</strong> Please correct the following errors.</c-alert>
   <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
     <c-row>
+      <c-col xs="12" md="6" *ngIf="!fromStation">
+        <div class="mb-2">
+          <label cLabel for="station">Station</label>
+          <input
+            id="station"
+            type="hidden"
+            formControlName="belongs_to"
+            aria-label="default input"
+            cFormControl
+          />
+          <div class="typeahead-selection theme form-group" *ngIf="station">
+            <div class="typeahead-selection-inner">
+              <span>{{station?.station_name}}</span>
+              <a (click)="resetStation()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+            </div>
+          </div>
+          <app-station-selection *ngIf="!station" (onSelection)="onStationSelect($event)"></app-station-selection>
+          <div col="12" class="invalid-feedback" *ngIf="f['belongs_to'].errors">
+            <div *ngIf="f['belongs_to'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Station selection required.</div>
+          </div>
+        </div>
+      </c-col>
+
       <c-col xs="12" md="6">
         <div class="mb-2">
           <label cLabel for="st-type">Station Type</label>
@@ -33,7 +56,7 @@
             placeholder="Latitude"
           />
           <div col="12" class="invalid-feedback" *ngIf="f['latitude'].errors">
-            <div *ngIf="f['latitude'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Height is required.</div>
+            <div *ngIf="f['latitude'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Latitude is required.</div>
           </div>
         </div>
       </c-col>
@@ -49,7 +72,7 @@
             placeholder="Longitude"
           />
           <div col="12" class="invalid-feedback" *ngIf="f['longitude'].errors">
-            <div *ngIf="f['longitude'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Station name is required.</div>
+            <div *ngIf="f['longitude'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Longitude is required.</div>
           </div>
         </div>
       </c-col>
@@ -108,6 +131,7 @@
             [current]="f['closing_datetime'].value"
             (onChange)="onClosingDateChanged($event)"
             [submitted]="submitted"
+            [minDate]="minDate"
             error="Closing datetime is required."></app-data-time>
         </div>
       </c-col>
@@ -123,7 +147,7 @@
             aria-label="default input"
             cFormControl
             [ngClass]="{ 'is-invalid': (submitted || f['authority'].touched) && f['authority'].invalid }"
-            placeholder="End Date"
+            placeholder="Authority"
           />
           <div col="12" class="invalid-feedback" *ngIf="f['authority'].errors">
             <div *ngIf="f['authority'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Authority data is required.</div>

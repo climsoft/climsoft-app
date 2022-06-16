@@ -4,7 +4,7 @@ import { PaperArchiveFormComponent } from './../../../paper-archive/components/p
 import { PhysicalFeatureFormComponent } from './../../../physical-feature/components/physical-feature-form/physical-feature-form.component';
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { filter, map, switchMap, take, tap, delay } from "rxjs/operators";
 import { BsModalRef, BsModalService, ModalOptions } from "ngx-bootstrap/modal";
 import * as moment from "moment";
@@ -28,6 +28,7 @@ import { QualifierService } from "@qualifier/services/qualifier.service";
 import { QualifierFormComponent } from "@qualifier/components/qualifier-form/qualifier-form.component";
 import { LocationHistoryDialogComponent } from "./../../components/location-history-dialog/location-history-dialog.component";
 import { StationElementDialogComponent } from "./../../components/station-element-dialog/station-element-dialog.component";
+import { StationElementFormComponent } from '@station-element/components/station-element-form/station-element-form.component';
 
 
 @Component({
@@ -89,40 +90,39 @@ export class StationComponent implements OnInit {
 
   addElement() {
     const dialogConfig: ModalOptions = {
-      initialState: { station: this.id },
-      class: 'modal-md',
+      initialState: { fromStation: this.raw },
+      class: 'modal-lg',
       backdrop: 'static',
       keyboard: false
     };
-    const dialogRef: BsModalRef | undefined = this.modalService.show(StationElementDialogComponent, dialogConfig);
-    dialogRef.content.onClose.subscribe((data: any) => {
-      if(data) {
-        data.begin_date = moment(data.begin_date).format('YYYY-MM-DD');
-        data.end_date = data.end_date? moment(data.end_date).format('YYYY-MM-DD') : null;
-        this.stationService.addStationElement(data).subscribe((res) => {
+    const dialogRef: BsModalRef | undefined = this.modalService.show(StationElementFormComponent, dialogConfig);
+    dialogRef.content.onClose.subscribe((payload: Partial<StationElement>) => {
+      if(payload) {
+        this.stationService.addStationElement(payload).subscribe((res) => {
           this.loadElements();
         });
       }
     });
   }
 
-  updateElement(el: StationElement) {
-    console.log(el);
-    const { recorded_from, described_by, recorded_with, begin_date } = el;
+  updateElement(stationElement: StationElement) {
+    console.log(stationElement);
     const dialogConfig: ModalOptions = {
-      initialState: {
-        station: this.id,
-        stationElement: { ...el, obs_element: null }
-      },
-      class: 'modal-md',
+      initialState: { stationElement },
+      class: 'modal-lg',
       backdrop: 'static',
       keyboard: false
     };
-    const dialogRef: BsModalRef | undefined = this.modalService.show(StationElementDialogComponent, dialogConfig);
-    dialogRef.content.onClose.subscribe((data: any) => {
-      if(data) {
-        this.stationService.updateStationElement({ recorded_from, described_by, recorded_with, begin_date }, data).subscribe(res => {
-          console.log(res);
+    const dialogRef: BsModalRef | undefined = this.modalService.show(StationElementFormComponent, dialogConfig);
+    dialogRef.content.onClose.subscribe((payload: Partial<StationElement>) => {
+      if(payload) {
+        const params = {
+          recorded_from: this.id,
+          described_by: stationElement.described_by,
+          recoded_with: stationElement.recorded_with,
+          begin_date: stationElement.begin_date
+        };
+        this.stationService.updateStationElement(params, payload).subscribe(() => {
           this.loadElements();
         });
       }
@@ -131,7 +131,7 @@ export class StationComponent implements OnInit {
 
   addLocHistory() {
     const dialogConfig: ModalOptions = {
-      initialState: { station: this.id },
+      initialState: { fromStation: this.id },
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false
@@ -150,9 +150,8 @@ export class StationComponent implements OnInit {
   }
 
   editLocHistory(historyItem: any) {
-    console.log(historyItem);
     const dialogConfig: ModalOptions = {
-      initialState: { station: this.id, historyItem },
+      initialState: { historyItem },
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false
@@ -207,7 +206,7 @@ export class StationComponent implements OnInit {
 
   addPhysicalFeature() {
     const dialogConfig: ModalOptions = {
-      initialState: { feature: undefined },
+      initialState: { feature: undefined, fromStation: this.id },
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false
@@ -215,7 +214,14 @@ export class StationComponent implements OnInit {
     const dialogRef: BsModalRef | undefined = this.modalService.show(PhysicalFeatureFormComponent, dialogConfig);
     dialogRef.content.onClose.subscribe((payload: Partial<PhysicalFeature>) => {
       if(payload) {
-        this.physFeatureService.addFeature(payload).subscribe();
+        this.physFeatureService.addFeature(payload)
+            .pipe(
+              delay(500)
+            )
+            .subscribe(() => {
+              dialogRef.hide();
+              this.loadPhysicalFeatures();
+            });
       }
     });
   }

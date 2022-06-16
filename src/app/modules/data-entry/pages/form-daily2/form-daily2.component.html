@@ -234,28 +234,52 @@
       <c-col sm="12" md="6" lg="4" xl="3">
         <c-row>
           <c-col md="12" *ngFor="let g of formDaysGroups | slice: 0:8;">
-            <app-daily-day-form-group [disabled]="!isEditable" [modified]="isModified" (onDirty)="onFormModified($event)" [group]="g"></app-daily-day-form-group>
+            <app-daily-day-form-group
+              #dailyGroup
+              [disabled]="!isEditable"
+              [modified]="isModified"
+              (onDirty)="onFormModified($event)"
+              (onRevert)="revertDay($event)"
+              [group]="g"></app-daily-day-form-group>
           </c-col>
         </c-row>
       </c-col>
       <c-col sm="12" md="6" lg="4" xl="3">
         <c-row>
           <c-col md="12" *ngFor="let g of formDaysGroups | slice: 8:16;">
-            <app-daily-day-form-group [disabled]="!isEditable" [modified]="isModified" (onDirty)="onFormModified($event)" [group]="g"></app-daily-day-form-group>
+            <app-daily-day-form-group
+              #dailyGroup
+              [disabled]="!isEditable"
+              [modified]="isModified"
+              (onDirty)="onFormModified($event)"
+              (onRevert)="revertDay($event)"
+              [group]="g"></app-daily-day-form-group>
           </c-col>
         </c-row>
       </c-col>
       <c-col sm="12" md="6" lg="4" xl="3">
         <c-row>
           <c-col md="12" *ngFor="let g of formDaysGroups | slice: 16:24;">
-            <app-daily-day-form-group [disabled]="!isEditable" [modified]="isModified" (onDirty)="onFormModified($event)" [group]="g"></app-daily-day-form-group>
+            <app-daily-day-form-group
+              #dailyGroup
+              [disabled]="!isEditable"
+              [modified]="isModified"
+              (onDirty)="onFormModified($event)"
+              (onRevert)="revertDay($event)"
+              [group]="g"></app-daily-day-form-group>
           </c-col>
         </c-row>
       </c-col>
       <c-col sm="12" md="6" lg="4" xl="3">
         <c-row>
           <c-col md="12" *ngFor="let g of formDaysGroups | slice: 24:31;">
-            <app-daily-day-form-group [disabled]="!isEditable" [modified]="isModified" (onDirty)="onFormModified($event)" [group]="g"></app-daily-day-form-group>
+            <app-daily-day-form-group
+              #dailyGroup
+              [disabled]="!isEditable"
+              [modified]="isModified"
+              (onDirty)="onFormModified($event)"
+              (onRevert)="revertDay($event)"
+              [group]="g"></app-daily-day-form-group>
           </c-col>
         </c-row>
       </c-col>

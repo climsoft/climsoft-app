@@ -12,6 +12,7 @@
         (bsValueChange)="onDateChanged($event)"
         [ngClass]="{ 'is-invalid': submitted && invalid }"
         [bsConfig]="bsConfig"
+        [minDate]="minDate"
       >
       <div sm="12" class="invalid-feedback" *ngIf="submitted && invalid">
         <svg cIcon name="cilXCircle"></svg> {{error}}.

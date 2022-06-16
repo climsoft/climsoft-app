@@ -1,7 +1,7 @@
 import { StationLocationHistory } from 'src/app/data/interface/station';
 import { HttpService } from './../../../shared/services/http.service';
-import { LocationHistoriesState } from './../../../data/interface/location-history';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { LocationHistoriesState, LocationHistoryPayload } from './../../../data/interface/location-history';
+import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 const apiPrefix = `climsoft/v1/station-location-histories`;
@@ -85,5 +85,35 @@ export class LocHistoryService {
     return this.http.GET(`${apiPrefix}/${id}`);
   }
 
-  remove() {}
+  addNew(payload: LocationHistoryPayload) {
+    return this.http.POST(`${apiPrefix}`, payload);
+  }
+
+  update(belongsTo: number, openDateTime: string, item: Partial<StationLocationHistory>) {
+    return this.http.PUT(`${apiPrefix}/${belongsTo}/${openDateTime}`, item).pipe(
+      catchError((err) => {
+        throw new Error(err.error.message);
+      }),
+      tap(res => {
+        console.log(res);
+        const state = this.histories$.getValue();
+        const { page, limit } = state;
+        this.getLocHistories(page, limit);
+      })
+    );
+  }
+
+  remove(belongsTo: number, openDateTime: string) {
+    return this.http.DELETE(`${apiPrefix}/${belongsTo}/${openDateTime}`).pipe(
+      catchError((err) => {
+        throw new Error(err.error.message);
+      }),
+      tap(res => {
+        console.log(res);
+        const state = this.histories$.getValue();
+        const { page, limit } = state;
+        this.getLocHistories(page, limit);
+      })
+    );
+  }
 }

@@ -7,6 +7,11 @@
   <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
     <c-row>
       <c-col xs="12" md="6">
+        <c-alert color="primary"><strong>Station </strong> {{station?.station_name}}</c-alert>
+      </c-col>
+    </c-row>
+    <c-row>
+      <c-col xs="12" md="6">
         <div class="mb-2">
           <label cLabel for="rec-with">Recorded With</label>
           <input
@@ -49,6 +54,24 @@
           </div>
         </div>
       </c-col>
+
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="sched-for">Scheduled For</label>
+          <input
+            id="sched-for"
+            formControlName="scheduled_for"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['scheduled_for'].touched) && f['scheduled_for'].invalid }"
+            placeholder="Scheduled For"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['scheduled_for'].errors">
+            <div *ngIf="f['scheduled_for'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Scheduled for data is required.</div>
+          </div>
+        </div>
+      </c-col>
+
       <c-col xs="12" md="6">
         <div class="mb-2">
           <label cLabel for="height">Height</label>
@@ -80,6 +103,7 @@
             bsDatepicker
             [bsValue]="beginDate"
             (bsValueChange)="onBeginDateChanged($event)"
+            [bsConfig]="bsConfig"
             placeholder="Begin Date"
           />
           <div col="12" class="invalid-feedback" *ngIf="f['begin_date'].errors">
@@ -98,7 +122,9 @@
             [ngClass]="{ 'is-invalid': (submitted || f['end_date'].touched) && f['end_date'].invalid }"
             bsDatepicker
             [bsValue]="endDate"
+            [minDate]="minDate"
             (bsValueChange)="onEndDateChanged($event)"
+            [bsConfig]="bsConfig"
             placeholder="End Date"
           />
           <div col="12" class="invalid-feedback" *ngIf="f['end_date'].errors">
@@ -128,22 +154,6 @@
           <app-instrument-selection *ngIf="!instrument" (onSelection)="onInstSelect($event)"></app-instrument-selection>
           <div col="12" class="invalid-feedback" *ngIf="f['instrument_code'].errors">
             <div *ngIf="f['instrument_code'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Instrument code is required.</div>
-          </div>
-        </div>
-      </c-col>
-      <c-col xs="12" md="6">
-        <div class="mb-2">
-          <label cLabel for="sched-for">Scheduled For</label>
-          <input
-            id="sched-for"
-            formControlName="scheduled_for"
-            aria-label="default input"
-            cFormControl
-            [ngClass]="{ 'is-invalid': (submitted || f['scheduled_for'].touched) && f['scheduled_for'].invalid }"
-            placeholder="Scheduled For"
-          />
-          <div col="12" class="invalid-feedback" *ngIf="f['scheduled_for'].errors">
-            <div *ngIf="f['scheduled_for'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Scheduled for data is required.</div>
           </div>
         </div>
       </c-col>

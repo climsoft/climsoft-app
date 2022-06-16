@@ -8,6 +8,14 @@
     </a>
   </div>
   <ul>
+    <li>
+      <button
+        type="button"
+        class="btn btn-circle btn-empty"
+        (click)="selectFlag(' ')">
+        <span class="p-1"></span>
+      </button>
+    </li>
     <li *ngFor="let f of flags">
       <button
         type="button"
