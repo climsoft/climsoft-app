@@ -182,6 +182,12 @@
   <fieldset class="form-group p-3 mt-2">
     <legend>Daily Data <span *ngIf="year && month">for {{getDateText(year, month)}}</span></legend>
 
+    <c-row *ngIf="error">
+      <c-col md="12">
+        <c-alert color="danger"><strong>Error(s) Found!</strong> {{error}}</c-alert>
+      </c-col>
+    </c-row>
+
     <c-row *ngIf="element && formDaysGroups.length">
       <c-col md="12 mt-3 mb-3">
         <div class="form-info">

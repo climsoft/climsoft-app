@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Flag } from '@data/enum/flag';
 import { filter, of, delay } from 'rxjs';
 
 // TODO: On FormGroup load do we have incoming record or it is blank. if record set state and keep a copy;
@@ -59,12 +60,23 @@ export class DailyDayFormGroupComponent implements OnInit, OnChanges, AfterViewI
     }
   }
 
+  onBlur(e: any) {
+    console.log(this.fg['value'].value);
+    if(this.pristine.value === this.fg['value'].value) {
+      this.fg['value'].markAsPristine();
+    }
+  }
+
   get fg() {
     return this.group.controls;
   }
 
   public get isDirty(): boolean {
     return this.fg['value'].dirty || this.fg['flag'].dirty || this.fg['period'].dirty;
+  }
+
+  public get isInvalid(): boolean {
+    return this.fg['value'].dirty && this.fg['value'].value && (this.fg['flag'].value === Flag.M);
   }
 
   public revert() {

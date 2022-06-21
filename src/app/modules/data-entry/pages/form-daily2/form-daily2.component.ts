@@ -104,6 +104,10 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
     return this.dailyGroup.toArray().filter((gp) => gp.isDirty === true).length > 0;
   }
 
+  get invalidEntries(): boolean {
+    return this.dailyGroup.toArray().filter(gp => !!gp.isInvalid).length > 0;
+  }
+
   onFormModified(val: boolean) {
     this.monthModified = val;
   }
@@ -133,6 +137,10 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
   onSubmit(e: Event) {
     this.submitted = true;
     if(this.form.invalid) {
+      return;
+    }
+    if(this.invalidEntries) {
+      this.error = 'The monthly data contains some invalid entried, please fix the items and try again.'
       return;
     }
     this.hasRecord ? this.updateRecord() : this.addRecord();
@@ -316,7 +324,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
 
     this.formDaysGroups.forEach((g, i) => {
       const num = (i+1 < 10) ? `0${i+1}` : (i+1);
-      const patchValue = { day: i+1, value: data[`day${num}`], flag: data[`flag${num}`], period: data[`period${num}`] };
+      const patchValue = { day: i+1, value: data[`day${num}`], flag: data[`flag${num}`] || Flag.X, period: data[`period${num}`] };
       g.patchValue({ ...patchValue });
     });
   }

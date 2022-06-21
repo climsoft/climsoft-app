@@ -4,25 +4,17 @@
        [ngClass]="{ 'disabled': disabled }"
        class="active-flag btn {{flagConfig[activeFlag].class}}"
        (click)="toggleActive()">
-       {{activeFlag}}
+       {{activeFlag === 'X'? ' ' : activeFlag}}
     </a>
   </div>
   <ul>
-    <li>
-      <button
-        type="button"
-        class="btn btn-circle btn-empty"
-        (click)="selectFlag(' ')">
-        <span class="p-1"></span>
-      </button>
-    </li>
     <li *ngFor="let f of flags">
       <button
         type="button"
         class="btn btn-circle"
         [ngClass]="flagConfig[f].class"
         (click)="selectFlag(f)">
-        {{f}}
+        {{f === 'X'? ' ' : f}}
       </button>
     </li>
   </ul>

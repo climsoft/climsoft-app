@@ -1,4 +1,5 @@
 $light: #ebedef;
+$empty: #ecc9c9;
 $dark: #4f5d73;
 $secondary: #9da5b1;
 $info: #39f;
@@ -21,6 +22,10 @@ $text-dark: #33434b;
         line-height: 0.9rem;
         color: #fff;
 
+        &.btn-empty {
+          color: $dark;
+          background-color: $empty;
+        }
         &.btn-light {
           color: $dark;
           background-color: $light;

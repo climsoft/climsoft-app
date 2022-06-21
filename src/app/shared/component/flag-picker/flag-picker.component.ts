@@ -43,9 +43,13 @@ export class FlagPickerComponent implements OnInit, OnChanges {
     return this.flagConfig[this.activeFlag].label;
   }
 
-  selectFlag(char: string) {
-    this.activeFlag = char;
-    this.toggled = false;
-    this.onSelect.emit(char);
+  selectFlag(char?: string) {
+    if(!char) {
+      this.activeFlag = Flag.X;
+    } else {
+      this.activeFlag = char;
+      this.toggled = false;
+      this.onSelect.emit(char);
+    }
   }
 }

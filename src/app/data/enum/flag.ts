@@ -1,5 +1,5 @@
 export enum Flag {
-  X = ' ',
+  X = 'X',
   M = 'M',
   T = 'T',
   E = 'E',
@@ -7,9 +7,10 @@ export enum Flag {
   D = 'D'
 }
 
-export const Flags: string[] = ['M', 'T', 'E', 'G', 'D'];
+export const Flags: string[] = ['X', 'M', 'T', 'E', 'G', 'D'];
 
 export const  FlagsConfig: any = {
+  X: { label: '', class: 'btn-empty' },
   M: { label: 'Missing', class: 'btn-light' },
   T: { label: 'Trace', class: 'btn-dark' },
   E: { label: 'Estimated', class: 'btn-secondary' },

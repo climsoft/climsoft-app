@@ -1,3 +1,4 @@
+$empty: #ecc9c9;
 $light: #ebedef;
 $dark: #4f5d73;
 $secondary: #9da5b1;
@@ -58,8 +59,8 @@ $text-dark: #33434b;
     }
 
     &.btn-empty {
-      border: 1px solid $dark;
-      background-color: $light;
+      background-color: $empty;
+      padding: 0.3rem 0.3rem;
     }
 
     &.btn-light {
@@ -96,4 +97,15 @@ $text-dark: #33434b;
   font-size: 0.9rem;
   font-weight: bold;
   line-height: 0.5rem;
+
+  &.btn-empty {
+    background-color: $empty;
+    border: 1px solid $text-dark;
+  }
+
+  &.btn-light {
+    color: $text-dark;
+    background-color: $light;
+    border: 1px solid $text-dark;
+  }
 }
