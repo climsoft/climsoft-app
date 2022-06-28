@@ -61,7 +61,6 @@ export class DailyDayFormGroupComponent implements OnInit, OnChanges, AfterViewI
   }
 
   onBlur(e: any) {
-    console.log(this.fg['value'].value);
     if(this.pristine.value === this.fg['value'].value) {
       this.fg['value'].markAsPristine();
     }

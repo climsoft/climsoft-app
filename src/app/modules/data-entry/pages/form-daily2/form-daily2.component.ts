@@ -147,7 +147,6 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
   }
 
   onDateSelection(data: Date) {
-    console.log(data);
     if(data) {
       this.renderFormDays(data);
     }
@@ -249,9 +248,10 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
   }
 
   private renderFormDays(date: Date, load: boolean = true) {
-    let selDate = moment(date);
+    const selDate = moment(date);
     this.year = selDate.year();
     this.month = selDate.month() + 1;
+    console.log(this.month);
     const days = moment(`${this.year}-${this.month}`, "YYYY-MM").daysInMonth();
     this.resetDays();
     for(let i=1; i <= days; i++) {
@@ -309,7 +309,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
           this.patchForm(res.result[0]);
         } else {
           this.resetDays();
-          this.renderFormDays(this.monthYearValue, false);
+          this.renderFormDays(new Date(`${this.month}-1-${this.year}`), false);
         }
         this.loading = false;
       });
@@ -330,15 +330,22 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
   }
 
   private addRecord() {
-
     // TODO: Apply relevant validation for all records
     let formVal: any = {
       station_id: this.station?.station_id,
       element_id: this.element?.element_id,
       yyyy: this.year,
       mm: this.month,
-      hh: this.hour
+      hh: this.hour,
+      temperature:  this.form.value.temperature,
+      precip_units: this.form.value.precip,
+      vis_units:    this.form.value.visibility,
+      cloud_height_units: this.form.value.cloud_height
     };
+
+    if(!this.hasChanges) {
+      alert('You must enter a few values');
+    }
 
     this.formDaysGroups.forEach((g, i) => {
       const num = (i+1 < 10) ? `0${i+1}` : (i+1);
@@ -354,13 +361,53 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
     formVal['cloud_height_units'] = this.f['cloud_height'].value,
     formVal['vis_units'] = this.f['visibility'].value;
 
-    console.log(formVal);
-    // this.dataEntryService.addDailyEntry(formVal)
+    this.dailyGroup.toArray()
+      .filter((gp) => gp.isDirty === true)
+      .forEach((g) => {
+        const val = g.group.value;
+        const dVal = `${val.day < 10 ? '0' : ''}${val.day}`;
+        formVal[`day${dVal}`] = +val.value;
+        formVal[`flag${dVal}`] = val.flag;
+        formVal[`period${dVal}`] = val.period;
+      });
+
+    this.dataEntryService.addDailyEntry(formVal).subscribe((res) => {
+      console.log(res);
+      this.form.markAsPristine();
+    });
   }
 
   private updateRecord() {
     console.log(this.form.value);
+    if(!this.hasChanges) {
+      return;
+    }
     // TODO: For any dirty records if any of the value, flag or period are same as original, ignore the property and do not send in update payload.
-    // this.dataEntryService.updateDailyEntry(this.station?.station_id, this.element?.element_id, this.year, this.month, this.hour, formVal)
+    let payload: any = {
+      station_id:   this.station?.station_id,
+      element_id:   this.element?.element_id,
+      yyyy:         this.year,
+      mm:           this.month,
+      hh:           this.hour,
+      temperature:  this.form.value.temperature,
+      precip_units: this.form.value.precip,
+      vis_units:    this.form.value.visibility,
+      cloud_height_units: this.form.value.cloud_height
+    };
+
+    this.dailyGroup.toArray()
+        .filter((gp) => gp.isDirty === true)
+        .forEach((g) => {
+          const val = g.group.value;
+          const dVal = `${val.day < 10 ? '0' : ''}${val.day}`;
+          payload[`day${dVal}`] = +val.value;
+          payload[`flag${dVal}`] = val.flag;
+          payload[`period${dVal}`] = val.period;
+        });
+
+    this.dataEntryService.updateDailyEntry(this.station?.station_id, this.element?.element_id, this.year, this.month, this.hour, payload).subscribe(res => {
+      console.log(res);
+      this.form.markAsPristine();
+    });
   }
 }

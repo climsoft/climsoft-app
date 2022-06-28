@@ -99,7 +99,7 @@ export const navItems: INavData[] = [
         url: '/data-entry/synoptic'
       },
       {
-        name: 'data_entry.agroment',
+        name: 'data_entry.agromet',
         url: '/data-entry/agro'
       }
     ]

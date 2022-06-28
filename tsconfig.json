@@ -23,6 +23,7 @@
       "dom"
     ],
     "paths": {
+      "@config/*": [ "src/config/*" ],
       "@data/*": [ "src/app/data/*" ],
       "@environment/*": [ "src/environments/*" ],
       "@station/*": [ "src/app/modules/station/*" ],
