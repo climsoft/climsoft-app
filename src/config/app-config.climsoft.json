@@ -1,4 +1,4 @@
-export const AppConfig = {
+{
   "dev.opencdms.org": {
       "domains": {
           "api-latest": "api-latest.opencdms.org",
@@ -16,4 +16,4 @@ export const AppConfig = {
       "defaultLanguage": "en-EN",
       "defaultMode": "climsoft"
   }
-};
+}

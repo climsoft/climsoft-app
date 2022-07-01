@@ -6,11 +6,16 @@
     "coreui_library_docs_url": "https://coreui.io/angular/docs/"
   },
   "scripts": {
+    "preconfig": "shx mkdir dist/config",
+    "config:dev": "npm run preconfig && shx cp src/config/app-config.json dist/config/app-config.json",
+    "config:climsoft": "npm run preconfig && shx cp src/config/app-config.climsoft.json dist/config/app-config.json",
+    "config:opencdms": "npm run preconfig && shx cp src/config/app-config.opencdms.json dist/config/app-config.json",
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
-    "build:climsoft": "ng build --configuration climsoft",
-    "build:opencdms": "ng build --configuration opencdms",
+    "prebuild": "shx rm -rf dist && echo 'prebuild cleanup done'",
+    "build:climsoft": "ng build --configuration climsoft && npm run config:climsoft",
+    "build:opencdms": "ng build --configuration opencdms && npm run config:opencdms",
+    "start": "ng serve --proxy-config proxy.conf.json",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -65,6 +70,7 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
+    "shx": "^0.3.4",
     "typescript": "~4.4.3"
   },
   "engines": {

@@ -6,7 +6,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from './../../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { AppConfig } from 'src/config/app-config';
+import AppConfig from '@config/app-config.json';
 
 @Component({
   selector: 'app-login',

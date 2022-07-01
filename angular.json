@@ -61,10 +61,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "src/configs/app-config.ts",
-                  "with": "src/config/app-config.prod.ts"
                 }
               ],
               "outputHashing": "all"
@@ -86,10 +82,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "src/config/app-config.ts",
-                  "with": "src/config/app-config.climsoft.ts"
                 }
               ],
               "outputHashing": "all"
@@ -111,10 +103,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "src/config/app-config.ts",
-                  "with": "src/config/app-config.opencdms.ts"
                 }
               ],
               "outputHashing": "all"

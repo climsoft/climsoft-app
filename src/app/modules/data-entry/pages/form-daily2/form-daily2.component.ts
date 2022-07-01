@@ -362,7 +362,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
     formVal['vis_units'] = this.f['visibility'].value;
 
     this.dailyGroup.toArray()
-      .filter((gp) => gp.isDirty === true)
+      // .filter((gp) => gp.isDirty === true)
       .forEach((g) => {
         const val = g.group.value;
         const dVal = `${val.day < 10 ? '0' : ''}${val.day}`;
@@ -396,7 +396,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
     };
 
     this.dailyGroup.toArray()
-        .filter((gp) => gp.isDirty === true)
+        // .filter((gp) => gp.isDirty === true)
         .forEach((g) => {
           const val = g.group.value;
           const dVal = `${val.day < 10 ? '0' : ''}${val.day}`;
