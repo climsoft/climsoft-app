@@ -23,7 +23,6 @@ export enum VisibilityUnit {
 
 export const TemperatureUnits = [
   { key: 'DEGREE CELSIUS', value: TemperatureUnit.Celsius, symbol: '°C' },
-  { key: 'DEGREE CELCIUS', value: TemperatureUnit.Celsius, symbol: '°C' },
   { key: 'DEGREE FAHRENHEIT', value: TemperatureUnit.DegreeF, symbol: '°F' }
 ];
 

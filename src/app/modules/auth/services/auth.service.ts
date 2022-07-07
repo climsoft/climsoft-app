@@ -1,5 +1,5 @@
 import { ConfirmationComponent } from './../../../shared/dialogs/confirmation/confirmation.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
@@ -27,7 +27,12 @@ export class AuthService {
     return this.user$.asObservable();
   }
 
-  constructor(private router: Router, private http: HttpService, private modalService: BsModalService) { }
+  constructor(
+      private router: Router,
+      private route: ActivatedRoute,
+      private http: HttpService,
+      private modalService: BsModalService
+    ) {}
 
   get isLoggedIn(): boolean {
     const tok = localStorage.getItem(environment.AUTH_KEY);
@@ -46,7 +51,8 @@ export class AuthService {
                   if(res && res.access_token) {
                     const decoded: any = helper.decodeToken(res.access_token);
                     this.handleAuth(decoded.firstName, decoded.lastName, decoded.username, res.access_token, decoded.expiresIn);
-                    this.router.navigate(['/dashboard']);
+                    this.redirectUrl = this.route.snapshot.queryParams[`returnUrl`] || `/dashboard`;
+                    this.router.navigate([this.redirectUrl]);
                   }
                 })
               );

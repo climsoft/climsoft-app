@@ -1,3 +1,4 @@
+import { ResponseInterceptor } from './modules/auth/interceptors/response.interceptor';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
@@ -130,7 +131,13 @@ const APP_CONTAINERS = [
     //   useClass: HttpInterceptorService,
     //   multi: true
     // },
-    { provide: HTTP_INTERCEPTORS,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ResponseInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
     },

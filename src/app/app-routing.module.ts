@@ -1,3 +1,4 @@
+import { AuthChildrenGuard } from './modules/auth/guards/auth.child.guard';
 import { PaperArchiveDefinitionModule } from './modules/paper-archive-definition/paper-archive-definition.module';
 import { ForgotPasswordComponent } from './modules/auth/components/forgot-password/forgot-password.component';
 import { AuthGuard } from './modules/auth/guards/auth.guard';
@@ -36,67 +37,67 @@ const routes: Routes = [
       },
       {
         path: 'stations',
-        canActivate: [AuthGuard],
+        canActivateChild: [AuthChildrenGuard],
         loadChildren: () =>
           import('./modules/station/station.module').then((m) => m.StationModule)
       },
       {
         path: 'elements',
-        canActivate: [AuthGuard],
+        canActivateChild: [AuthChildrenGuard],
         loadChildren: () =>
           import('./modules/element/element.module').then((m) => m.ElementModule)
       },
       {
         path: 'station-elements',
-        canActivate: [AuthGuard],
+        canActivateChild: [AuthChildrenGuard],
         loadChildren: () =>
           import('./modules/station-element/station-element.module').then((m) => m.StationElementModule)
       },
       {
         path: 'instruments',
-        canActivate: [AuthGuard],
+        canActivateChild: [AuthChildrenGuard],
         loadChildren: () =>
           import('./modules/instrument/instrument.module').then((m) => m.InstrumentModule)
       },
       {
         path: 'location-histories',
-        canActivate: [AuthGuard],
+        canActivateChild: [AuthChildrenGuard],
         loadChildren: () =>
           import('./modules/location-history/location-history.module').then((m) => m.LocationHistoryModule)
       },
       {
         path: 'qualifiers',
-        canActivate: [AuthGuard],
+        canActivateChild: [AuthChildrenGuard],
         loadChildren: () =>
           import('./modules/qualifier/qualifier.module').then((m) => m.QualifierModule)
       },
       {
         path: 'schedule-classes',
-        canActivate: [AuthGuard],
+        canActivateChild: [AuthChildrenGuard],
         loadChildren: () =>
           import('./modules/schedule-class/schedule-class.module').then((m) => m.ScheduleClassModule)
       },
       {
         path: 'physical-features',
-        canActivate: [AuthGuard],
+        canActivateChild: [AuthChildrenGuard],
         loadChildren: () =>
           import('./modules/physical-feature/physical-feature.module').then((m) => m.PhysicalFeatureModule)
       },
       {
         path: 'paper-archives',
-        canActivate: [AuthGuard],
+        canActivateChild: [AuthChildrenGuard],
         loadChildren: () =>
           import('./modules/paper-archive/paper-archive.module').then((m) => m.PaperArchiveModule)
       },
       {
         path: 'paper-archive-definitions',
-        canActivate: [AuthGuard],
+        canActivateChild: [AuthChildrenGuard],
         loadChildren: () =>
           import('./modules/paper-archive-definition/paper-archive-definition.module').then((m) => m.PaperArchiveDefinitionModule)
       },
       {
         path: 'data-entry',
-        canActivate: [AuthGuard],
+        canActivateChild: [AuthChildrenGuard],
         loadChildren: () =>
           import('./modules/data-entry/data-entry.module').then((m) => m.DataEntryModule)
       },

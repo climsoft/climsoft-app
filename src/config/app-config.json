@@ -1,19 +1,20 @@
 {
   "dev.opencdms.org": {
-      "domains": {
-          "api-latest": "api-latest.opencdms.org",
-          "api (stable)": "api.opencdms.org"
-      },
-      "defaultDomain": "api (stable)",
-      "defaultLanguage": "en-EN",
-      "defaultMode": "opencdms"
+    "apis": [
+      { "name": "api-latest", "base": "api-latest.opencdms.org", "default": true },
+      { "name": "api (stable)", "base": "api.opencdms.org" }
+    ],
+    "defaultLanguage": "en-EN",
+    "mode": 0
   },
   "kenya.openclimate.net": {
       "domains": {
           "KMD": "kmd_prod.openclimate.net"
       },
-      "defaultDomain": "KMD",
+      "apis": [
+        { "name": "KMD", "base": "kmd_prod.openclimate.net", "default": true }
+      ],
       "defaultLanguage": "en-EN",
-      "defaultMode": "climsoft"
+      "mode": 1
   }
 }

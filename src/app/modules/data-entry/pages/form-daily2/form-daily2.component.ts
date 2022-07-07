@@ -66,10 +66,10 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
   ngOnInit(): void {
     this.initForm();
     // console.log(MediaQueryListEvent);
-    this.responsiveSvc.screenSize.subscribe(x => {
-      console.log(x);
-      // this.size = x;
-    });
+    // this.responsiveSvc.screenSize.subscribe(x => {
+    //   console.log(x);
+    //   this.size = x;
+    // });
 
     this.dataEntryService.dailyState
         .pipe(
@@ -136,13 +136,20 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
 
   onSubmit(e: Event) {
     this.submitted = true;
-    if(this.form.invalid) {
+    if(this.form.invalid && !this.f['days'].invalid) {
       return;
     }
     if(this.invalidEntries) {
       this.error = 'The monthly data contains some invalid entried, please fix the items and try again.'
       return;
     }
+    console.log(+this.f['total'].value, this.calcTotal, +this.f['total'].value === this.calcTotal);
+    if(+this.f['total'].value !== this.calcTotal) {
+      this.error = `The days based data total does not match with the total provided, please check the values and try again.`;
+      return;
+    }
+
+    this.error = '';
     this.hasRecord ? this.updateRecord() : this.addRecord();
   }
 
@@ -211,6 +218,13 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
     return this.daysArray.controls as FormGroup[];
   }
 
+  get calcTotal(): number {
+    return this.dailyGroup.toArray().reduce((ac, g) => {
+      const val: number = g.group.value.value? +g.group.value.value : 0;
+      return ac = val + ac;
+    }, 0);
+  }
+
   revertDay(day: number) {
     const config = {
       title: `Confirm Revert`,
@@ -251,7 +265,6 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
     const selDate = moment(date);
     this.year = selDate.year();
     this.month = selDate.month() + 1;
-    console.log(this.month);
     const days = moment(`${this.year}-${this.month}`, "YYYY-MM").daysInMonth();
     this.resetDays();
     for(let i=1; i <= days; i++) {
@@ -269,10 +282,10 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
       element_seq:    new FormControl(false),
       monthYear:      new FormControl(new Date(), Validators.required),
       dayHour:        new FormControl(6, [Validators.min(0), Validators.max(24)]),
-      temperature:    new FormControl(''),
-      precip:         new FormControl(''),
-      cloud_height:   new FormControl(''),
-      visibility:     new FormControl(''),
+      temperature:    new FormControl(null),
+      precip:         new FormControl(null),
+      cloud_height:   new FormControl(null),
+      visibility:     new FormControl(null),
       days:           new FormArray([]),
       total:          new FormControl(null)
     });
@@ -317,7 +330,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
   }
 
   private patchForm(data: any) {
-    this.f['temperature'].setValue(data['temperature_units']);
+    this.f['temperature'].setValue(data['temperature_units'] ||  '');
     this.f['precip'].setValue(data['precip_units']);
     this.f['cloud_height'].setValue(data['cloud_height_units']);
     this.f['visibility'].setValue(data['vis_units']);
@@ -378,7 +391,6 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
   }
 
   private updateRecord() {
-    console.log(this.form.value);
     if(!this.hasChanges) {
       return;
     }
@@ -389,7 +401,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
       yyyy:         this.year,
       mm:           this.month,
       hh:           this.hour,
-      temperature:  this.form.value.temperature,
+      temperature_units:  this.form.value.temperature,
       precip_units: this.form.value.precip,
       vis_units:    this.form.value.visibility,
       cloud_height_units: this.form.value.cloud_height
@@ -406,7 +418,6 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
         });
 
     this.dataEntryService.updateDailyEntry(this.station?.station_id, this.element?.element_id, this.year, this.month, this.hour, payload).subscribe(res => {
-      console.log(res);
       this.form.markAsPristine();
     });
   }
