@@ -1,3 +1,6 @@
+import { ConfirmationComponent } from './../../../../shared/dialogs/confirmation/confirmation.component';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { filter, map, tap } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
@@ -56,6 +59,7 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
   loading = false;
   error = '';
   monthModified: boolean = false;
+  hasRecord = false;
 
   station!: Station | undefined;
 
@@ -72,7 +76,11 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
 
   hoursList = [24, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 
-  constructor(private responsiveSvc: ResponsiveService, private dataEntryService: DataEntryService) {}
+  constructor(
+      private modalService: BsModalService,
+      private responsiveSvc: ResponsiveService,
+      private dataEntryService: DataEntryService
+    ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -103,7 +111,7 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
   onStationSelect(data: Station) {
     this.station = data;
     this.form.controls['station'].setValue(data.station_id);
-    this.loadDailyData();
+    this.loadSynopData();
   }
 
   onDateSelection(date: Date) {
@@ -111,6 +119,8 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
       let selDate = moment(date);
       this.year = selDate.year();
       this.month = selDate.month() + 1;
+      this.day = selDate.date();
+      this.loadSynopData();
     }
   }
 
@@ -142,6 +152,29 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
     return this.groupArray.controls as FormGroup[];
   }
 
+  revertElement(day: number) {
+    const config = {
+      title: `Confirm Revert`,
+      message: `Are you sure you want to revert to original values?`,
+      confirm: 'Go Ahead',
+      cancel: 'Cancel'
+    };
+    const dialogRef: BsModalRef | undefined = this.modalService.show(ConfirmationComponent, { initialState: config });
+    dialogRef.content.onClose.subscribe((opt: boolean) => {
+      if(opt) {
+        // if(this.hasRecord) {
+        //   const postFix = (day<10? '0' : '') + day;
+        //   const dVal = this.raw[`day${postFix}`];
+        //   const fVal = this.raw[`flag${postFix}`];
+        //   const pVal = this.raw[`period${postFix}`];
+        //   this.formDaysGroups[day-1] = this.getDayGroup(day, dVal, fVal, pVal);
+        // } else {
+        //   this.formDaysGroups[day-1] = this.getDayGroup(day);
+        // }
+      }
+    });
+  }
+
   private getTagGroup(key: string, label: string, value: number, flag?: string): FormGroup {
     return new FormGroup({
       key:    new FormControl(key),
@@ -164,9 +197,20 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
     }
   }
 
-  private loadDailyData() {
-    if(this.station && this.year && this.month && this.hour) {
-
+  private loadSynopData() {
+    console.log(this.station, this.year, this.month, this.day);
+    if(this.station && this.year && this.month && this.day && this.hour) {
+      this.dataEntryService.getSynopticEntry(this.station.station_id, this.year, this.month, this.day, this.hour)
+          .pipe(
+            tap((res: any) => { this.hasRecord = res.result.length > 0 }),
+            filter((res: any) => res.result.length),
+            map((res: any) => res.result[0])
+          )
+          .subscribe(data => {
+            console.log(data);
+            this.hasRecord = true;
+            this.patchForm(data)
+          });
     }
   }
 
@@ -208,5 +252,5 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
   private updateRecord() {
     // this.dataEntryService.updateDailyEntry(this.station?.station_id, this.element?.element_id, this.year, this.month, this.hour, formVal)
   }
-
 }
+

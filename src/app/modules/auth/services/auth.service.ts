@@ -43,8 +43,13 @@ export class AuthService {
     return !helper.isTokenExpired(tok);
   }
 
-  login(cred: { email: string, password: string }): Observable<any> {
-    return this.http.POST(`auth`, cred)
+  login(cred: { username: string, password: string }): Observable<any> {
+    const payload: URLSearchParams = new URLSearchParams();
+    payload.set('grant_type', 'password');
+    payload.set('username', cred.username);
+    payload.set('password', cred.password);
+
+    return this.http.POST(`auth`, payload.toString(), { "Content-Type": "application/x-www-form-urlencoded" })
               .pipe(
                 catchError((err: HttpErrorResponse) => of({ error: err.error, status: err.status })),
                 tap((res: any) => {

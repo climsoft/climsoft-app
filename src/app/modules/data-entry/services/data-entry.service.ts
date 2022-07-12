@@ -3,6 +3,8 @@ import { HttpService } from '@shared/services/http.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 
 import { FormDailyPayload, DailyState } from '@data/interface/data-entry-daily-payload';
+import { SynopticState } from '@data/interface/data-entry-synoptic-payload';
+import * as moment from 'moment';
 
 const apiPrefix = `climsoft/v1`;
 
@@ -12,6 +14,7 @@ const apiPrefix = `climsoft/v1`;
 export class DataEntryService {
 
   dailyState$: BehaviorSubject<DailyState | boolean> = new BehaviorSubject<DailyState | boolean>(false);
+  synopticState$: BehaviorSubject<SynopticState | boolean> = new BehaviorSubject<SynopticState | boolean>(false);
 
   constructor(private http: HttpService) { }
 
@@ -39,5 +42,15 @@ export class DataEntryService {
 
   resetDailyState() {
     this.dailyState$.next(false);
+  }
+
+  getSynopticEntry(station: string | any, year: number, month: number, day: number, hour: number) {
+    this.synopticState$.next({ station, year, month, day, hour })
+    const url = `${apiPrefix}/synop-features?station_id=${station}&yy=${year}&mm=${month}&dd=${day}&hh=${hour}`;
+    return this.http.GET(url);
+  }
+
+  updateSynopticState(station: string | any, year: number, month: number, day: number, hour: number) {
+    this.synopticState$.next({ station, year, month, day, hour })
   }
 }

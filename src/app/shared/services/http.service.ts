@@ -26,12 +26,12 @@ export class HttpService {
     return defaults;
   }
 
-  POST<T, R>(path: string, data: T): Observable<R> {
+  POST<T, R>(path: string, data: T, options?: any): Observable<R> {
     return this.http
       .post<R>(
         `${this.API_BASE}/${path}`,
         data,
-        this.createDefaultOptions()
+        options ? { headers: new HttpHeaders(options) } : this.createDefaultOptions()
       );
   }
 

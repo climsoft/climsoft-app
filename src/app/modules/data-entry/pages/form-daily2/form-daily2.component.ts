@@ -21,6 +21,8 @@ import { DataEntryService } from './../../services/data-entry.service';
 
 import { ResponsiveService } from '@shared/services/responsive.service';
 
+// TODO: On Enter Key press the focus should jump to next day for the month, if value is Empty also assing an empty flag before shifting focus.
+
 @Component({
   selector: 'app-form-daily2',
   templateUrl: './form-daily2.component.html',
