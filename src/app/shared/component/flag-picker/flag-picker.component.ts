@@ -40,12 +40,12 @@ export class FlagPickerComponent implements OnInit, OnChanges {
   }
 
   get activeLabel(): string {
-    return this.flagConfig[this.activeFlag].label;
+    return this.activeFlag ? this.flagConfig[this.activeFlag].label : '';
   }
 
   selectFlag(char?: string) {
     if(!char) {
-      this.activeFlag = Flag.X;
+      this.activeFlag = '';
     } else {
       this.activeFlag = char;
       this.toggled = false;

@@ -21,8 +21,6 @@ import { DataEntryService } from './../../services/data-entry.service';
 
 import { ResponsiveService } from '@shared/services/responsive.service';
 
-// TODO: On Enter Key press the focus should jump to next day for the month, if value is Empty also assing an empty flag before shifting focus.
-
 @Component({
   selector: 'app-form-daily2',
   templateUrl: './form-daily2.component.html',
@@ -221,6 +219,9 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
   }
 
   get calcTotal(): number {
+    if(!this.dailyGroup) {
+      return 0;
+    }
     return this.dailyGroup.toArray().reduce((ac, g) => {
       const val: number = g.group.value.value? +g.group.value.value : 0;
       return ac = val + ac;
@@ -332,16 +333,19 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
   }
 
   private patchForm(data: any) {
-    this.f['temperature'].setValue(data['temperature_units'] ||  '');
-    this.f['precip'].setValue(data['precip_units']);
-    this.f['cloud_height'].setValue(data['cloud_height_units']);
-    this.f['visibility'].setValue(data['vis_units']);
+    this.f['temperature'].setValue(data['temperature_units'] || '');
+    this.f['precip'].setValue(data['precip_units'] || '');
+    this.f['cloud_height'].setValue(data['cloud_height_units'] || '');
+    this.f['visibility'].setValue(data['vis_units'] || '');
 
+    let total = 0;
     this.formDaysGroups.forEach((g, i) => {
       const num = (i+1 < 10) ? `0${i+1}` : (i+1);
-      const patchValue = { day: i+1, value: data[`day${num}`], flag: data[`flag${num}`] || Flag.X, period: data[`period${num}`] };
+      const patchValue = { day: i+1, value: data[`day${num}`], flag: data[`flag${num}`] || '', period: data[`period${num}`] };
       g.patchValue({ ...patchValue });
+      total += +data[`day${num}`];
     });
+    this.f['total'].setValue(total || 0);
   }
 
   private addRecord() {

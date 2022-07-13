@@ -298,9 +298,11 @@
         <div class="mb-2">
           <label cLabel for="total">Total</label>
           <input type="number"
+                 class="txt-total"
                  formControlName="total"
                  aria-label="total"
                  placeholder="Total"
+                 [ngClass]="{ 'is-valid': f['total'].value === calcTotal, 'is-invalid': f['total'].value !== calcTotal  }"
                  cFormControl />
         </div>
       </c-col>

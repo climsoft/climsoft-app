@@ -18,7 +18,7 @@ export class FlagLegendComponent implements OnInit {
 
   get flags(): any {
     return Object.keys(FlagsConfig).map((k) => {
-      return { key: k, value: FlagsConfig[k].label || 'Empty', class: FlagsConfig[k].class };
+      return { key: k, value: FlagsConfig[k].label || 'No Flag', class: FlagsConfig[k].class };
     });
   }
 }

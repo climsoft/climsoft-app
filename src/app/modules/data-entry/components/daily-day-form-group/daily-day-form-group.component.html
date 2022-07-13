@@ -1,10 +1,14 @@
-<c-row class="daily-data-row" [ngClass]="{ 'is-dirty': isDirty && !isInvalid, 'is-invalid': isInvalid }" [formGroup]="group">
+<c-row class="daily-data-row" [ngClass]="{ 'has-focus': hasFocus, 'is-dirty': isDirty && !isInvalid, 'is-invalid': isInvalid }" [formGroup]="group">
   <c-col class="py-2 label">
     <span *ngIf="!isDirty">{{fg['day'].value}}</span>
     <button type="button" cButton color="dark" shape="rounded-pill" (click)="revert()" *ngIf="isDirty">{{fg['day'].value}}</button>
   </c-col>
   <c-col class="py-1">
-    <input formControlName="value" (blur)="onBlur($event)" aria-label="value" cFormControl />
+    <input formControlName="value"
+           (focus)="onFocus()"
+           (blur)="onBlur($event)"
+           aria-label="value"
+           cFormControl />
   </c-col>
   <c-col class="py-1 text-center">
     <input type="hidden" formControlName="flag" aria-label="flag" cFormControl />

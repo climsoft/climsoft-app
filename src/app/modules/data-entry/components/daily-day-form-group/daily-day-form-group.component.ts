@@ -28,6 +28,7 @@ export class DailyDayFormGroupComponent implements OnInit, OnChanges, AfterViewI
   @Output() onRevert: EventEmitter<number> = new EventEmitter;
 
   pristine: any;
+  hasFocus = false;
 
   constructor() { }
 
@@ -61,6 +62,7 @@ export class DailyDayFormGroupComponent implements OnInit, OnChanges, AfterViewI
   }
 
   onBlur(e: any) {
+    this.hasFocus = false;
     if(this.pristine.value === this.fg['value'].value) {
       this.fg['value'].markAsPristine();
     }
@@ -68,6 +70,10 @@ export class DailyDayFormGroupComponent implements OnInit, OnChanges, AfterViewI
 
   get fg() {
     return this.group.controls;
+  }
+
+  onFocus() {
+    this.hasFocus = true;
   }
 
   public get isDirty(): boolean {

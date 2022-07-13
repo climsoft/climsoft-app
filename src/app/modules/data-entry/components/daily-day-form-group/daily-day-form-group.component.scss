@@ -1,9 +1,11 @@
 $block-bg: #e5ecf2;
 $block-border: #cdd4da;
 $border-radius: 0.2rem;
+$border-focus: #9dacb9;
 
 $block-error-bg: #ffe2e2;
 $block-error-border: #dd6868;
+$block-focus-bg: #dbfaff;
 $block-dirty-bg: #a3e8fd;
 $block-dirty-border: #8cc9db;
 
@@ -30,6 +32,11 @@ $block-dirty-border: #8cc9db;
   &.is-dirty {
     background-color: $block-dirty-bg;
     border: 1px solid $block-dirty-border;
+  }
+
+  &.has-focus {
+    background-color: $block-focus-bg;
+    border: 1px solid $border-focus;
   }
 
   .form-control:disabled {
