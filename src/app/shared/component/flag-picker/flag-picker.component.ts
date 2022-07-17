@@ -13,7 +13,7 @@ export class FlagPickerComponent implements OnInit, OnChanges {
 
   flags: string[] = Flags;
   flagConfig: any = FlagsConfig;
-  activeFlag: string = Flag.M;
+  activeFlag: string = 'N';
   toggled: boolean = false;
 
   constructor(private _eref: ElementRef) { }
@@ -39,17 +39,17 @@ export class FlagPickerComponent implements OnInit, OnChanges {
     }
   }
 
-  get activeLabel(): string {
-    return this.activeFlag ? this.flagConfig[this.activeFlag].label : '';
+  selectFlag(char: string) {
+    this.activeFlag = char;
+    this.toggled = false;
+    this.onSelect.emit(char);
   }
 
-  selectFlag(char?: string) {
-    if(!char) {
-      this.activeFlag = '';
-    } else {
-      this.activeFlag = char;
-      this.toggled = false;
-      this.onSelect.emit(char);
-    }
+  get activeLabel(): string {
+    return this.flagConfig[this.activeFlag].label;
+  }
+
+  get filteredFlags(): string[] {
+    return this.flags.filter(f => f !== 'N');
   }
 }

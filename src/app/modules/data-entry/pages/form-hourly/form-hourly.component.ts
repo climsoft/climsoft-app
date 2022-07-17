@@ -168,5 +168,4 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
       total:          new FormControl(null)
     });
   }
-
 }

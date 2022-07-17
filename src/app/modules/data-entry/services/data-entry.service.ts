@@ -13,6 +13,7 @@ const apiPrefix = `climsoft/v1`;
 })
 export class DataEntryService {
 
+  hourlyState$: BehaviorSubject<DailyState | boolean> = new BehaviorSubject<DailyState | boolean>(false);
   dailyState$: BehaviorSubject<DailyState | boolean> = new BehaviorSubject<DailyState | boolean>(false);
   synopticState$: BehaviorSubject<SynopticState | boolean> = new BehaviorSubject<SynopticState | boolean>(false);
 

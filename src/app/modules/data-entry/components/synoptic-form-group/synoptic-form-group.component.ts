@@ -65,5 +65,5 @@ export class SynopticFormGroupComponent implements OnInit {
 
   public revert() {
     this.onRevert.emit(+this.fg['day'].value);
-  };
+  }
 }

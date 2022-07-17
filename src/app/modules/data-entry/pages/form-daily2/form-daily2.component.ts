@@ -20,6 +20,7 @@ import { StationService } from '@station/services/station.service';
 import { DataEntryService } from './../../services/data-entry.service';
 
 import { ResponsiveService } from '@shared/services/responsive.service';
+import { cibTheMighty } from '@coreui/icons';
 
 @Component({
   selector: 'app-form-daily2',
@@ -51,6 +52,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
 
   hasRecord = false;
   raw: any;
+  day: number = 0;
 
   @ViewChildren('dailyGroup') dailyGroup!: QueryList<DailyDayFormGroupComponent>;
 
@@ -189,6 +191,10 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
     this.router.navigateByUrl('/');
   }
 
+  onReturn(e: Event) {
+    e.preventDefault();
+  }
+
   onOpenCalendar(container: any) {
     container.monthSelectHandler = (event: any): void => {
       container._store.dispatch(container._actions.select(event.date));
@@ -228,6 +234,19 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
     }, 0);
   }
 
+  dayFocus(d: number) {
+    this.day = d;
+  }
+
+  dayBlur(d: number) {}
+
+  handleReturn(d: number) {
+    const total = this.dailyGroup.toArray().length;
+    if(+d < total) {
+      this.dailyGroup.toArray()[+d].focusValue();
+    }
+  }
+
   revertDay(day: number) {
     const config = {
       title: `Confirm Revert`,
@@ -259,7 +278,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
     return new FormGroup({
       day:    new FormControl(day),
       value:  new FormControl(value, [Validators.min(0), Validators.max(70)]),
-      flag:   new FormControl(flag || Flag.M),
+      flag:   new FormControl(flag || ''),
       period: new FormControl(period)
     });
   }
@@ -327,7 +346,11 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
           this.resetDays();
           this.renderFormDays(new Date(`${this.month}-1-${this.year}`), false);
         }
+        this.dailyGroup.toArray()[0].focusValue();
         this.loading = false;
+        // if(this.dailyGroup) {
+        //   this.dailyGroup.toArray()[0].group['value'].focus();
+        // }
       });
     }
   }

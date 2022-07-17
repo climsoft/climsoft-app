@@ -1,14 +1,8 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { tap } from 'rxjs/operators';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Flag } from '@data/enum/flag';
-import { filter, of, delay } from 'rxjs';
-
-// TODO: On FormGroup load do we have incoming record or it is blank. if record set state and keep a copy;
-// TODO: If the record exists change the color ot the FormGroup to an agreed color exmaple light blue;
-// TODO: If user modifies the data the color changes to light orange/beige
-// TODO: If the form values have been modified then on hover over the form user can see a reset button
-// TODO: When user clicks the reset button a confirmation dialog appears showing original values the form will reset to.
-// TODO: If user chooses Yes in confirmation dialog, the form values get reset to original.
+import { filter, of, delay, Observable, fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-daily-day-form-group',
@@ -16,6 +10,7 @@ import { filter, of, delay } from 'rxjs';
   styleUrls: ['./daily-day-form-group.component.scss']
 })
 export class DailyDayFormGroupComponent implements OnInit, OnChanges, AfterViewInit {
+  @ViewChild('inputValue') txtVal!: ElementRef;
   @Input() modified: boolean = false;
   @Input() group: FormGroup = new FormGroup({
     day:    new FormControl(1),
@@ -26,11 +21,15 @@ export class DailyDayFormGroupComponent implements OnInit, OnChanges, AfterViewI
   @Input() disabled: boolean = false;
   @Output() onDirty: EventEmitter<boolean> = new EventEmitter;
   @Output() onRevert: EventEmitter<number> = new EventEmitter;
+  @Output() onFocus: EventEmitter<number> = new EventEmitter;
+  @Output() onBlur: EventEmitter<number> = new EventEmitter;
+  @Output() onReturn: EventEmitter<number> = new EventEmitter;
 
+  valFocus = false;
   pristine: any;
   hasFocus = false;
 
-  constructor() { }
+  constructor(private ref: ElementRef) { }
 
   ngOnInit(): void {
     this.group.valueChanges.pipe(
@@ -52,6 +51,14 @@ export class DailyDayFormGroupComponent implements OnInit, OnChanges, AfterViewI
     of(true).pipe(delay(500)).subscribe(() => {
       this.pristine = this.group.value;
     });
+
+    fromEvent<KeyboardEvent>(this.ref.nativeElement, 'keyup')
+      .pipe(
+        filter((e: KeyboardEvent) => e.keyCode === 13 && this.valFocus)
+      )
+      .subscribe((e) => {
+        this.onValRetunKey();
+      });
   }
 
   selectFlag(f: string) {
@@ -61,19 +68,41 @@ export class DailyDayFormGroupComponent implements OnInit, OnChanges, AfterViewI
     }
   }
 
-  onBlur(e: any) {
+  focusValue() {
+    this.txtVal.nativeElement.focus();
+  }
+
+  private onValRetunKey() {
+    if(!this.fg['value'].value || +this.fg['value'].value === 0) {
+      this.fg['flag'].setValue(Flag.M);
+    }
+    this.onReturn.emit(+this.fg['day'].value);
+  }
+
+  onValueFocus() {
+    this.hasFocus = true;
+    this.onFocus.emit(this.fg['day'].value);
+    this.valFocus = true;
+  }
+
+  onValueBlur(e: any) {
     this.hasFocus = false;
-    if(this.pristine.value === this.fg['value'].value) {
+    const val = this.fg['value'].value;
+    if(this.pristine.value === val && val !== '') {
       this.fg['value'].markAsPristine();
     }
+    if(val === '' && this.fg['flag'].value !== Flag.M) {
+      this.selectFlag(Flag.M);
+    }
+    if(val !== '' && this.fg['flag'].value === Flag.M) {
+      this.selectFlag(Flag.N);
+    }
+    this.onBlur.emit(this.fg['day'].value);
+    this.valFocus = false;
   }
 
   get fg() {
     return this.group.controls;
-  }
-
-  onFocus() {
-    this.hasFocus = true;
   }
 
   public get isDirty(): boolean {
@@ -81,10 +110,34 @@ export class DailyDayFormGroupComponent implements OnInit, OnChanges, AfterViewI
   }
 
   public get isInvalid(): boolean {
-    return this.fg['value'].dirty && this.fg['value'].value && (this.fg['flag'].value === Flag.M);
+    return this.fg['value'].dirty && this.fg['value'].value !== '' && (this.fg['flag'].value === Flag.M);
+  }
+
+  public get styles(): any {
+    const styles: any = { 'has-focus': this.hasFocus };
+    if(this.isDirty) {
+      styles['is-dirty'] = true;
+    }
+    if(this.isInvalid) {
+      styles['is-dirty'] = false;
+      styles['is-invalid'] = true;
+    }
+
+    return styles;
   }
 
   public revert() {
     this.onRevert.emit(+this.fg['day'].value);
-  };
+  }
 }
+
+// TODO: On all data entry forms:
+// TODO: - 'empty' flag should be removed from legend and referred to as noFlag in code ...DONE
+// TODO: - noFlag should be stored as NULL (or the empty string) in database ...DONE
+// TODO: - In the flag selector, noFlag should be grey and M (Missing) should be red ...DONE
+// TODO: - noFlag should not have a tool tip ???
+// TODO: - New forms should initially have all flags set to noFlag ...DONE
+// TODO: - After user selects a station/date, or after they submit/update and move to the next form, the first value field should have the focus ...DONE
+// TODO: - On Enter Key press the focus should move to next value field ...DONE
+// TODO: - If value was left empty when value field loses focus then a M/Missing flag should be automatically  ...DONE
+// TODO: - If the users focuses on a value field with <No-Value & Missing Flag> and enters a value then the Missing flag should be automatically removed (set to noFlag) ???

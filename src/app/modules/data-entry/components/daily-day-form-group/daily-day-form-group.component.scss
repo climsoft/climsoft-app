@@ -35,8 +35,9 @@ $block-dirty-border: #8cc9db;
   }
 
   &.has-focus {
-    background-color: $block-focus-bg;
+    background-color: #e2e7ec;
     border: 1px solid $border-focus;
+    box-shadow: rgb(0, 0, 0, 0.25) 1px 1px 0px 1px;
   }
 
   .form-control:disabled {

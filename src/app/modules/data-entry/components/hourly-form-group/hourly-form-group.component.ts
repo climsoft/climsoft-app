@@ -9,7 +9,7 @@ const patternRegex = ``;
   templateUrl: './hourly-form-group.component.html',
   styleUrls: ['./hourly-form-group.component.scss']
 })
-export class HourlyFormGroupComponent implements OnInit {
+export class HourlyFormGroupComponent implements OnInit { 
   @Input() modified: boolean = false;
   @Input() group: FormGroup = new FormGroup({
     hour:    new FormControl(1),

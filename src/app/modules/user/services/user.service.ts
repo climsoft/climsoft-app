@@ -40,7 +40,7 @@ export class UserService {
         userId: 'admin'
       },
       preferences: {
-        mode: this.cookieService.get(environment.APP_MODE_COOKIE) ? +this.cookieService.get(environment.APP_MODE_COOKIE) : AppMode.DEFAULT,
+        mode: this.cookieService.get(environment.APP_MODE_COOKIE) ? +this.cookieService.get(environment.APP_MODE_COOKIE) : AppMode.CLIMSOFT,
         locale: Locale.EnglishGreatBritain,
         language: Locale.EnglishGreatBritain
       }
