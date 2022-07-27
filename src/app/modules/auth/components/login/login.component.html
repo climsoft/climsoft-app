@@ -21,7 +21,7 @@
                     [autofocus]="true"
                     cFormControl
                     [ngClass]="{ 'is-invalid': (submitted || f['username'].touched) && f['username'].invalid }"
-                    placeholder="Email" />
+                    placeholder="Username" />
                     <div col="12" class="invalid-feedback pl-1" *ngIf="f['username'].errors">
                       <div *ngIf="f['username'].errors['required']"> <i class="fa fa-times"></i> Username is required.</div>
                     </div>

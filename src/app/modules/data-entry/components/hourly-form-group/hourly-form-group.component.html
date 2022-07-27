@@ -1,9 +1,22 @@
-<c-row class="hourly-data-row" [formGroup]="group">
+<c-row class="hourly-data-row" [ngClass]="styles" [formGroup]="group">
   <c-col class="py-2 label">
-    <span>{{hourVal(fg['hour'].value)}}</span>
+    <span *ngIf="!isDirty">{{hourVal(fg['hour'].value)}}</span>
+    <button
+      type="button"
+      cButton
+      color="dark"
+      shape="rounded-pill"
+      (click)="revert()"
+      *ngIf="isDirty">{{fg['hour'].value}}</button>
   </c-col>
   <c-col class="py-1">
-    <input formControlName="value" aria-label="value" cFormControl />
+    <input
+      #inputValue
+      formControlName="value"
+      aria-label="value"
+      (focus)="onValueFocus()"
+      (blur)="onValueBlur($event)"
+      cFormControl />
   </c-col>
   <c-col class="py-1 text-center">
     <input type="hidden" formControlName="flag" aria-label="flag" cFormControl />

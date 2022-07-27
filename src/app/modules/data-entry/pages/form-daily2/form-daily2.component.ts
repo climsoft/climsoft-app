@@ -21,6 +21,7 @@ import { DataEntryService } from './../../services/data-entry.service';
 
 import { ResponsiveService } from '@shared/services/responsive.service';
 import { cibTheMighty } from '@coreui/icons';
+import { of, delay } from 'rxjs';
 
 @Component({
   selector: 'app-form-daily2',
@@ -342,11 +343,14 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
         if(res.result.length) {
           this.raw = res.result[0];
           this.patchForm(res.result[0]);
+          this.focusFirst();
         } else {
           this.resetDays();
           this.renderFormDays(new Date(`${this.month}-1-${this.year}`), false);
+          this.f['total'].setValue('');
+          this.focusFirst();
         }
-        this.dailyGroup.toArray()[0].focusValue();
+
         this.loading = false;
         // if(this.dailyGroup) {
         //   this.dailyGroup.toArray()[0].group['value'].focus();
@@ -364,7 +368,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
     let total = 0;
     this.formDaysGroups.forEach((g, i) => {
       const num = (i+1 < 10) ? `0${i+1}` : (i+1);
-      const patchValue = { day: i+1, value: data[`day${num}`], flag: data[`flag${num}`] || '', period: data[`period${num}`] };
+      const patchValue = { day: i+1, value: data[`day${num}`], flag: data[`flag${num}`] || Flag.N, period: data[`period${num}`] };
       g.patchValue({ ...patchValue });
       total += +data[`day${num}`];
     });
@@ -409,7 +413,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
         const val = g.group.value;
         const dVal = `${val.day < 10 ? '0' : ''}${val.day}`;
         formVal[`day${dVal}`] = +val.value;
-        formVal[`flag${dVal}`] = val.flag;
+        formVal[`flag${dVal}`] = val.flag === 'N'? null : val.flag;
         formVal[`period${dVal}`] = val.period;
       });
 
@@ -442,12 +446,20 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
           const val = g.group.value;
           const dVal = `${val.day < 10 ? '0' : ''}${val.day}`;
           payload[`day${dVal}`] = +val.value;
-          payload[`flag${dVal}`] = val.flag;
+          payload[`flag${dVal}`] = val.flag === 'N'? null : val.flag;
           payload[`period${dVal}`] = val.period;
         });
 
     this.dataEntryService.updateDailyEntry(this.station?.station_id, this.element?.element_id, this.year, this.month, this.hour, payload).subscribe(res => {
       this.form.markAsPristine();
     });
+  }
+
+  private focusFirst() {
+    of(true)
+      .pipe(delay(100))
+      .subscribe(() => {
+        this.dailyGroup.toArray()[0].focusValue();
+      });
   }
 }

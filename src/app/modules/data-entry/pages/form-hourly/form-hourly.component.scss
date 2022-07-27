@@ -34,3 +34,18 @@
     margin-top: 0.5rem;
   }
 }
+
+.txt-total {
+  font-size: 1.2rem;
+  font-weight: bold;
+
+  &.is-valid {
+    background-color: #d3eebc;
+    color: #0c971e;
+  }
+
+  &.is-invalid {
+    background-color: #f0cdcd;
+    color: #ff2f2f;
+  }
+}

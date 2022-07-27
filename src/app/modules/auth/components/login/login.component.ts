@@ -15,8 +15,8 @@ import AppConfig from '@config/app-config.json';
 })
 export class LoginComponent {
   form: FormGroup = new FormGroup({
-    username: new FormControl('admin', Validators.required),
-    password: new FormControl('password123', Validators.required),
+    username: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
     api: new FormControl('api-latest'),
     db: new FormControl('')
   });

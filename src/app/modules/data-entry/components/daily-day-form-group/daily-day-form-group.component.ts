@@ -75,6 +75,10 @@ export class DailyDayFormGroupComponent implements OnInit, OnChanges, AfterViewI
   private onValRetunKey() {
     if(!this.fg['value'].value || +this.fg['value'].value === 0) {
       this.fg['flag'].setValue(Flag.M);
+    } else {
+      console.log('111111');
+      // TODO: Fix to be done
+      this.fg['flag'].setValue(Flag.N);
     }
     this.onReturn.emit(+this.fg['day'].value);
   }

@@ -1,6 +1,12 @@
+export interface HourlyState {
+  station: number,
+  element: number,
+  date: string
+}
+
 export interface HourlyPayload {
-    stationId: number;
-    elementId: number;
+    station_id: any;
+    element_id: number;
     yyyy: number;
     mm: number;
     dd: number;
@@ -54,5 +60,5 @@ export interface HourlyPayload {
     flag23: string;
     total: string;
     signature: string;
-    entryDatetime: Date;
+    entry_datetime: Date;
 }

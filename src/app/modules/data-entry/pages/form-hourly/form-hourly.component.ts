@@ -1,4 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs/operators';
+import { ConfirmationComponent } from './../../../../shared/dialogs/confirmation/confirmation.component';
+import { HourlyPayload, HourlyState } from './../../../../data/interface/data-entry-hourly-payload';
+import { DailyDayFormGroupComponent } from './../../components/daily-day-form-group/daily-day-form-group.component';
+import { ElementService } from './../../../element/services/element.service';
+import { StationService } from './../../../station/services/station.service';
+import { DataEntryService } from './../../services/data-entry.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { Router } from '@angular/router';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 
@@ -10,6 +19,7 @@ import { IDataEntryForm } from '@data/interface/data-entry-form';
 
 import * as moment from 'moment';
 import { Flag } from '@data/enum/flag';
+import { of, delay, tap, switchMap, filter } from 'rxjs';
 
 @Component({
   selector: 'app-form-hourly',
@@ -17,6 +27,8 @@ import { Flag } from '@data/enum/flag';
   styleUrls: ['./form-hourly.component.scss']
 })
 export class FormHourlyComponent implements OnInit, IDataEntryForm {
+  @ViewChildren('hourlyGroup') hourlyGroup!: QueryList<DailyDayFormGroupComponent>;
+
   form!: FormGroup;
   submitted = false;
   loading = false;
@@ -33,10 +45,20 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
     dateInputFormat: 'DD/MM/YYYY'
   };
   date!: Date;
+  raw: any;
+  hasRecord = false;
+  activeHour = 0;
 
   hoursList = [24, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 
-  constructor(private responsiveSvc: ResponsiveService) {}
+  constructor(
+    private router: Router,
+    private modalService: BsModalService,
+    private responsiveSvc: ResponsiveService,
+    private dataEntryService: DataEntryService,
+    private stationService: StationService,
+    private elementService: ElementService
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -45,6 +67,16 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
       console.log(x);
       // this.size = x;
     });
+
+    this.dataEntryService.hourlyState
+        .pipe(
+          tap((st) => this.loading = !!st),
+          filter(st => !!st),
+          take(1)
+        )
+        .subscribe((st: HourlyState) => {
+          this.setFormState(+st.station, +st.element, moment(st.date).toDate());
+        });
   }
 
   get f() {
@@ -59,6 +91,14 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
     return this.monthModified;
   }
 
+  get hasChanges(): boolean {
+    return this.hourlyGroup.toArray().filter((gp) => gp.isDirty === true).length > 0;
+  }
+
+  get invalidEntries(): boolean {
+    return this.hourlyGroup.toArray().filter(gp => !!gp.isInvalid).length > 0;
+  }
+
   onFormModified(val: boolean) {
     this.monthModified = val;
   }
@@ -71,6 +111,7 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
   onStationSelect(data: Station) {
     this.station = data;
     this.form.controls['station'].setValue(data.station_id);
+    this.loadHourlyData();
   }
 
   resetElement() {
@@ -81,31 +122,46 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
   onElementSelect(data: ObsElement) {
     this.element = data;
     this.form.controls['element'].setValue(data.element_id);
-  }
-
-  onSubmit(e: Event) {
-    this.submitted = true;
-
-    // if(this.form.invalid) {
-    //   return false;
-    // }
-    const formVal = this.form.value;
-    formVal.hours = this.formHoursGroups.map(fg => fg.value);
-    console.log(formVal);
-
-    // API implementation goes here.
-    return true;
+    this.loadHourlyData();
   }
 
   onDateSelection(data: Date) {
     if(data) {
-      this.renderFormHours(data);
+      this.date = data;
+      this.loadHourlyData();
     }
   }
 
   getHoursValue(h: number) {
     const tempDate = moment().set('hours', h).startOf('hour');
     return tempDate.format('HH:mm');
+  }
+
+  onOpenCalendar(container: any) {
+    container.monthSelectHandler = (event: any): void => {
+      container._store.dispatch(container._actions.select(event.date));
+    };
+  }
+
+  onSubmit(e: Event) {
+    this.submitted = true;
+
+    if(this.form.invalid && !this.f['hours'].invalid) {
+      return;
+    }
+    if(this.invalidEntries) {
+      this.error = 'The monthly data contains some invalid entried, please fix the items and try again.'
+      return;
+    }
+    console.log(+this.f['total'].value, this.calcTotal, +this.f['total'].value === this.calcTotal);
+    if(+this.f['total'].value !== this.calcTotal) {
+      this.error = `The days based data total does not match with the total provided, please check the values and try again.`;
+      return;
+    }
+
+    const pl = this.buildPayload();
+    this.error = '';
+    this.hasRecord? this.update(pl) : this.save(pl);
   }
 
   onReset() {
@@ -115,15 +171,22 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
 
   onCancel() {}
 
-  onOpenCalendar(container: any) {
-    container.monthSelectHandler = (event: any): void => {
-      container._store.dispatch(container._actions.select(event.date));
-    };
-    container.setViewMode('month');
+  onReturn(e: Event) {
+    e.preventDefault();
   }
 
-  getDateText() {
+  get dateText() {
     return moment(this.date).format('DD MMM YYYYY');
+  }
+
+  get calcTotal(): number {
+    if(!this.hourlyGroup) {
+      return 0;
+    }
+    return this.hourlyGroup.toArray().reduce((ac, g) => {
+      const val: number = g.group.value.value? +g.group.value.value : 0;
+      return ac = val + ac;
+    }, 0);
   }
 
   get hoursArray(): FormArray {
@@ -138,7 +201,7 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
     const formGroup = new FormGroup({
       hour:    new FormControl(null),
       value:  new FormControl(null, [Validators.min(0), Validators.max(70)]),
-      flag:   new FormControl(null)
+      flag:   new FormControl(Flag.N)
     });
 
     if(data) {
@@ -148,15 +211,50 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
     return formGroup;
   }
 
-  private renderFormHours(date: Date) {
+  private renderFormHours() {
     this.resetHours();
-    for(let i=0; i <= this.hoursList.length; i++) {
-      this.hoursArray.push(this.getHourGroup({ hour: i, value: 0, flag: Flag.M }));
+    for(let i=0; i < this.hoursList.length; i++) {
+      this.hoursArray.push(this.getHourGroup({ hour: i, value: 0, flag: Flag.N }));
     }
   }
 
+  dayFocus(h: number) {
+    this.activeHour = h;
+  }
+
+  dayBlur(d: number) {}
+
+  handleReturn(h: number) {
+    const total = this.hourlyGroup.toArray().length;
+    if(h < total - 1) {
+      this.hourlyGroup.toArray()[+h + 1].focusValue();
+    }
+  }
+
+  revertDay(hh: number) {
+    const config = {
+      title: `Confirm Revert`,
+      message: `Are you sure you want to revert to original values?`,
+      confirm: 'Go Ahead',
+      cancel: 'Cancel'
+    };
+    const dialogRef: BsModalRef | undefined = this.modalService.show(ConfirmationComponent, { initialState: config });
+    dialogRef.content.onClose.subscribe((opt: boolean) => {
+      if(opt) {
+        if(this.hasRecord) {
+          const postFix = (hh<10? '0' : '') + hh;
+          const hVal = this.raw[`hh_${postFix}`];
+          const fVal = this.raw[`flag${postFix}`];
+          this.formHoursGroups[hh] = this.getHourGroup({ hour: hh, value: +hVal, flag: Flag.N });
+        } else {
+          this.formHoursGroups[hh] = this.getHourGroup({ hour: hh, value: 0, flag: Flag.N });
+        }
+      }
+    });
+  }
+
   private resetHours() {
-    this.form.controls['days'] = new FormArray([]);
+    this.form.controls['hours'] = new FormArray([]);
   }
 
   private initForm() {
@@ -167,5 +265,120 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
       hours:          new FormArray([]),
       total:          new FormControl(null)
     });
+  }
+
+  private setFormState(station: number, element: number, date: Date) {
+    this.stationService.getStation(station)
+        .pipe(
+          tap((res) => {
+            this.station = res.result[0];
+          }),
+          switchMap((res) => this.elementService.getElement(element))
+        )
+        .subscribe((res) => {
+          this.element = res.result[0];
+          this.loadHourlyData();
+        });
+
+      this.monthYearValue = moment(date).toDate();
+  }
+
+  private loadHourlyData() {
+    console.log(this.monthYearValue);
+    console.log(this.date);
+
+    if(this.station && this.element && this.date) {
+      const date = moment(this.date);
+      const yyyy = date.year();
+      const mm = date.month() + 1;
+      const dd = date.date();
+      console.log(yyyy, mm, dd);
+
+      this.loading = true;
+      this.dataEntryService.getHourlyEntry(this.station.station_id, this.element.element_id, yyyy, mm, dd).subscribe((res: any) => {
+        console.log(res);
+        this.hasRecord = res.result.length > 0;
+        if(res.result.length) {
+          this.raw = res.result[0];
+          this.patchForm(res.result[0]);
+          this.focusFirst();
+        } else {
+          this.renderFormHours();
+          // this.renderFormHours(new Date(`${this.month}-1-${this.year}`), false);
+          this.focusFirst();
+        }
+        this.loading = false;
+      });
+    }
+  }
+
+  private patchForm(data: any) {
+    this.f['temperature'].setValue(data['temperature_units'] || '');
+    this.f['precip'].setValue(data['precip_units'] || '');
+    this.f['cloud_height'].setValue(data['cloud_height_units'] || '');
+    this.f['visibility'].setValue(data['vis_units'] || '');
+
+    let total = 0;
+    this.hourlyGroup.forEach((g, i) => {
+      const num = (i+1 < 10) ? `0${i+1}` : (i+1);
+      const patchValue = { day: i+1, value: data[`day${num}`], flag: data[`flag${num}`] || Flag.N, period: data[`period${num}`] };
+      // g.patchValue({ ...patchValue });
+      total += +data[`day${num}`];
+    });
+    this.f['total'].setValue(total || 0);
+  }
+
+  private update(payload: HourlyPayload) {
+    console.log(payload);
+    const date = moment(this.date);
+    const yyyy = date.year();
+    const mm = date.month() + 1;
+    const dd = date.date();
+    console.log(yyyy, mm, dd);
+    if(this.station && this.element && this.date) {
+      this.dataEntryService.updateHourlyEntry(this.station.station_id, this.element.element_id, yyyy, mm, dd, payload).subscribe((res) => {
+        console.log(res);
+        this.form.markAsPristine();
+      });
+    }
+  }
+
+  private save(payload: HourlyPayload) {
+    console.log(payload);
+    this.dataEntryService.addHourlyEntry(payload).subscribe((res) => {
+      console.log(res);
+      this.form.markAsPristine();
+    });
+  }
+
+  private buildPayload(): any {
+    const mom = moment(this.monthYearValue);
+    const payload: any = {
+      station_id: this.station?.station_id,
+      element_id: 0,
+      yyyy: mom.year(),
+      mm: mom.month(),
+      dd: mom.date(),
+      total: 0,
+      signature: '',
+      entry_datetime: new Date()
+    };
+    const formVal = this.form.value;
+    formVal.hours = this.formHoursGroups.map(fg => ({ ...fg.value, flag: fg.value.flag || null }));
+    for(let h of formVal.hours) {
+      const post = h.hour < 10 ? `0${h.hour}` : `${h.hour}`;
+      payload[`hh_${post}`] = h.value;
+      payload[`flag${post}`] = h.flag || null;
+    }
+
+    return payload;
+  }
+
+  private focusFirst() {
+    of(true)
+      .pipe(delay(100))
+      .subscribe(() => {
+        this.hourlyGroup.toArray()[0].focusValue();
+      });
   }
 }
