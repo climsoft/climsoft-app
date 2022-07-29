@@ -27,7 +27,6 @@ Feature: As a CLIMSOFT user I must be able to login and open the Stations list v
     Then I am able to see page "2" button active
     And I am able to see the next page results loaded
 
-  @focus
   @CLIM-2-4
   Scenario: Scenario-4 - User should be able to view a station by clicking a row in stations table view
     Given I am able to login successfully

@@ -1,5 +1,5 @@
-Feature: OPEN-CDMS-AUTH
-I want to test various auth features
+@CLIMS-1
+Feature: As a CLIMSOFT user I must be able to use auth features
 
   @CLIM-1-1
   Scenario: Scenario-1 As a user When I try to login into the climsoft app with blank form it shows validation errors
