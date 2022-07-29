@@ -41,3 +41,30 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+/**
+ * Climsoft App Custom Commands
+ */
+
+Cypress.on('uncaught:exception', () => {
+  return false;
+});
+
+Cypress.Commands.add("login", (username: string = 'admin', password: string = 'password123') => {
+    cy.visit('#/login');
+    cy.wait(2000);
+
+    cy.get('app-login').within(() => {
+      cy.get('form').within(() => {
+        cy.get('c-input-group').eq(0).within(() => {
+          cy.get('[formcontrolname="username"]').type(username);
+        });
+        cy.wait(500);
+        cy.get('c-input-group').eq(1).within(() => {
+          cy.get('[formcontrolname="password"]').type(password);
+        });
+        cy.wait(500);
+        cy.get('button[type="submit"]').click({ force: true });
+      });
+    });
+});

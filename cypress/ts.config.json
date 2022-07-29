@@ -3,6 +3,11 @@
   "include": ["**/*.ts"],
   "compilerOptions": {
     "sourceMap": false,
-    "types": ["cypress", "cypress-xpath", "cypress-wait-until"]
+    "types": ["./support", "cypress", "cypress-xpath", "cypress-wait-until"],
+    "lib": ["es2015", "dom"],
+    "target": "es5",
+    "isolatedModules": false,
+    "allowJs": true,
+    "noEmit": true
   }
 }

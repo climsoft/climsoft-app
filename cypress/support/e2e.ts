@@ -15,5 +15,12 @@
 
 // When a command from ./commands is ready to use, import with `import './commands'` syntax
 // import './commands';
+import 'cypress-localstorage-commands';
 import 'cypress-xpath';
 import 'cypress-wait-until';
+
+import './commands';
+
+beforeEach(() => {
+  cy.restoreLocalStorage();
+});
