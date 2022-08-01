@@ -18,9 +18,16 @@
 import 'cypress-localstorage-commands';
 import 'cypress-xpath';
 import 'cypress-wait-until';
+import 'cypress-mochawesome-reporter/register';
 
 import './commands';
 
 beforeEach(() => {
   cy.restoreLocalStorage();
 });
+
+// Cypress.on('test:after:run', (test, runnable) => {
+//   if (test.state === 'failed') {
+//       addContext({ test }, `../videos/${Cypress.spec.name}.mp4`);
+//   }
+// });

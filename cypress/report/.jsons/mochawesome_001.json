@@ -1,0 +1,172 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 4,
+    "passes": 3,
+    "pending": 0,
+    "failures": 1,
+    "start": "2022-07-31T16:57:38.408Z",
+    "end": "2022-07-31T16:58:09.050Z",
+    "duration": 30642,
+    "testsRegistered": 4,
+    "passPercent": 75,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "1beda52b-99a1-4a41-a0d8-c3f3c4990f3d",
+      "title": "",
+      "fullFile": "cypress\\integration\\CLIMS-2.feature",
+      "file": "cypress\\integration\\CLIMS-2.feature",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "c7bf8034-30c0-47d1-b500-6598559a26c0",
+          "title": "As a CLIMSOFT user I must be able to login and open the Stations list view",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Scenario-1 - User should be able to login and view the stations list",
+              "fullTitle": "As a CLIMSOFT user I must be able to login and open the Stations list view Scenario-1 - User should be able to login and view the stations list",
+              "timedOut": null,
+              "duration": 6469,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const state = window.testState;\nreturn cy\n  .then(() => state.onStartScenario(scenario, indexedSteps))\n  .then(() =>\n    resolveAndRunBeforeHooks.call(this, scenario.tags, state.feature.name)\n  )\n  .then(() =>\n    indexedSteps.forEach((step) =>\n      stepTest.call(this, state, step, rowData)\n    )\n  )\n  .then(() => state.onFinishScenario(scenario));",
+              "err": {},
+              "uuid": "3dd7000f-1349-4321-9af3-7437686a254b",
+              "parentUUID": "c7bf8034-30c0-47d1-b500-6598559a26c0",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Scenario-2 - User should be able to load more records per page on the stations view",
+              "fullTitle": "As a CLIMSOFT user I must be able to login and open the Stations list view Scenario-2 - User should be able to load more records per page on the stations view",
+              "timedOut": null,
+              "duration": 9817,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const state = window.testState;\nreturn cy\n  .then(() => state.onStartScenario(scenario, indexedSteps))\n  .then(() =>\n    resolveAndRunBeforeHooks.call(this, scenario.tags, state.feature.name)\n  )\n  .then(() =>\n    indexedSteps.forEach((step) =>\n      stepTest.call(this, state, step, rowData)\n    )\n  )\n  .then(() => state.onFinishScenario(scenario));",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: expected 10 to be at least 20",
+                "estack": "AssertionError: Timed out retrying after 4000ms: expected 10 to be at least 20\n    at Context.eval (http://localhost:4200/__cypress/tests?p=cypress\\integration\\CLIMS-2.feature:92:52)",
+                "diff": "- 10\n+ 20\n"
+              },
+              "uuid": "ffacf2cc-cc7c-4ade-b3be-30b37abd0da3",
+              "parentUUID": "c7bf8034-30c0-47d1-b500-6598559a26c0",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Scenario-3 - User should be able to load the next page on the stations view",
+              "fullTitle": "As a CLIMSOFT user I must be able to login and open the Stations list view Scenario-3 - User should be able to load the next page on the stations view",
+              "timedOut": null,
+              "duration": 6091,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const state = window.testState;\nreturn cy\n  .then(() => state.onStartScenario(scenario, indexedSteps))\n  .then(() =>\n    resolveAndRunBeforeHooks.call(this, scenario.tags, state.feature.name)\n  )\n  .then(() =>\n    indexedSteps.forEach((step) =>\n      stepTest.call(this, state, step, rowData)\n    )\n  )\n  .then(() => state.onFinishScenario(scenario));",
+              "err": {},
+              "uuid": "1fdfbd94-37a4-4c38-bc09-8322ae0ffc74",
+              "parentUUID": "c7bf8034-30c0-47d1-b500-6598559a26c0",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Scenario-4 - User should be able to view a station by clicking a row in stations table view",
+              "fullTitle": "As a CLIMSOFT user I must be able to login and open the Stations list view Scenario-4 - User should be able to view a station by clicking a row in stations table view",
+              "timedOut": null,
+              "duration": 7010,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const state = window.testState;\nreturn cy\n  .then(() => state.onStartScenario(scenario, indexedSteps))\n  .then(() =>\n    resolveAndRunBeforeHooks.call(this, scenario.tags, state.feature.name)\n  )\n  .then(() =>\n    indexedSteps.forEach((step) =>\n      stepTest.call(this, state, step, rowData)\n    )\n  )\n  .then(() => state.onFinishScenario(scenario));",
+              "err": {},
+              "uuid": "8d2933e7-93b1-45b0-ae36-8cdf53575bba",
+              "parentUUID": "c7bf8034-30c0-47d1-b500-6598559a26c0",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "3dd7000f-1349-4321-9af3-7437686a254b",
+            "1fdfbd94-37a4-4c38-bc09-8322ae0ffc74",
+            "8d2933e7-93b1-45b0-ae36-8cdf53575bba"
+          ],
+          "failures": [
+            "ffacf2cc-cc7c-4ade-b3be-30b37abd0da3"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 29387,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "charts": true,
+        "reportDir": "cypress\\report\\.jsons",
+        "reportPageTitle": "admin-report",
+        "embeddedScreenshots": true,
+        "inlineAssets": true,
+        "saveAllAttempts": false,
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

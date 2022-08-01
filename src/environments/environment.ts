@@ -6,7 +6,8 @@ export const environment = {
   production: false,
   apiPrefix: '',
   AUTH_KEY: 'api_key',
-  APP_MODE_COOKIE: 'app_mode'
+  APP_MODE_COOKIE: 'app_mode',
+  IDLE_TIME_IN_MINUTES: 5
 };
 
 /*

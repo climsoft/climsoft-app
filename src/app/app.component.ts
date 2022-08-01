@@ -1,4 +1,6 @@
-import { take } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { IdleService } from './shared/services/idle.service';
+import { filter } from 'rxjs';
 import { Component, OnInit, ElementRef, HostListener } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Title } from '@angular/platform-browser'
@@ -37,7 +39,8 @@ export class AppComponent implements OnInit {
     private iconSetService: IconSetService,
     private wiIcons: WiIconsService,
     private responsive: ResponsiveService,
-    private userService: UserService
+    private userService: UserService,
+    private idleService: IdleService
   ) {}
 
   ngOnInit(): void {
@@ -56,5 +59,22 @@ export class AppComponent implements OnInit {
       this.titleService.setTitle(isClimsoft ? 'Climsoft Weather App' : 'OpenCDMS Weather Data Management');
       this.favIcon.href = isClimsoft ? `./assets/climsoft.ico` : `/assets/opencdms.ico`;
     });
+
+    this.initialIdleSettings();
+  }
+
+  private initialIdleSettings() {
+    const idleTimeoutInSeconds: number = environment.IDLE_TIME_IN_MINUTES * 60;
+    this.idleService.startWatching(idleTimeoutInSeconds).subscribe((val) => {
+      if(val) {
+        console.log('API is sleeing now');
+      }
+    });
+    this.idleService.refreshAPI
+        .pipe(filter(n => n>0))
+        .subscribe(n => {
+          console.log('API is now Awake');
+          this.idleService.awake();
+        });
   }
 }
