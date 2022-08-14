@@ -28,4 +28,9 @@ $block-error-border: #dd6868;
   .form-control:disabled {
     cursor: not-allowed;
   }
+
+  .btn.rounded-pill {
+    padding: 0rem 0.4rem;
+    font-size: 0.8rem;
+  }
 }

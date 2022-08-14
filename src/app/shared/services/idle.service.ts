@@ -69,6 +69,7 @@ export class IdleService {
     this.http.GET(`${apiPrefix}`)
         .pipe(take(1))
         .subscribe(() => {
+          this.resetTimer();
           this.setExpired(false);
         });
   }

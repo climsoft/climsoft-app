@@ -11,6 +11,8 @@ export class YearSelectorComponent implements OnInit, OnDestroy {
   @Input() disabled: boolean = false;
   @Input() tabIndex: number = 0;
   @Input() value: number = new Date().getFullYear();
+  @Input() start: number = new Date().getFullYear() - 30;
+  @Input() end: number = new Date().getFullYear();
 
   formControl!: FormControl;
   @Output() onSelect: EventEmitter<number> = new EventEmitter();
@@ -20,13 +22,11 @@ export class YearSelectorComponent implements OnInit, OnDestroy {
   years: number[] = [];
   selectedIndex: any;
 
-
   constructor() {}
 
   ngOnInit(): void {
     this.formControl = new FormControl(this.value);
-    const yr = new Date().getFullYear();
-    for(let i = yr; i > yr-50; i--) {
+    for(let i = this.end; i > this.start; i--) {
       this.years.push(i);
     }
 

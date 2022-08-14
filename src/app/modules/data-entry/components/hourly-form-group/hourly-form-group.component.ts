@@ -36,7 +36,6 @@ export class HourlyFormGroupComponent implements OnInit, AfterViewInit {
     this.group.valueChanges.pipe(
       filter((val) => !this.modified)
     ).subscribe((val) => {
-      console.log(val);
       this.onDirty.emit(true);
     });
   }

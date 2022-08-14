@@ -50,6 +50,7 @@
     "@ngx-loading-bar/router": "^6.0.1",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
+    "angular-user-idle": "^3.0.0",
     "chart.js": "^3.6.1",
     "moment": "^2.29.1",
     "ngx-bootstrap": "^8.0.0",

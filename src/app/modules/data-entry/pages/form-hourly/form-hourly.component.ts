@@ -128,6 +128,7 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
   onDateSelection(data: Date) {
     if(data) {
       this.date = data;
+      this.date = new Date(data);
       this.loadHourlyData();
     }
   }
@@ -268,19 +269,21 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
   }
 
   private setFormState(station: number, element: number, date: Date) {
+    this.monthYearValue = moment(date).toDate();
     this.stationService.getStation(station)
         .pipe(
           tap((res) => {
             this.station = res.result[0];
+            this.form.controls['station'].setValue(this.station?.station_id);
           }),
           switchMap((res) => this.elementService.getElement(element))
         )
         .subscribe((res) => {
           this.element = res.result[0];
+          this.form.controls['element'].setValue(this.element?.element_id);
+          this.renderFormHours();
           this.loadHourlyData();
         });
-
-      this.monthYearValue = moment(date).toDate();
   }
 
   private loadHourlyData() {
@@ -304,6 +307,7 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
           this.focusFirst();
         } else {
           this.renderFormHours();
+          this.f['total'].setValue(0);
           // this.renderFormHours(new Date(`${this.month}-1-${this.year}`), false);
           this.focusFirst();
         }
@@ -313,17 +317,12 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
   }
 
   private patchForm(data: any) {
-    this.f['temperature'].setValue(data['temperature_units'] || '');
-    this.f['precip'].setValue(data['precip_units'] || '');
-    this.f['cloud_height'].setValue(data['cloud_height_units'] || '');
-    this.f['visibility'].setValue(data['vis_units'] || '');
-
     let total = 0;
-    this.hourlyGroup.forEach((g, i) => {
-      const num = (i+1 < 10) ? `0${i+1}` : (i+1);
-      const patchValue = { day: i+1, value: data[`day${num}`], flag: data[`flag${num}`] || Flag.N, period: data[`period${num}`] };
-      // g.patchValue({ ...patchValue });
-      total += +data[`day${num}`];
+    this.formHoursGroups.forEach((g, i) => {
+      const num = (i < 10) ? `0${i}` : (i);
+      const patchValue = { hour: i, value: data[`hh_${num}`], flag: data[`flag${num}`] || Flag.N };
+      g.patchValue({ ...patchValue });
+      total += +data[`hh_${num}`];
     });
     this.f['total'].setValue(total || 0);
   }
@@ -345,6 +344,7 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
 
   private save(payload: HourlyPayload) {
     console.log(payload);
+    payload.mm = payload.mm + 1
     this.dataEntryService.addHourlyEntry(payload).subscribe((res) => {
       console.log(res);
       this.form.markAsPristine();
@@ -352,10 +352,10 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
   }
 
   private buildPayload(): any {
-    const mom = moment(this.monthYearValue);
+    const mom = moment(this.date);
     const payload: any = {
       station_id: this.station?.station_id,
-      element_id: 0,
+      element_id: this.element?.element_id,
       yyyy: mom.year(),
       mm: mom.month(),
       dd: mom.date(),

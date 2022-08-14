@@ -35,10 +35,10 @@ $text-dark: #33434b;
           background-color: $dark;
         }
         &.btn-estimated {
-          background-color: $info;
+          background-color: $secondary;
         }
         &.btn-generated {
-          background-color: $secondary;
+          background-color: $info;
         }
         &.btn-dubious {
           background-color: $warning;

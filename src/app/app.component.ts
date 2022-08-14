@@ -1,12 +1,12 @@
 import { environment } from 'src/environments/environment';
-import { IdleService } from './shared/services/idle.service';
-import { filter } from 'rxjs';
 import { Component, OnInit, ElementRef, HostListener } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { filter, take } from 'rxjs';
 import { Title } from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
 import { IconSetService } from '@coreui/icons-angular';
 
+import { IdleService } from './shared/services/idle.service';
 import { UserService } from './modules/user/services/user.service';
 import { ResponsiveService } from './shared/services/responsive.service';
 
@@ -68,13 +68,13 @@ export class AppComponent implements OnInit {
     this.idleService.startWatching(idleTimeoutInSeconds).subscribe((val) => {
       if(val) {
         console.log('API is sleeing now');
-      }
-    });
-    this.idleService.refreshAPI
-        .pipe(filter(n => n>0))
+        this.idleService.refreshAPI
+        .pipe(filter(n => n > 0), take(1))
         .subscribe(n => {
           console.log('API is now Awake');
           this.idleService.awake();
         });
+      }
+    });
   }
 }

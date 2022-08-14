@@ -18,7 +18,7 @@ export interface HourlyWindRecord {
 }
 
 export interface MonthlyRecord {
-  month: string;
+  month: number;
   value:  number;
   flag:   string;
   period: number;
