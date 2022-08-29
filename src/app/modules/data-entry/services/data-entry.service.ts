@@ -6,6 +6,7 @@ import { HourlyPayload, HourlyState } from '@data/interface/data-entry-hourly-pa
 import { MonthlyPayload, MonthlyState } from '@data/interface/data-entry-monthly-payload';
 import { FormDailyPayload, DailyState } from '@data/interface/data-entry-daily-payload';
 import { SynopticState } from '@data/interface/data-entry-synoptic-payload';
+import {  HourlyWindPayload, HourlyWindState } from '@data/interface/data-entry-hourly-wind-payload';
 
 const apiPrefix = `climsoft/v1`;
 const hourlyUrl = `${apiPrefix}/form_hourlys`;
@@ -21,6 +22,7 @@ const synopticRa1fUrl = `${apiPrefix}/form_synoptic_2_ra1s`;
 export class DataEntryService {
 
   hourlyState$: BehaviorSubject<HourlyState | boolean> = new BehaviorSubject<HourlyState | boolean>(false);
+  hourlyWindState$: BehaviorSubject<HourlyWindState | boolean> = new BehaviorSubject<HourlyWindState | boolean>(false);
   dailyState$: BehaviorSubject<DailyState | boolean> = new BehaviorSubject<DailyState | boolean>(false);
   monthlyState$: BehaviorSubject<MonthlyState | boolean> = new BehaviorSubject<MonthlyState | boolean>(false);
   synopticState$: BehaviorSubject<SynopticState | boolean> = new BehaviorSubject<SynopticState | boolean>(false);
@@ -35,12 +37,15 @@ export class DataEntryService {
     return this.hourlyState$.asObservable();
   }
 
+  get hourlyWindState(): Observable<any> {
+    return this.hourlyWindState$.asObservable();
+  }
+
   get monthlyState(): Observable<any> {
     return this.monthlyState$.asObservable();
   }
 
   getDailyEntry(station: string | any, element: string | any, year: number, month: number, hour: number): Observable<any> {
-    // return this.http.GET(`${apiPrefix}/form_daily2s/${station}/${element}/${year}/${month}/${hour}`);
     this.updateDailyState({ station, element, monthYear: `${month}-1-${year}`, hour });
     return this.http.GET(`${dailyUrl}?station_id=${station}&element_id=${element}&yyyy=${year}&mm=${month}&hh=${hour}&limit=25&offset=0`);
   }
@@ -82,7 +87,36 @@ export class DataEntryService {
   }
 
   resetHourlyState() {
-    this.dailyState$.next(false);
+    this.hourlyState$.next(false);
+  }
+
+  /**
+   *  Hourly Wind Data
+   */
+
+  elementLookup(code: number) {
+    return this.http.GET(`${apiPrefix}/obselements/${code}`);
+  }
+
+  getHourlyWindEntry(station: string | any, year: number, month: number, day: number): Observable<any> {
+    this.updateHourlyWindState({ station, date: new Date(`${month}-${day}-${year}`).toISOString() });
+    return this.http.GET(`${hourlyWindsUrl}?station_id=${station}&yyyy=${year}&mm=${month}&dd=${day}&limit=25&offset=0`);
+  }
+
+  addHourlyWindEntry(payload: HourlyWindPayload) {
+    return this.http.POST(`${hourlyWindsUrl}`, payload);
+  }
+
+  updateHourlyWindEntry(station: string | any, year: number, month: number, day: number, payload: HourlyWindPayload) {
+    return this.http.PUT(`${hourlyWindsUrl}/${station}/${year}/${month}/${day}`, payload);
+  }
+
+  updateHourlyWindState(newVal: HourlyWindState) {
+    this.hourlyWindState$.next(newVal);
+  }
+
+  resetHourlyWindState() {
+    this.hourlyWindState$.next(false);
   }
 
   /**

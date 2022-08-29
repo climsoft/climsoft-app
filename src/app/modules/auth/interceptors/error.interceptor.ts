@@ -27,8 +27,8 @@ export class ErrorInterceptor implements HttpInterceptor {
               break;
 
             case 401:
-              this.toastr.add('warning', 'Unauthorized', 'Session Expired, Please login');
-              this.authService.logout();
+              // this.toastr.add('warning', 'Unauthorized', 'Session Expired, Please login');
+              this.authService.logout(true);
               break;
 
             case 404:

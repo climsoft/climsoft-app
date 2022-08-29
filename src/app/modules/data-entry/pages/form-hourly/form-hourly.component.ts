@@ -327,6 +327,15 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
     this.f['total'].setValue(total || 0);
   }
 
+  private save(payload: HourlyPayload) {
+    console.log(payload);
+    payload.mm = payload.mm + 1
+    this.dataEntryService.addHourlyEntry(payload).subscribe((res) => {
+      console.log(res);
+      this.form.markAsPristine();
+    });
+  }
+
   private update(payload: HourlyPayload) {
     console.log(payload);
     const date = moment(this.date);
@@ -340,15 +349,6 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
         this.form.markAsPristine();
       });
     }
-  }
-
-  private save(payload: HourlyPayload) {
-    console.log(payload);
-    payload.mm = payload.mm + 1
-    this.dataEntryService.addHourlyEntry(payload).subscribe((res) => {
-      console.log(res);
-      this.form.markAsPristine();
-    });
   }
 
   private buildPayload(): any {
