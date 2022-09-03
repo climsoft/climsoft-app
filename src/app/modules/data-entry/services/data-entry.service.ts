@@ -98,6 +98,10 @@ export class DataEntryService {
     return this.http.GET(`${apiPrefix}/obselements/${code}`);
   }
 
+  getRegKeys() {
+    return this.http.GET(`${apiPrefix}/reg-keys`);
+  }
+
   getHourlyWindEntry(station: string | any, year: number, month: number, day: number): Observable<any> {
     this.updateHourlyWindState({ station, date: new Date(`${month}-${day}-${year}`).toISOString() });
     return this.http.GET(`${hourlyWindsUrl}?station_id=${station}&yyyy=${year}&mm=${month}&dd=${day}&limit=25&offset=0`);

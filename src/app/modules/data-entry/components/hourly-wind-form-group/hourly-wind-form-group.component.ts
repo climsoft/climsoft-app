@@ -157,3 +157,8 @@ export class HourlyWindFormGroupComponent implements OnInit, AfterViewInit {
     this.onRevert.emit(+this.fg['hour'].value);
   }
 }
+
+
+// TODO: Call the API for getting the digit sizes for DD and FF
+// TODO: API: GET:https://api-latest.opencdms.org/climsoft/#/Reg%20Keys/get_reg_keys_v1_reg_keys_get
+// TODO based on the keyvalue for each element type

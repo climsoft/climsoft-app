@@ -219,7 +219,7 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
     }
   }
 
-  dayFocus(h: number) {
+  hourFocus(h: number) {
     this.activeHour = h;
   }
 

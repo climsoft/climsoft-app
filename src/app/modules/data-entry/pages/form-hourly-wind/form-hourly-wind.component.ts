@@ -14,7 +14,7 @@ import { HourlyWindRecord } from '@data/interface/data-entry-form';
 import { Station } from '@data/interface/station';
 import { StationService } from '@station/services/station.service';
 import { DataEntryService } from './../../services/data-entry.service';
-import { delay, filter, merge, of, take, tap } from 'rxjs';
+import { delay, filter, map, merge, of, take, tap, switchMap } from 'rxjs';
 import { HourlyWindState, HourlyWindPayload } from '@data/interface/data-entry-hourly-wind-payload';
 import * as _ from 'cypress/types/lodash';
 
@@ -46,6 +46,10 @@ export class FormHourlyWindComponent implements OnInit {
   activeHour = 0;
 
   hoursList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+  config: any = {
+    elem_111: {},
+    elem_112: {}
+  };
 
   constructor(
     private router: Router,
@@ -74,12 +78,7 @@ export class FormHourlyWindComponent implements OnInit {
       this.setFormState(+st.station, new Date(st.date));
     });
 
-    merge(
-      this.dataEntryService.elementLookup(112),
-      this.dataEntryService.elementLookup(111)
-    ).subscribe((res) => {
-      console.log(res);
-    });
+    this.initConfig();
   }
 
   get f() {
@@ -374,6 +373,42 @@ export class FormHourlyWindComponent implements OnInit {
       .pipe(delay(100))
       .subscribe(() => {
         this.hourlyWindGroup.toArray()[0].focusValue();
+      });
+  }
+
+  private initConfig() {
+    // this.dataEntryService.elementLookup(107)
+    //     .pipe(map((res: any) => res.result[0]))
+    //     .subscribe(res => console.log(res));
+
+    this.dataEntryService.elementLookup(111)
+      .pipe(
+        tap((res: any) => {
+          const obj = res.result[0];
+          this.config.elem_111 = { element_id: obj.element_id, element_name: obj.element_name, element_scale: obj.element_scale };
+        }),
+        switchMap(res => this.dataEntryService.elementLookup(112))
+      )
+      .subscribe((res: any) => {
+        const obj = res.result[0];
+        this.config.elem_112 = { element_id: obj.element_id, element_name: obj.element_name, element_scale: obj.element_scale };
+        this.initKeys();
+      });
+  }
+
+  private initKeys() {
+    this.dataEntryService.getRegKeys()
+      .pipe(
+        map((res: any) => {
+          return res.result
+                    .filter((item: any) => ['key05', 'key06'].includes(item.key_name))
+                    .map((item: any) => ({ ...item, key_value: +item.key_value }));
+        })
+      )
+      .subscribe((keys) => {
+        this.config.elem_111 = { ...this.config.elem_111, ...keys[1] };
+        this.config.elem_112 = { ...this.config.elem_112, ...keys[0] };
+        console.log(this.config);
       });
   }
 }

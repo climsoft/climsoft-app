@@ -1,9 +1,15 @@
-<c-row class="synoptic-data-row" [formGroup]="group">
+<c-row class="synoptic-data-row" [ngClass]="styles" [formGroup]="group">
   <c-col md="7" class="py-2 label">
     <span>{{fg['label'].value}}</span>
   </c-col>
   <c-col md="3" class="py-1">
-    <input formControlName="value" aria-label="value" cFormControl />
+    <input
+      #inputValue
+      formControlName="value"
+      aria-label="value"
+      (focus)="onValueFocus()"
+      (blur)="onValueBlur($event)"
+      cFormControl />
   </c-col>
   <c-col md="2" class="py-1 text-center">
     <input type="hidden" formControlName="flag" aria-label="flag" cFormControl />

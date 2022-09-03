@@ -1,7 +1,9 @@
+import { SynopticPayload } from './../../../../data/interface/data-entry-synoptic-payload';
+import { SynopticFormGroupComponent } from './../../components/synoptic-form-group/synoptic-form-group.component';
 import { ConfirmationComponent } from './../../../../shared/dialogs/confirmation/confirmation.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { filter, map, tap } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import * as moment from 'moment';
@@ -11,41 +13,42 @@ import { DataEntryService } from './../../services/data-entry.service';
 import { ResponsiveService } from '@shared/services/responsive.service';
 import { Station } from 'src/app/data/interface/station';
 import { Flag } from '@data/enum/flag';
+import { of, delay } from 'rxjs';
 
 const groupsList = [
-  { key: 'cloudHeight',   label: 'Height of Cloud' },
-  { key: 'visibility',    label: 'Visibility' },
-  { key: 'cloudCover',    label: 'Total Cloud Cover' },
-  { key: 'windDirection', label: 'Wind Direction' },
-  { key: 'windSpeed',     label: 'Wind Speed' },
-  { key: 'dryBulb',       label: 'Dry Bulb' },
-  { key: 'wetBulb',       label: 'Wet Bulb' },
-  { key: 'dewPoint',      label: 'Dew Point' },
-  { key: 'relativeHum',   label: 'Relative Humidity' },
-  { key: 'stnLevelPress', label: 'Station Level Pressure' },
-  { key: 'seaLevelPress', label: 'Height of cloud' },
-  { key: 'rainFall',      label: 'Rain Fall' },
-  { key: 'presentWx',     label: 'Present WX' },
-  { key: 'pastWx1',       label: 'Past WX 1' },
-  { key: 'pastWx2',       label: 'Past WX 2' },
-  { key: 'nh',            label: 'Nh' },
-  { key: 'cl',            label: 'Cl' },
-  { key: 'cm',            label: 'Cm' },
-  { key: 'ch',            label: 'Ch' },
-  { key: 'tmin',          label: 'Temperature Min' },
-  { key: 'gmin',          label: 'G Min' },
-  { key: 'cldAmtLvl1',    label: 'Cloud Amt Level 1' },
-  { key: 'cldTpLvl1',     label: 'Cloud Type Level 1' },
-  { key: 'cldHtLvl1',     label: 'Cloud Height Level 1' },
-  { key: 'cldAmtLvl2',    label: 'Cloud Amt Level 2' },
-  { key: 'cldTpLvl2',     label: 'Cloud Type Level 2' },
-  { key: 'cldHtLvl2',     label: 'Cloud Height Level 2' },
-  { key: 'cldAmtLvl3',    label: 'Cloud Amt Level 3' },
-  { key: 'cldTpLvl3',     label: 'Cloud Type Level 3' },
-  { key: 'cldHtLvl3',     label: 'Cloud Height Level 3' },
-  { key: 'cldAmtLvl4',    label: 'Cloud Amt Level 4' },
-  { key: 'cldTpLvl4',     label: 'Cloud Type Level 4' },
-  { key: 'cldHtLvl4',     label: 'Cloud Height Level 4' }
+  { element: 192, key: 'cloudHeight',   label: 'Height of Cloud' },
+  { element: 110, key: 'visibility',    label: 'Visibility' },
+  { element: 114, key: 'cloudCover',    label: 'Total Cloud Cover' },
+  { element: 112, key: 'windDirection', label: 'Wind Direction' },
+  { element: 111, key: 'windSpeed',     label: 'Wind Speed' },
+  { element: 0, key: 'dryBulb',       label: 'Dry Bulb' },
+  { element: 0, key: 'wetBulb',       label: 'Wet Bulb' },
+  { element: 0, key: 'dewPoint',      label: 'Dew Point' },
+  { element: 0, key: 'relativeHum',   label: 'Relative Humidity' },
+  { element: 106, key: 'stnLevelPress', label: 'Station Level Pressure' },
+  { element: 107, key: 'seaLevelPress', label: 'Height of cloud' },
+  { element: 0, key: 'rainFall',      label: 'Rain Fall' },
+  { element: 0, key: 'presentWx',     label: 'Present WX' },
+  { element: 0, key: 'pastWx1',       label: 'Past WX 1' },
+  { element: 0, key: 'pastWx2',       label: 'Past WX 2' },
+  { element: 0, key: 'nh',            label: 'Nh' },
+  { element: 0, key: 'cl',            label: 'Cl' },
+  { element: 0, key: 'cm',            label: 'Cm' },
+  { element: 0, key: 'ch',            label: 'Ch' },
+  { element: 0, key: 'tmin',          label: 'Temperature Min' },
+  { element: 0, key: 'gmin',          label: 'G Min' },
+  { element: 0, key: 'cldAmtLvl1',    label: 'Cloud Amt Level 1' },
+  { element: 0, key: 'cldTpLvl1',     label: 'Cloud Type Level 1' },
+  { element: 0, key: 'cldHtLvl1',     label: 'Cloud Height Level 1' },
+  { element: 0, key: 'cldAmtLvl2',    label: 'Cloud Amt Level 2' },
+  { element: 0, key: 'cldTpLvl2',     label: 'Cloud Type Level 2' },
+  { element: 0, key: 'cldHtLvl2',     label: 'Cloud Height Level 2' },
+  { element: 0, key: 'cldAmtLvl3',    label: 'Cloud Amt Level 3' },
+  { element: 0, key: 'cldTpLvl3',     label: 'Cloud Type Level 3' },
+  { element: 0, key: 'cldHtLvl3',     label: 'Cloud Height Level 3' },
+  { element: 0, key: 'cldAmtLvl4',    label: 'Cloud Amt Level 4' },
+  { element: 0, key: 'cldTpLvl4',     label: 'Cloud Type Level 4' },
+  { element: 0, key: 'cldHtLvl4',     label: 'Cloud Height Level 4' }
 ];
 
 @Component({
@@ -54,16 +57,18 @@ const groupsList = [
   styleUrls: ['./form-synoptic2-caribbean.component.scss']
 })
 export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
+  @ViewChildren('synopticGroup') synopticGroup!: QueryList<SynopticFormGroupComponent>;
+
   form!: FormGroup;
   submitted = false;
   loading = false;
   error = '';
   monthModified: boolean = false;
-  hasRecord = false;
 
   station!: Station | undefined;
 
   monthYearValue: Date = new Date();
+  date!: Date;
   bsConfig: Partial<BsDatepickerConfig> = {
     isAnimated: true,
     containerClass:'theme-blue',
@@ -72,7 +77,10 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
   year!: number;
   month!: number;
   day!: number;
-  hour: number = 6;
+  hour!: number;
+  raw: any;
+  hasRecord = false;
+  activeItem = 0;
 
   hoursList = [24, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 
@@ -103,6 +111,10 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
     return this.monthModified;
   }
 
+  onFormModified(val: boolean) {
+    this.monthModified = val;
+  }
+
   resetStation() {
     this.station = undefined;
     this.form.controls['station'].reset();
@@ -116,6 +128,7 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
 
   onDateSelection(date: Date) {
     if(date) {
+      this.date = date;
       let selDate = moment(date);
       this.year = selDate.year();
       this.month = selDate.month() + 1;
@@ -136,6 +149,15 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
 
   onCancel() {}
 
+  onReturn(e: Event) {
+    e.preventDefault();
+  }
+
+  onHourSelect(data: any) {
+    this.hour = this.f['hour'].value;
+    this.loadSynopData();
+  }
+
   onSubmit(e: Event) {
     this.submitted = true;
     // if(this.form.invalid) {
@@ -152,7 +174,20 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
     return this.groupArray.controls as FormGroup[];
   }
 
-  revertElement(day: number) {
+  keyFocus(i: number) {
+    this.activeItem = i;
+  }
+
+  keyBlur(d: number) {}
+
+  handleReturn(h: number) {
+    const total = this.synopticGroup.toArray().length;
+    if(h < total - 1) {
+      this.synopticGroup.toArray()[+h + 1].focusValue();
+    }
+  }
+
+  revertItem(day: number) {
     const config = {
       title: `Confirm Revert`,
       message: `Are you sure you want to revert to original values?`,
@@ -175,8 +210,9 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
     });
   }
 
-  private getTagGroup(key: string, label: string, value: number, flag?: string): FormGroup {
+  private getTagGroup(index: number, key: string, label: string, value: number, flag?: string): FormGroup {
     return new FormGroup({
+      index:  new FormControl(index),
       key:    new FormControl(key),
       label:  new FormControl(label),
       value:  new FormControl(value),
@@ -193,7 +229,7 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
     });
 
     for(let i=0; i < groupsList.length; i++) {
-      this.groupArray.push(this.getTagGroup(groupsList[i].key, groupsList[i].label, 0));
+      this.groupArray.push(this.getTagGroup(i, groupsList[i].key, groupsList[i].label, 0));
     }
   }
 
@@ -239,11 +275,7 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
     });
 
     // formVal['signature'] = this.f['signature'].value;
-    formVal['entry_datetime'] =  new Date().toISOString(),
-    formVal['temperature_units'] =  this.f['temperature'].value,
-    formVal['precip_units'] =  this.f['precip'].value,
-    formVal['cloud_height_units'] = this.f['cloud_height'].value,
-    formVal['vis_units'] = this.f['visibility'].value;
+    formVal['entry_datetime'] =  new Date().toISOString();
 
     console.log(formVal);
     // this.dataEntryService.addDailyEntry(formVal)
@@ -251,6 +283,61 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
 
   private updateRecord() {
     // this.dataEntryService.updateDailyEntry(this.station?.station_id, this.element?.element_id, this.year, this.month, this.hour, formVal)
+  }
+
+  private save(payload: SynopticPayload) {
+    console.log(payload);
+    // payload.mm = payload.mm + 1
+    // this.dataEntryService.addHourlyEntry(payload).subscribe((res) => {
+    //   console.log(res);
+    //   this.form.markAsPristine();
+    // });
+  }
+
+  private update(payload: SynopticPayload) {
+    console.log(payload);
+    // const date = moment(this.date);
+    // const yyyy = date.year();
+    // const mm = date.month() + 1;
+    // const dd = date.date();
+    // console.log(yyyy, mm, dd);
+    // if(this.station && this.element && this.date) {
+    //   this.dataEntryService.updateHourlyEntry(this.station.station_id, this.element.element_id, yyyy, mm, dd, payload).subscribe((res) => {
+    //     console.log(res);
+    //     this.form.markAsPristine();
+    //   });
+    // }
+  }
+
+  private buildPayload(): any {
+    const mom = moment(this.date);
+    const payload: any = {
+      station_id: this.station?.station_id,
+      yyyy: mom.year(),
+      mm: mom.month(),
+      dd: mom.date(),
+      hh: this.hour,
+      total: 0,
+      signature: '',
+      entry_datetime: new Date()
+    };
+    const formVal = this.form.value;
+    formVal.hours = this.formGroups.map(fg => ({ ...fg.value, flag: fg.value.flag || null }));
+    for(let h of formVal.hours) {
+      const post = h.hour < 10 ? `0${h.hour}` : `${h.hour}`;
+      payload[`hh_${post}`] = h.value;
+      payload[`flag${post}`] = h.flag || null;
+    }
+
+    return payload;
+  }
+
+  private focusFirst() {
+    of(true)
+      .pipe(delay(100))
+      .subscribe(() => {
+        this.synopticGroup.toArray()[0].focusValue();
+      });
   }
 }
 

@@ -1,6 +1,6 @@
 <h5> Carribean Synoptic Data </h5>
 <hr>
-<form [formGroup]="form" *ngIf="form" novalidate (ngSubmit)="onSubmit($event)">
+<form [formGroup]="form" *ngIf="form" novalidate (ngSubmit)="onSubmit($event)" (keydown.enter)="onReturn($event)">
   <c-row>
     <c-col sm="12" class="text-end">
       <app-flag-legend></app-flag-legend>
@@ -70,6 +70,7 @@
               <select formControlName="hour"
                       aria-label="Hour"
                       cSelect
+                      (change)="onHourSelect($event.target)"
                       [ngClass]="{ 'is-invalid': (submitted || f['hour'].touched) && f['hour'].invalid }">
                 <option value>Select Hour</option>
                 <option *ngFor="let h of hoursList" [value]="h">{{getHoursValue(h)}}</option>
@@ -91,21 +92,48 @@
       <c-col md="12" lg="4">
         <c-row>
           <c-col md="12" *ngFor="let g of formGroups | slice: 0:12;">
-            <app-synoptic-form-group [disabled]="!isEditable" [modified]="isModified" [group]="g"></app-synoptic-form-group>
+            <app-synoptic-form-group
+              #synopticGroup
+              [disabled]="!isEditable"
+              [modified]="isModified"
+              (onReturn)="handleReturn($event)"
+              (onFocus)="keyFocus($event)"
+              (onBlur)="keyBlur($event)"
+              (onDirty)="onFormModified($event)"
+              (onRevert)="revertItem($event)"
+              [group]="g"></app-synoptic-form-group>
           </c-col>
         </c-row>
       </c-col>
       <c-col md="12" lg="4">
         <c-row>
           <c-col md="12" *ngFor="let g of formGroups | slice: 12:24;">
-            <app-synoptic-form-group [disabled]="!isEditable" [modified]="isModified" [group]="g"></app-synoptic-form-group>
+            <app-synoptic-form-group
+              #synopticGroup
+              [disabled]="!isEditable"
+              [modified]="isModified"
+              (onReturn)="handleReturn($event)"
+              (onFocus)="keyFocus($event)"
+              (onBlur)="keyBlur($event)"
+              (onDirty)="onFormModified($event)"
+              (onRevert)="revertItem($event)"
+              [group]="g"></app-synoptic-form-group>
           </c-col>
         </c-row>
       </c-col>
       <c-col md="12" lg="4">
         <c-row>
           <c-col md="12" *ngFor="let g of formGroups | slice: 24:33;">
-            <app-synoptic-form-group [disabled]="!isEditable" [modified]="isModified" [group]="g"></app-synoptic-form-group>
+            <app-synoptic-form-group
+              #synopticGroup
+              [disabled]="!isEditable"
+              [modified]="isModified"
+              (onReturn)="handleReturn($event)"
+              (onFocus)="keyFocus($event)"
+              (onBlur)="keyBlur($event)"
+              (onDirty)="onFormModified($event)"
+              (onRevert)="revertItem($event)"
+              [group]="g"></app-synoptic-form-group>
           </c-col>
         </c-row>
       </c-col>
