@@ -11,10 +11,10 @@ export interface SynopticPayload {
   val_elem814: number; // 2 Hr Pressure Characteriszit, 3HRpppChar
   val_elem399: number; // Pressure Tendency 24 hly, PRESSTEND
   val_elem301: number; // Pressure Level, PRESS
-  val_elem185: number; // Reduced Pressure  Geopotential Metres, PREGPM
-  val_elem101: number; // Temperature  dry bulb, TEMPDB
-  val_elem102: number; // Temperature  wet bulb, TEMPWB
-  val_elem103: number; // Temperature  dew point, TEMPDP
+  val_elem185: number; // Reduced Pressure Geopotential Metres, PREGPM
+  val_elem101: number; // Temperature dry bulb, TEMPDB
+  val_elem102: number; // Temperature wet bulb, TEMPWB
+  val_elem103: number; // Temperature dew point, TEMPDP
   val_elem105: number; // Relative humidity at 06Z, RELHUM
   val_elem192: number; // Cloud height of the lowest layer, LCHGHT
   val_elem110: number; // Visibility horizontal, VISBY
@@ -44,7 +44,7 @@ export interface SynopticPayload {
   val_elem131: number; // Cloud opacity of the fourth layer, CLDAP4
   val_elem128: number; // Cloud amount of the fourth layer, CLDAM4
   val_elem129: number; // Cloud type of the fourth layer, CLDTY4
-  val_elem130: number; // Cloud  height of the fourth layer, CLDHT4
+  val_elem130: number; // Cloud height of the fourth layer, CLDHT4
   val_elem002: number; // Temperature daily maximum, TMPMAX
   val_elem003: number; // Temperature daily minimum, TMPMIN
   val_elem099: number; // Wind Totalizer at 06Z, WINDRUN08

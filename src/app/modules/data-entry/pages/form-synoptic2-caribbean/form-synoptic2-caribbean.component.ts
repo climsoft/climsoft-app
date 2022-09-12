@@ -21,34 +21,34 @@ const groupsList = [
   { element: 114, key: 'cloudCover',    label: 'Total Cloud Cover' },
   { element: 112, key: 'windDirection', label: 'Wind Direction' },
   { element: 111, key: 'windSpeed',     label: 'Wind Speed' },
-  { element: 0, key: 'dryBulb',       label: 'Dry Bulb' },
-  { element: 0, key: 'wetBulb',       label: 'Wet Bulb' },
-  { element: 0, key: 'dewPoint',      label: 'Dew Point' },
-  { element: 0, key: 'relativeHum',   label: 'Relative Humidity' },
+  { element: 101, key: 'dryBulb',       label: 'Dry Bulb' },
+  { element: 102, key: 'wetBulb',       label: 'Wet Bulb' },
+  { element: 103, key: 'dewPoint',      label: 'Dew Point' },
+  { element: 105, key: 'relativeHum',   label: 'Relative Humidity' },
   { element: 106, key: 'stnLevelPress', label: 'Station Level Pressure' },
   { element: 107, key: 'seaLevelPress', label: 'Height of cloud' },
-  { element: 0, key: 'rainFall',      label: 'Rain Fall' },
-  { element: 0, key: 'presentWx',     label: 'Present WX' },
-  { element: 0, key: 'pastWx1',       label: 'Past WX 1' },
-  { element: 0, key: 'pastWx2',       label: 'Past WX 2' },
-  { element: 0, key: 'nh',            label: 'Nh' },
-  { element: 0, key: 'cl',            label: 'Cl' },
-  { element: 0, key: 'cm',            label: 'Cm' },
-  { element: 0, key: 'ch',            label: 'Ch' },
-  { element: 0, key: 'tmin',          label: 'Temperature Min' },
-  { element: 0, key: 'gmin',          label: 'G Min' },
-  { element: 0, key: 'cldAmtLvl1',    label: 'Cloud Amt Level 1' },
-  { element: 0, key: 'cldTpLvl1',     label: 'Cloud Type Level 1' },
-  { element: 0, key: 'cldHtLvl1',     label: 'Cloud Height Level 1' },
-  { element: 0, key: 'cldAmtLvl2',    label: 'Cloud Amt Level 2' },
-  { element: 0, key: 'cldTpLvl2',     label: 'Cloud Type Level 2' },
-  { element: 0, key: 'cldHtLvl2',     label: 'Cloud Height Level 2' },
-  { element: 0, key: 'cldAmtLvl3',    label: 'Cloud Amt Level 3' },
-  { element: 0, key: 'cldTpLvl3',     label: 'Cloud Type Level 3' },
-  { element: 0, key: 'cldHtLvl3',     label: 'Cloud Height Level 3' },
-  { element: 0, key: 'cldAmtLvl4',    label: 'Cloud Amt Level 4' },
-  { element: 0, key: 'cldTpLvl4',     label: 'Cloud Type Level 4' },
-  { element: 0, key: 'cldHtLvl4',     label: 'Cloud Height Level 4' }
+  { element: 0, key: 'rainFall',      label: 'Rain Fall' }, // ??
+  { element: 167, key: 'presentWx',     label: 'Present WX' },
+  { element: 0, key: 'pastWx1',       label: 'Past WX 1' }, // ??
+  { element: 0, key: 'pastWx2',       label: 'Past WX 2' }, // ??
+  { element: 0, key: 'nh',            label: 'Nh' }, // ??
+  { element: 0, key: 'cl',            label: 'Cl' }, // ??
+  { element: 193, key: 'cm',            label: 'Cm' }, // ??
+  { element: 0, key: 'ch',            label: 'Ch' }, // ??
+  { element: 3, key: 'tmin',          label: 'Temperature Min' },
+  { element: 0, key: 'gmin',          label: 'G Min' }, // ??
+  { element: 116, key: 'cldAmtLvl1',    label: 'Cloud Amt Level 1' },
+  { element: 117, key: 'cldTpLvl1',     label: 'Cloud Type Level 1' },
+  { element: 118, key: 'cldHtLvl1',     label: 'Cloud Height Level 1' },
+  { element: 120, key: 'cldAmtLvl2',    label: 'Cloud Amt Level 2' },
+  { element: 121, key: 'cldTpLvl2',     label: 'Cloud Type Level 2' },
+  { element: 122, key: 'cldHtLvl2',     label: 'Cloud Height Level 2' },
+  { element: 124, key: 'cldAmtLvl3',    label: 'Cloud Amt Level 3' },
+  { element: 125, key: 'cldTpLvl3',     label: 'Cloud Type Level 3' },
+  { element: 126, key: 'cldHtLvl3',     label: 'Cloud Height Level 3' },
+  { element: 128, key: 'cldAmtLvl4',    label: 'Cloud Amt Level 4' },
+  { element: 129, key: 'cldTpLvl4',     label: 'Cloud Type Level 4' },
+  { element: 130, key: 'cldHtLvl4',     label: 'Cloud Height Level 4' }
 ];
 
 @Component({

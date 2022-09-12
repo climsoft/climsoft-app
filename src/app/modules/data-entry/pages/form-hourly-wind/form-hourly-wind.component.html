@@ -84,29 +84,29 @@
     <c-row formArrayName="hours" *ngIf="formHoursGroups.length">
       <c-col sm="12" md="6" lg="4" >
         <c-row class="hourly-header">
-          <c-col class="py-1">Hour</c-col>
-          <c-col class="py-1">DDFF</c-col>
-          <c-col class="py-1">DD</c-col>
-          <c-col class="py-1">FF</c-col>
-          <c-col class="py-1">Flag</c-col>
+          <c-col sm="2" class="py-1">Hour</c-col>
+          <c-col sm="4" class="py-1">DDFF</c-col>
+          <c-col sm="2" class="py-1">DD</c-col>
+          <c-col sm="2" class="py-1">FF</c-col>
+          <c-col sm="2" class="py-1">Flag</c-col>
         </c-row>
       </c-col>
       <c-col sm="12" md="6" lg="4"  class="d-none d-md-block">
         <c-row class="hourly-header">
-          <c-col class="py-1">Hour</c-col>
-          <c-col class="py-1">DDFF</c-col>
-          <c-col class="py-1">DD</c-col>
-          <c-col class="py-1">FF</c-col>
-          <c-col class="py-1">Flag</c-col>
+          <c-col sm="2" class="py-1">Hour</c-col>
+          <c-col sm="4" class="py-1">DDFF</c-col>
+          <c-col sm="2" class="py-1">DD</c-col>
+          <c-col sm="2" class="py-1">FF</c-col>
+          <c-col sm="2" class="py-1">Flag</c-col>
         </c-row>
       </c-col>
       <c-col sm="12" md="6" lg="4"  class="d-none d-lg-block">
         <c-row class="hourly-header">
-          <c-col class="py-1">Hour</c-col>
-          <c-col class="py-1">DDFF</c-col>
-          <c-col class="py-1">DD</c-col>
-          <c-col class="py-1">FF</c-col>
-          <c-col class="py-1">Flag</c-col>
+          <c-col sm="2" class="py-1">Hour</c-col>
+          <c-col sm="4" class="py-1">DDFF</c-col>
+          <c-col sm="2" class="py-1">DD</c-col>
+          <c-col sm="2" class="py-1">FF</c-col>
+          <c-col sm="2" class="py-1">Flag</c-col>
         </c-row>
       </c-col>
     </c-row>
@@ -116,6 +116,7 @@
           <c-col md="12" *ngFor="let g of formHoursGroups | slice: 0:8;">
             <app-hourly-wind-form-group
               #hourlyWindGroup
+              [config]="ddffConfig"
               [disabled]="!isEditable"
               [modified]="isModified"
               (onDirty)="onFormModified($event)"
@@ -133,6 +134,7 @@
           <c-col md="12" *ngFor="let g of formHoursGroups | slice: 8:16;">
             <app-hourly-wind-form-group
               #hourlyWindGroup
+              [config]="ddffConfig"
               [disabled]="!isEditable"
               [modified]="isModified"
               (onDirty)="onFormModified($event)"
@@ -150,6 +152,7 @@
           <c-col md="12" *ngFor="let g of formHoursGroups | slice: 16:24;">
             <app-hourly-wind-form-group
               #hourlyWindGroup
+              [config]="ddffConfig"
               [disabled]="!isEditable"
               [modified]="isModified"
               (onDirty)="onFormModified($event)"
@@ -169,7 +172,7 @@
     <c-row class="mt-3" *ngIf="formHoursGroups.length">
       <c-col sm="12" md="6" lg="4" xl="3">
         <div class="mb-2">
-          <label cLabel for="total">Total</label>
+          <label cLabel for="total">Total [FF]</label>
           <input type="number"
                  class="txt-total"
                  formControlName="total"

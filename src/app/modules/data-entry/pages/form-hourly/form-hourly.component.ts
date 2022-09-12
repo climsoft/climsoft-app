@@ -223,7 +223,7 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
     this.activeHour = h;
   }
 
-  dayBlur(d: number) {}
+  hourBlur(d: number) {}
 
   handleReturn(h: number) {
     const total = this.hourlyGroup.toArray().length;

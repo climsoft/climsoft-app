@@ -57,7 +57,9 @@ export class FormHourlyWindComponent implements OnInit {
     private responsiveSvc: ResponsiveService,
     private dataEntryService: DataEntryService,
     private stationService: StationService
-  ) {}
+  ) {
+    this.initConfig();
+  }
 
   ngOnInit(): void {
     this.initForm();
@@ -77,8 +79,6 @@ export class FormHourlyWindComponent implements OnInit {
       console.log(st);
       this.setFormState(+st.station, new Date(st.date));
     });
-
-    this.initConfig();
   }
 
   get f() {
@@ -99,6 +99,10 @@ export class FormHourlyWindComponent implements OnInit {
 
   get invalidEntries(): boolean {
     return this.hourlyWindGroup.toArray().filter(gp => !!gp.isInvalid).length > 0;
+  }
+
+  get ddffConfig(): any {
+    return { dd: this.config.elem_112.key_value, ff: this.config.elem_111.key_value };
   }
 
   onFormModified(val: boolean) {
@@ -176,9 +180,8 @@ export class FormHourlyWindComponent implements OnInit {
       return 0;
     }
     return this.hourlyWindGroup.toArray().reduce((ac, g) => {
-      const dd: number = g.group.value.dd? + g.group.value.dd : 0;
       const ff: number = g.group.value.ff? + g.group.value.ff : 0;
-      return ac = (dd + ff) + ac;
+      return ac = ff + ac;
     }, 0);
   }
 
@@ -246,7 +249,7 @@ export class FormHourlyWindComponent implements OnInit {
   private renderFormHours(date: Date) {
     this.resetHours();
     for(let i=0; i < this.hoursList.length; i++) {
-      this.hoursArray.push(this.getHourGroup({ hour: i, ddff: 0, dd: 0, ff: 0, flag: Flag.M }));
+      this.hoursArray.push(this.getHourGroup({ hour: i, ddff: 0, dd: 0, ff: 0, flag: Flag.N }));
     }
   }
 
@@ -310,7 +313,7 @@ export class FormHourlyWindComponent implements OnInit {
       const num = (i < 10) ? `0${i}` : (i);
       const patchValue = {
         hour: i,
-        ddff: 0,
+        ddff: `${data[`elem_111_${num}`]}${data[`elem_112_${num}`]}`,
         dd: data[`elem_111_${num}`],
         ff: data[`elem_112_${num}`],
         flag: data[`ddflag${num}`] || Flag.N

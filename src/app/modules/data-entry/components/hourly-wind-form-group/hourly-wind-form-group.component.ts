@@ -14,14 +14,15 @@ export class HourlyWindFormGroupComponent implements OnInit, AfterViewInit {
   @ViewChild('ffValue') ffValue!: ElementRef;
 
   @Input() modified: boolean = false;
+  @Input() disabled: boolean = false;
+  @Input() config!: { dd: number, ff: number };
   @Input() group: FormGroup = new FormGroup({
     hour: new FormControl(1),
     ddff: new FormControl(null, Validators.required),
     dd:   new FormControl(null, Validators.required),
     ff:   new FormControl(null, Validators.required),
-    flag: new FormControl(null)
+    flag: new FormControl(Flag.N)
   });
-  @Input() disabled: boolean = false;
   @Output() onDirty: EventEmitter<boolean> = new EventEmitter;
   @Output() onRevert: EventEmitter<number> = new EventEmitter;
   @Output() onFocus: EventEmitter<number> = new EventEmitter;
@@ -29,8 +30,6 @@ export class HourlyWindFormGroupComponent implements OnInit, AfterViewInit {
   @Output() onReturn: EventEmitter<number> = new EventEmitter;
 
   ddffFocus = false;
-  ddFocus = false;
-  ffFocus = false;
   pristine: any;
   hasFocus = false;
 
@@ -55,11 +54,24 @@ export class HourlyWindFormGroupComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     fromEvent<KeyboardEvent>(this.ref.nativeElement, 'keyup')
       .pipe(
-        filter((e: KeyboardEvent) => e.keyCode === 13 && (this.ddffFocus || this.ddFocus || this.ffFocus))
+        filter((e: KeyboardEvent) => e.keyCode === 13 && this.ddffFocus)
       )
       .subscribe((e) => {
         this.onValRetunKey();
       });
+  }
+
+  get ddffRegex(): any {
+    if(this.config) {
+      switch (this.config.dd + this.config.ff) {
+        case 2: return /\b\d{2}\b/g;
+        case 3: return /\b\d{3}\b/g;
+        case 4: return /\b\d{4}\b/g;
+        case 5: return /\b\d{5}\b/g;
+        case 6: return /\b\d{6}\b/g;
+        default: return /\b\d{6}\b/g;
+      }
+    }
   }
 
   get fg() {
@@ -67,11 +79,15 @@ export class HourlyWindFormGroupComponent implements OnInit, AfterViewInit {
   }
 
   public get isDirty(): boolean {
-    return this.fg['ddff'].dirty || this.fg['dd'].dirty || this.fg['ff'].dirty || this.fg['flag'].dirty;
+    return this.fg['ddff'].dirty || this.fg['flag'].dirty;
   }
 
   public get isInvalid(): boolean {
-    return this.fg['ddff'].dirty && this.fg['ddff'].value !== '' && (this.fg['ddff'].value === Flag.M);
+    return this.ddffInvalid || (this.fg['ddff'].dirty && this.fg['ddff'].value !== '' && this.fg['flag'].value === Flag.M);
+  }
+
+  public get ddffInvalid(): boolean {
+    return this.fg['ddff'].dirty && this.fg['ddff'].value && !this.ddffRegex.test(this.fg['ddff'].value);
   }
 
   public get styles(): any {
@@ -106,58 +122,53 @@ export class HourlyWindFormGroupComponent implements OnInit, AfterViewInit {
   }
 
   private onValRetunKey() {
-    if(this.ffFocus) {
-      this.onReturn.emit(+this.fg['hour'].value);
-    }
-    if(this.ddFocus) {
-      this.ffValue.nativeElement.focus();
-    }
-    if(this.ddffFocus) {
-      this.ddValue.nativeElement.focus();
-    }
-
-    if(this.fg['ddff'].value === '' && this.fg['dd'].value === '' && this.fg['ff'].value === '') {
+    if(this.fg['ddff'].value === '') {
       this.fg['flag'].setValue(Flag.M);
     }
+
+    this.onReturn.emit(+this.fg['hour'].value);
   }
 
   onValFocus(field: string) {
-    this.ddffFocus = false;
-    this.ddFocus = false;
-    this.ffFocus = false;
-
     this.hasFocus = true;
+    this.ddffFocus = true;
     this.onFocus.emit(this.fg['hour'].value);
-    switch (field) {
-      case 'ddff': this.ddffFocus = true; break;
-      case 'dd': this.ddFocus = true; break;
-      case 'ff': this.ffFocus = true; break;
-    }
   }
 
-  onValBlur(e: any) {
+  onValBlur() {
     this.hasFocus = false;
     const val = this.fg['ddff'].value;
-    if(this.pristine && this.pristine.value === val && val !== '') {
-      this.fg['ddff'].markAsPristine();
+
+    // console.log(this.fg['ddff'].dirty && this.fg['ddff'].hasError('pattern'));
+
+    if(val === '') {
+      if(this.fg['flag'].value !== Flag.M) {
+        this.selectFlag(Flag.M);
+      }
+
+      return;
     }
-    if(val === '' && this.fg['flag'].value !== Flag.M) {
-      this.selectFlag(Flag.M);
-    }
+
     if(val !== '' && this.fg['flag'].value === Flag.M) {
       this.selectFlag(Flag.N);
     }
+
+    if(!this.ddffInvalid && +val) {
+      const dd = val.slice(0, this.config.dd);
+      const ff = val.slice(this.config.dd, (this.config.dd + this.config.ff));
+      this.fg['dd'].setValue(dd);
+      this.fg['ff'].setValue(ff);
+      this.fg['ddff'].markAsPristine();
+    }
+
     this.onBlur.emit(this.fg['hour'].value);
     this.ddffFocus = false;
-    this.ddFocus = false;
-    this.ffFocus = false;
   }
 
   public revert() {
     this.onRevert.emit(+this.fg['hour'].value);
   }
 }
-
 
 // TODO: Call the API for getting the digit sizes for DD and FF
 // TODO: API: GET:https://api-latest.opencdms.org/climsoft/#/Reg%20Keys/get_reg_keys_v1_reg_keys_get

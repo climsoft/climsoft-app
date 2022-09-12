@@ -53,4 +53,14 @@ $block-dirty-border: #8cc9db;
     padding: 0.1rem 0.4rem;
     font-size: 0.9rem;
   }
+
+  .text-label {
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    border-radius: 0.25rem;
+    border: 1px solid #8cc9db;
+  }
 }
