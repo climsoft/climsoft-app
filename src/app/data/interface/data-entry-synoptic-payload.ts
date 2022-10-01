@@ -1,9 +1,9 @@
 export interface SynopticPayload {
   station_id: string;
-  yyyy: number,
-  mm: number,
-  dd: number,
-  hh: number,
+  yyyy?: number,
+  mm?: number,
+  dd?: number,
+  hh?: number,
   entry_datetime: Date;
   val_elem106: number; // Pressure station, PRESST
   val_elem107: number; // Pressure sea level, PRESSL

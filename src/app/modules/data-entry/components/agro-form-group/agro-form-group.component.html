@@ -1,0 +1,25 @@
+<c-row class="agro-data-row" [ngClass]="styles" [formGroup]="group">
+  <c-col md="8" class="py-2 label">
+    <span *ngIf="!isDirty">{{fg['label'].value}}</span>
+    <button
+      type="button"
+      cButton
+      color="dark"
+      shape="rounded-pill"
+      (click)="revert()"
+      *ngIf="isDirty">{{fg['label'].value}}</button>
+  </c-col>
+  <c-col md="2" class="py-1">
+    <input
+      #inputValue
+      formControlName="value"
+      aria-label="value"
+      (focus)="onValueFocus()"
+      (blur)="onValueBlur($event)"
+      cFormControl />
+  </c-col>
+  <c-col md="2" class="py-1 text-center">
+    <input type="hidden" formControlName="flag" aria-label="flag" cFormControl />
+    <app-flag-picker [flag]="fg['flag'].value" [disabled]="disabled" (onSelect)="selectFlag($event)"></app-flag-picker>
+  </c-col>
+</c-row>

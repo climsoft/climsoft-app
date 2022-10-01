@@ -27,16 +27,16 @@ const groupsList = [
   { element: 105, key: 'relativeHum',   label: 'Relative Humidity' },
   { element: 106, key: 'stnLevelPress', label: 'Station Level Pressure' },
   { element: 107, key: 'seaLevelPress', label: 'Height of cloud' },
-  { element: 0, key: 'rainFall',      label: 'Rain Fall' }, // ??
+  { element: 0,   key: 'rainFall',      label: 'Rain Fall' }, // ??
   { element: 167, key: 'presentWx',     label: 'Present WX' },
-  { element: 0, key: 'pastWx1',       label: 'Past WX 1' }, // ??
-  { element: 0, key: 'pastWx2',       label: 'Past WX 2' }, // ??
-  { element: 0, key: 'nh',            label: 'Nh' }, // ??
-  { element: 0, key: 'cl',            label: 'Cl' }, // ??
+  { element: 0,   key: 'pastWx1',       label: 'Past WX 1' }, // ??
+  { element: 0,   key: 'pastWx2',       label: 'Past WX 2' }, // ??
+  { element: 0,   key: 'nh',            label: 'Nh' }, // ??
+  { element: 0,   key: 'cl',            label: 'Cl' }, // ??
   { element: 193, key: 'cm',            label: 'Cm' }, // ??
-  { element: 0, key: 'ch',            label: 'Ch' }, // ??
-  { element: 3, key: 'tmin',          label: 'Temperature Min' },
-  { element: 0, key: 'gmin',          label: 'G Min' }, // ??
+  { element: 0,   key: 'ch',            label: 'Ch' }, // ??
+  { element: 3,   key: 'tmin',          label: 'Temperature Min' },
+  { element: 0,   key: 'gmin',          label: 'G Min' }, // ??
   { element: 116, key: 'cldAmtLvl1',    label: 'Cloud Amt Level 1' },
   { element: 117, key: 'cldTpLvl1',     label: 'Cloud Type Level 1' },
   { element: 118, key: 'cldHtLvl1',     label: 'Cloud Height Level 1' },
@@ -210,13 +210,14 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
     });
   }
 
-  private getTagGroup(index: number, key: string, label: string, value: number, flag?: string): FormGroup {
+  private getTagGroup(index: number, element: number, key: string, label: string, value: number, flag?: string): FormGroup {
     return new FormGroup({
       index:  new FormControl(index),
+      element: new FormControl(element),
       key:    new FormControl(key),
       label:  new FormControl(label),
       value:  new FormControl(value),
-      flag:   new FormControl(flag || Flag.M),
+      flag:   new FormControl(flag || Flag.N),
     });
   }
 
@@ -229,7 +230,7 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
     });
 
     for(let i=0; i < groupsList.length; i++) {
-      this.groupArray.push(this.getTagGroup(i, groupsList[i].key, groupsList[i].label, 0));
+      this.groupArray.push(this.getTagGroup(i, groupsList[i].element, groupsList[i].key, groupsList[i].label, 0));
     }
   }
 
@@ -286,27 +287,40 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
   }
 
   private save(payload: SynopticPayload) {
+    if(payload.mm) {
+      payload.mm = payload.mm + 1;
+    }
+    payload['entry_datetime'] =  new Date();
     console.log(payload);
-    // payload.mm = payload.mm + 1
-    // this.dataEntryService.addHourlyEntry(payload).subscribe((res) => {
-    //   console.log(res);
-    //   this.form.markAsPristine();
-    // });
+    this.dataEntryService.addSynopticEntry(payload).subscribe((res) => {
+      console.log(res);
+      this.form.markAsPristine();
+    });
   }
 
   private update(payload: SynopticPayload) {
     console.log(payload);
-    // const date = moment(this.date);
-    // const yyyy = date.year();
-    // const mm = date.month() + 1;
-    // const dd = date.date();
-    // console.log(yyyy, mm, dd);
-    // if(this.station && this.element && this.date) {
-    //   this.dataEntryService.updateHourlyEntry(this.station.station_id, this.element.element_id, yyyy, mm, dd, payload).subscribe((res) => {
-    //     console.log(res);
-    //     this.form.markAsPristine();
-    //   });
-    // }
+    const date = moment(this.date);
+    const yyyy = date.year();
+    const mm = date.month() + 1;
+    const dd = date.date();
+    console.log(yyyy, mm, dd);
+    delete payload.dd;
+    delete payload.mm;
+    delete payload.yyyy;
+    if(this.station && this.date) {
+      this.dataEntryService.updateSynopEntry(this.station.station_id, yyyy, mm, dd, this.hour, payload).subscribe((res) => {
+        console.log(res);
+        this.form.markAsPristine();
+      });
+    }
+  }
+
+  private formatEl(num: number) {
+    if (num < 10) return `00${num}`;
+    if(num < 100) return `0${num}`;
+
+    return `${num}`;
   }
 
   private buildPayload(): any {
@@ -321,13 +335,11 @@ export class FormSynoptic2CaribbeanComponent implements OnInit, IDataEntryForm {
       signature: '',
       entry_datetime: new Date()
     };
-    const formVal = this.form.value;
-    formVal.hours = this.formGroups.map(fg => ({ ...fg.value, flag: fg.value.flag || null }));
-    for(let h of formVal.hours) {
-      const post = h.hour < 10 ? `0${h.hour}` : `${h.hour}`;
-      payload[`hh_${post}`] = h.value;
-      payload[`flag${post}`] = h.flag || null;
-    }
+    this.synopticGroup.forEach(fg => {
+      const target = { ...fg.group.value };
+      payload[`val_elem${this.formatEl(target.element)}`] = target.value;
+      payload[`flag${this.formatEl(target.element)}`] = target.flag;
+    });
 
     return payload;
   }

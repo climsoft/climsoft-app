@@ -1,12 +1,14 @@
+import { SynopticPayload } from './../../../data/interface/data-entry-synoptic-payload';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@shared/services/http.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 
+import { AgroPayload, AgroState } from '@data/interface/data-entry-agro-payload';
 import { HourlyPayload, HourlyState } from '@data/interface/data-entry-hourly-payload';
 import { MonthlyPayload, MonthlyState } from '@data/interface/data-entry-monthly-payload';
 import { FormDailyPayload, DailyState } from '@data/interface/data-entry-daily-payload';
 import { SynopticState } from '@data/interface/data-entry-synoptic-payload';
-import {  HourlyWindPayload, HourlyWindState } from '@data/interface/data-entry-hourly-wind-payload';
+import { HourlyWindPayload, HourlyWindState } from '@data/interface/data-entry-hourly-wind-payload';
 
 const apiPrefix = `climsoft/v1`;
 const hourlyUrl = `${apiPrefix}/form_hourlys`;
@@ -15,6 +17,7 @@ const dailyUrl = `${apiPrefix}/form_daily2s`;
 const monthlyUrl = `${apiPrefix}/form_monthlys`;
 const synopticTdcfUrl = `${apiPrefix}/form_synoptic2_tdcfs`;
 const synopticRa1fUrl = `${apiPrefix}/form_synoptic_2_ra1s`;
+const agro1Url = `${apiPrefix}/form_agro1s`;
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +29,7 @@ export class DataEntryService {
   dailyState$: BehaviorSubject<DailyState | boolean> = new BehaviorSubject<DailyState | boolean>(false);
   monthlyState$: BehaviorSubject<MonthlyState | boolean> = new BehaviorSubject<MonthlyState | boolean>(false);
   synopticState$: BehaviorSubject<SynopticState | boolean> = new BehaviorSubject<SynopticState | boolean>(false);
+  agroState$: BehaviorSubject<AgroState | boolean> = new BehaviorSubject<AgroState | boolean>(false);
 
   constructor(private http: HttpService) { }
 
@@ -43,6 +47,10 @@ export class DataEntryService {
 
   get monthlyState(): Observable<any> {
     return this.monthlyState$.asObservable();
+  }
+
+  get agroState(): Observable<any> {
+    return this.agroState$.asObservable();
   }
 
   getDailyEntry(station: string | any, element: string | any, year: number, month: number, hour: number): Observable<any> {
@@ -153,11 +161,44 @@ export class DataEntryService {
    */
   getSynopticEntry(station: string | any, year: number, month: number, day: number, hour: number) {
     this.synopticState$.next({ station, year, month, day, hour })
-    const url = `${apiPrefix}/synop-features?station_id=${station}&yy=${year}&mm=${month}&dd=${day}&hh=${hour}`;
+    const url = `${synopticRa1fUrl}/${station}/${year}/${month}/${day}/${hour}`;
     return this.http.GET(url);
+  }
+
+  addSynopticEntry(payload: SynopticPayload) {
+    return this.http.POST(synopticRa1fUrl, payload);
+  }
+
+  updateSynopEntry(station: string | any, year: number, month: number, day: number, hour: number, payload: SynopticPayload) {
+    const url = `${synopticRa1fUrl}/${station}/${year}/${month}/${day}/${hour}`;
+    return this.http.PUT(url, payload);
   }
 
   updateSynopticState(station: string | any, year: number, month: number, day: number, hour: number) {
     this.synopticState$.next({ station, year, month, day, hour })
+  }
+
+  /**
+   *  Agro Data
+   */
+   getAgroEntry(station: string | any, year: number, month: number, day: number): Observable<any> {
+    this.updateAgroState({ station, year, month, day });
+    return this.http.GET(`${agro1Url}/${station}/${year}/${month}/${day}`);
+  }
+
+  addAgroEntry(payload: AgroPayload) {
+    return this.http.POST(`${agro1Url}`, payload);
+  }
+
+  updateAgroEntry(station: string | any, year: number, month: number, day: number, payload: AgroPayload) {
+    return this.http.PUT(`${agro1Url}/${station}/${year}/${month}/${day}`, payload);
+  }
+
+  updateAgroState(newVal: AgroState) {
+    this.agroState$.next(newVal);
+  }
+
+  resetAgroState() {
+    this.agroState$.next(false);
   }
 }

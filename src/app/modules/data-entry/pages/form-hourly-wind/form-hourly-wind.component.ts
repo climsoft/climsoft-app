@@ -380,9 +380,9 @@ export class FormHourlyWindComponent implements OnInit {
   }
 
   private initConfig() {
-    // this.dataEntryService.elementLookup(107)
-    //     .pipe(map((res: any) => res.result[0]))
-    //     .subscribe(res => console.log(res));
+    this.dataEntryService.elementLookup(554)
+        .pipe(map((res: any) => res.result[0]))
+        .subscribe(res => console.log(res));
 
     this.dataEntryService.elementLookup(111)
       .pipe(

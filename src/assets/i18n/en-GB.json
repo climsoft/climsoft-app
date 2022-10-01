@@ -25,7 +25,8 @@
       "daily": "Daily",
       "monthly": "Monthly",
       "hourly_wind": "Hourly Wind",
-      "synoptic": "Synoptic",
+      "synoptic-carribean": "Synoptic Carribean",
+      "synoptic-2ra1": "Synoptic 2RA1",
       "agromet": "Agromet"
     }
   }

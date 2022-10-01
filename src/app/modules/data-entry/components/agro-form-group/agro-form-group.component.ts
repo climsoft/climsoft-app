@@ -1,23 +1,21 @@
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit, Input, EventEmitter, Output, SimpleChanges, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, Output, EventEmitter, ElementRef, ViewChild, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Flag } from '@data/enum/flag';
 import { filter, fromEvent } from 'rxjs';
 
-import { Flag } from '@data/enum/flag';
-
 @Component({
-  selector: 'app-synoptic-form-group',
-  templateUrl: './synoptic-form-group.component.html',
-  styleUrls: ['./synoptic-form-group.component.scss']
+  selector: 'app-agro-form-group',
+  templateUrl: './agro-form-group.component.html',
+  styleUrls: ['./agro-form-group.component.scss']
 })
-export class SynopticFormGroupComponent implements OnInit, AfterViewInit {
+export class AgroFormGroupComponent implements OnInit, AfterViewInit {
   @Input() modified: boolean = false;
   @Input() group: FormGroup = new FormGroup({
     index:  new FormControl(0),
     element: new FormControl(0),
-    key:    new FormControl(''),
-    label:  new FormControl(''),
+    label:  new FormControl('No Value'),
     value:  new FormControl(null, Validators.required),
-    flag:   new FormControl(null)
+    flag:   new FormControl(Flag.N)
   });
   @Input() disabled: boolean = false;
   @Output() onDirty: EventEmitter<boolean> = new EventEmitter;
@@ -77,7 +75,7 @@ export class SynopticFormGroupComponent implements OnInit, AfterViewInit {
   }
 
   public get isInvalid(): boolean {
-    return this.fg['value'].dirty && this.fg['value'].value && (this.fg['flag'].value === Flag.M);
+    return this.fg['value'].dirty && this.fg['value'].value && this.fg['flag'].value === Flag.M;
   }
 
   public get styles(): any {
@@ -102,7 +100,7 @@ export class SynopticFormGroupComponent implements OnInit, AfterViewInit {
 
   onValueFocus() {
     this.hasFocus = true;
-    this.onFocus.emit(this.fg['key'].value);
+    this.onFocus.emit(this.fg['index'].value);
     this.valFocus = true;
   }
 
@@ -118,7 +116,7 @@ export class SynopticFormGroupComponent implements OnInit, AfterViewInit {
     if(val !== '' && this.fg['flag'].value === Flag.M) {
       this.selectFlag(Flag.N);
     }
-    this.onBlur.emit(this.fg['key'].value);
+    this.onBlur.emit(this.fg['index'].value);
     this.valFocus = false;
   }
 
