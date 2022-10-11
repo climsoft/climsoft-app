@@ -14,8 +14,9 @@ export class DataEntryBaseComponent implements OnInit {
     { name: 'Hourly Wind', route: 'hourly-wind', index: 1 },
     { name: 'Daily', route: 'daily', index: 2 },
     { name: 'Monthly', route: 'monthly', index: 3 },
-    { name: 'Synoptic 2', route: 'synoptic', index: 4 },
-    { name: 'Agro', route: 'agro', index: 5 }
+    { name: 'Synoptic Carribiean', route: 'synoptic-carribiean', index: 4 },
+    { name: 'Synoptic 2 RA1', route: 'synoptic-2ra1', index: 5 },
+    { name: 'Agro', route: 'agro', index: 6 }
   ];
 
   constructor(private router: Router, private route: ActivatedRoute) {}

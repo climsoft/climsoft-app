@@ -10,6 +10,7 @@ import { FormHourlyComponent } from './pages/form-hourly/form-hourly.component';
 import { FormDaily2Component } from './pages/form-daily2/form-daily2.component';
 
 import { FormDirtyGuard } from '../auth/guards/form-dirty.guard';
+import { FormSynopticRaComponent } from './pages/form-synoptic-ra/form-synoptic-ra.component';
 
 const routes: Routes = [
   {
@@ -56,11 +57,19 @@ const routes: Routes = [
         }
       },
       {
-        path: 'synoptic',
+        path: 'synoptic-carribiean',
         component: FormSynoptic2CaribbeanComponent,
         canDeactivate: [FormDirtyGuard],
         data: {
           title: 'Caribbean Synoptic Data'
+        }
+      },
+      {
+        path: 'synoptic-2ra1',
+        component: FormSynopticRaComponent,
+        canDeactivate: [FormDirtyGuard],
+        data: {
+          title: 'Caribbean 2RA1'
         }
       },
       {
