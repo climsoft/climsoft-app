@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.NODE_ENV === 'dev' ? 3000 : 80;
 const path = require('path');
 
 app.use(express.static('dist/'));
