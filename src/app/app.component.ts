@@ -27,11 +27,6 @@ export class AppComponent implements OnInit {
   /* @ts-ignore */
   favIcon: HTMLLinkElement = document.querySelector('#appIcon');
 
-  @HostListener("window:resize", ['event'])
-  private onResize(e: Event) {
-    this.responsive.onResize(window.innerWidth);
-  }
-
   constructor(
     private router: Router,
     private translate: TranslateService,
@@ -42,6 +37,16 @@ export class AppComponent implements OnInit {
     private userService: UserService,
     private idleService: IdleService
   ) {}
+
+  @HostListener("window:resize", ['event'])
+  private onResize(e: Event) {
+    this.responsive.onResize(window.innerWidth);
+  }
+
+  @HostListener('window:focus', ['$event'])
+  private onFocus(e: Event) {
+    this.awakeAPI();
+  }
 
   ngOnInit(): void {
     this.iconSetService.icons = { ...iconSubset };
@@ -60,7 +65,7 @@ export class AppComponent implements OnInit {
       this.favIcon.href = isClimsoft ? `./assets/climsoft.ico` : `/assets/opencdms.ico`;
     });
 
-    this.initialIdleSettings();
+    // this.initialIdleSettings();
   }
 
   private initialIdleSettings() {
@@ -76,5 +81,13 @@ export class AppComponent implements OnInit {
         });
       }
     });
+  }
+
+  private awakeAPI() {
+    this.idleService.refreshAPI
+        .pipe(filter(n => n > 0), take(1))
+        .subscribe(() => {
+          console.log('Working');          
+        })
   }
 }
