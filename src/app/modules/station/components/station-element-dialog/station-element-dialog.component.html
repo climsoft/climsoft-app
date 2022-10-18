@@ -1,0 +1,171 @@
+<div class="modal-header">
+  <h5 class="modal-title pull-left">{{update? 'Update' : 'Add'}} Station Element</h5>
+  <button type="button" class="btn-close pull-right" aria-label="Close" (click)="onCancel()"></button>
+</div>
+<div class="modal-body">
+  <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Error(s)!</strong> Please correct the following errors.</c-alert>
+  <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
+    <c-row>
+      <c-col xs="12" md="6">
+        <c-alert color="primary"><strong>Station </strong> {{station?.station_name}}</c-alert>
+      </c-col>
+    </c-row>
+    <c-row>
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="rec-with">Recorded With</label>
+          <input
+            id="rec-with"
+            formControlName="recorded_with"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['recorded_with'].touched) && f['recorded_with'].invalid }"
+            placeholder="Recorded With"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['recorded_with'].errors">
+            <div *ngIf="f['recorded_with'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Height is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="desc-by">Described By</label>
+          <input
+            id="desc-by"
+            type="hidden"
+            formControlName="described_by"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['described_by'].touched) && f['described_by'].invalid }"
+            placeholder="Station Name"
+          />
+          <div class="typeahead-selection theme form-group" *ngIf="descBy">
+            <div class="typeahead-selection-inner">
+              <span>{{descBy}}</span>
+              <a (click)="resetDescBy()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+            </div>
+          </div>
+          <app-element-selection *ngIf="!descBy" (onSelection)="onElementSelect($event)"></app-element-selection>
+          <div col="12" class="invalid-feedback" *ngIf="f['described_by'].errors">
+            <div *ngIf="f['described_by'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Element not selected.</div>
+          </div>
+        </div>
+      </c-col>
+
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="sched-for">Scheduled For</label>
+          <input
+            id="sched-for"
+            formControlName="scheduled_for"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['scheduled_for'].touched) && f['scheduled_for'].invalid }"
+            placeholder="Scheduled For"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['scheduled_for'].errors">
+            <div *ngIf="f['scheduled_for'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Scheduled for data is required.</div>
+          </div>
+        </div>
+      </c-col>
+
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="height">Height</label>
+          <input
+            id="height"
+            formControlName="height"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['height'].touched) && f['height'].invalid }"
+            placeholder="Height"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['height'].errors">
+            <div *ngIf="f['height'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Height is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="begin-date">Begin Date</label>
+          <input
+            id="begin-date"
+            formControlName="begin_date"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['begin_date'].touched) && f['begin_date'].invalid }"
+            bsDatepicker
+            [bsValue]="beginDate"
+            (bsValueChange)="onBeginDateChanged($event)"
+            [bsConfig]="bsConfig"
+            placeholder="Begin Date"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['begin_date'].errors">
+            <div *ngIf="f['begin_date'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Begin Date is required.</div>
+          </div>
+        </div>
+      </c-col>
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="end-date">End Date</label>
+          <input
+            id="end-date"
+            formControlName="end_date"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['end_date'].touched) && f['end_date'].invalid }"
+            bsDatepicker
+            [bsValue]="endDate"
+            [minDate]="minDate"
+            (bsValueChange)="onEndDateChanged($event)"
+            [bsConfig]="bsConfig"
+            placeholder="End Date"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['end_date'].errors">
+            <div *ngIf="f['end_date'].errors['required']"> <svg cIcon name="cilXCircle"></svg> End Date is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="inst-code">Instrument</label>
+          <input
+            id="inst-code"
+            type="hidden"
+            formControlName="instrument_code"
+            aria-label="default input"
+            [ngClass]="{ 'is-invalid': (submitted || f['instrument_code'].touched) && f['instrument_code'].invalid }"
+          />
+          <div class="typeahead-selection theme form-group" *ngIf="instrument">
+            <div class="typeahead-selection-inner">
+              <span>{{instrument.instrument_name}}</span>
+              <a (click)="resetInst()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+            </div>
+          </div>
+          <app-instrument-selection *ngIf="!instrument" (onSelection)="onInstSelect($event)"></app-instrument-selection>
+          <div col="12" class="invalid-feedback" *ngIf="f['instrument_code'].errors">
+            <div *ngIf="f['instrument_code'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Instrument code is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+    </c-row>
+    <c-row>
+      <c-col xs="12" class="text-end pt-3">
+        <button type="submit" class="btn btn-dark mx-1">{{update? 'Update' : 'Add'}}</button>
+        <button type="button" class="btn btn-dark" (click)="onCancel()">Cancel</button>
+      </c-col>
+    </c-row>
+  </form>
+</div>

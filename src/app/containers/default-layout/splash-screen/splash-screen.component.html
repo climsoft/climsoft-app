@@ -1,0 +1,19 @@
+<div
+  class="app-splash-screen"
+  [ngStyle]="{
+    left: windowWidth,
+    opacity: opacityChange,
+    transition: splashTransition
+  }"
+  *ngIf="showSplash"
+>
+  <div class="app-splash-inner">
+    <div class="app-loader">
+      <img src="assets/img/gif/loader.gif" class="anime" alt="">
+    </div>
+    <div class="app-logo">
+      <img src="./assets/img/brand/opencdms-logo.png" *ngIf="!isClimsoft" alt="">
+      <img src="./assets/img/brand/climsoft_sm.png" *ngIf="isClimsoft" alt="">
+    </div>
+  </div>
+</div>

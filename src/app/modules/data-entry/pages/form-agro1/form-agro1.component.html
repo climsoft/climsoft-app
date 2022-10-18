@@ -1,0 +1,121 @@
+<h5> Kenya Agromet Data </h5>
+<hr>
+<form [formGroup]="form" *ngIf="form" novalidate (ngSubmit)="onSubmit($event)" (keydown.enter)="onReturn($event)">
+  <c-row>
+    <c-col sm="12" class="text-end">
+      <app-flag-legend></app-flag-legend>
+    </c-col>
+    <c-col sm="12" class="text-end" *ngIf="loading">
+      <app-infinite-loading></app-infinite-loading>
+    </c-col>
+    <c-col sm="12">
+      <fieldset class="form-group p-3 mt-2">
+        <legend>Form Selector</legend>
+        <c-row>
+          <c-col xs="12" md="6" xl="3">
+            <div class="mb-2">
+              <label cLabel for="station">Station</label>
+              <input
+                id="station"
+                type="hidden"
+                formControlName="station"
+                aria-label="default input"
+                cFormControl
+                [ngClass]="{ 'is-invalid': (submitted || f['station'].touched) && f['station'].invalid }"
+              />
+              <div class="typeahead-selection theme form-group" *ngIf="station">
+                <div class="typeahead-selection-inner">
+                  <span>{{station.station_name}}</span>
+                  <a (click)="resetStation()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+                </div>
+              </div>
+              <app-station-selection *ngIf="!station" (onSelection)="onStationSelect($event)"></app-station-selection>
+              <div col="12" class="invalid-feedback" *ngIf="f['station'].errors">
+                <div *ngIf="f['station'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Station selection required.</div>
+              </div>
+            </div>
+          </c-col>
+
+          <c-col xs="12" md="6" xl="3">
+            <label cLabel for="yymmdd">Year/Month/Day</label>
+            <c-input-group class="mb-3">
+              <span cInputGroupText id="basic-addon1">
+                <svg cIcon name="cilCalendar"></svg>
+              </span>
+              <input
+                id="yymmdd"
+                type="hidden"
+                formControlName="dayMonthYear"
+                aria-label="default input"
+                cFormControl
+                placeholder="Select Date"
+              />
+              <input
+                  name="dayMonthYear"
+                  placeholder="Select Year & Month"
+                  cFormControl
+                  bsDatepicker
+                  (bsValueChange)="onDateSelection($event)"
+                  [bsConfig]="bsConfig"
+                  [bsValue]="monthYearValue"
+                  autocomplete="off"
+                  [ngClass]="{ 'is-invalid': submitted && f['dayMonthYear'].invalid }"
+                >
+                <div sm="12" class="invalid-feedback" *ngIf="submitted && f['dayMonthYear'].invalid">
+                  <svg cIcon name="cilXCircle"></svg> Year and Month is required
+                </div>
+            </c-input-group>
+          </c-col>
+        </c-row>
+      </fieldset>
+    </c-col>
+  </c-row>
+
+  <c-row *ngIf="error">
+    <c-col md="12">
+      <c-alert color="danger"><strong>Error(s) Found!</strong> {{error}}</c-alert>
+    </c-col>
+  </c-row>
+
+  <c-row>
+    <c-col sm="12" md="12" lg="6" xl="4" class="text-end" *ngFor="let fs of fieldSets">
+      <fieldset class="form-group group-fieldset p-3 mt-4" formArrayName="{{fs.field}}" *ngIf="formGroups(fs.field)">
+        <legend> {{fs.title}} </legend>
+        <c-row>
+          <c-col md="12">
+            <c-row>
+              <c-col md="8"></c-col>
+              <c-col md="2" class="item-header px-1">Value</c-col>
+              <c-col md="2" class="item-header px-1">Flag</c-col>
+            </c-row>
+          </c-col>
+          <c-col md="12" *ngFor="let g of formGroups(fs.field)">
+            <app-agro-form-group
+              #agroGroup
+              [disabled]="!isEditable"
+              [modified]="isModified"
+              (onReturn)="handleReturn($event)"
+              (onFocus)="keyFocus($event)"
+              (onBlur)="keyBlur($event)"
+              (onDirty)="onFormModified($event)"
+              (onRevert)="revertItem($event)"
+              [group]="g"></app-agro-form-group>
+          </c-col>
+        </c-row>
+        <c-alert *ngIf="!formGroups(fs.field).length" color="info" class="mt-4">Please select a date to view form.</c-alert>
+      </fieldset>
+    </c-col>
+  </c-row>
+
+  <hr class="my-4">
+  <c-row>
+    <c-col xs="12 py-4">
+      <button type="submit" cButton class="px-3" color="dark">
+        <c-spinner *ngIf="loading" aria-hidden="true" size="sm"></c-spinner> {{ hasRecord ? 'Update' : 'Save'}} </button>
+      <button type="button" cButton class="px-3 mx-1" color="dark" (click)="onReset()"> Reset </button>
+      <button type="button" cButton class="px-3" color="dark" (click)="onCancel()"> Cancel </button>
+    </c-col>
+  </c-row>
+</form>
+
+

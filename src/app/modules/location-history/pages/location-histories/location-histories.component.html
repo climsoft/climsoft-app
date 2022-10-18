@@ -1,0 +1,80 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12" lg="12" xl="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <c-row>
+          <c-col xs="6">
+            <strong class="col-6">Location History List</strong>
+          </c-col>
+          <c-col xs="6" class="text-end">
+            <a (click)="add()" class="btn btn-sm cs-btn-sm btn-outline"> <svg cIcon name="cilPlus"></svg> Add New </a>
+          </c-col>
+        </c-row>
+      </c-card-header>
+      <c-card-body *ngIf="histories$ | async; let state">
+        <app-paginator (onPage)="onPage($event)"
+                       [limit]="state.limit"
+                       [current]="state.page"
+                       [pages]="createPages(state.pages)"></app-paginator>
+        <table cTable>
+          <thead>
+          <tr>
+            <th scope="col">Station</th>
+            <th scope="col">Station Type</th>
+            <th scope="col">Method</th>
+            <th scope="col">Accuracy</th>
+            <th scope="col">Drain Basin</th>
+            <th scope="col">Opening</th>
+            <th scope="col">Closing</th>
+            <th scope="col">Location</th>
+            <th scope="col">Elevation</th>
+            <th scope="col">Authority</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let lh of state.locationHistories">
+            <th scope="row">{{lh.belongs_to}}</th>
+            <td scope="col">{{getStationTypeText(lh.station_type)}}</td>
+            <td scope="col">{{lh.geoLocationMethod}}</td>
+            <td scope="col">{{lh.geoLocationAccuracy}}</td>
+            <td scope="col">{{lh.drainage_basin}}</td>
+            <td scope="col">{{lh.opening_datetime | date}}</td>
+            <td scope="col">{{lh.closing_datetime | date}}</td>
+            <td scope="col">{{lh.latitude}}, {{lh.longitude}}</td>
+            <td scope="col">{{lh.elevation}}</td>
+            <td scope="col">{{lh.authority}}</td>
+            <td>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      (click)="viewLocHist(lh)"
+                      cTooltip="View Location History">
+                <svg cIcon name="cilArrowThickFromLeft" size="sm"></svg>
+              </button>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      (click)="update(lh)"
+                      cTooltip="Update Station">
+                <svg cIcon name="cilPencil" size="sm"></svg>
+              </button>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      (click)="remove(lh)"
+                      cTooltip="Remove Station">
+                <svg cIcon name="cilTrash" size="sm" class="text-danger"></svg>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <c-alert *ngIf="!state.locationHistories.length" color="primary"><strong>Info</strong> No instruments available to show. </c-alert>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

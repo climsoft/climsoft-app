@@ -1,0 +1,15 @@
+<c-row ngPreserveWhitespaces>
+  <c-col *ngFor="let el of elements" xs="6" sm="4" md="3" lg="2" xl="1" class="p-1">
+    <div class="el" (click)="selectEl(el)">
+      <div class="el-icon">
+        <div class="icon-wrap">
+          <i class="wi {{getIcon(el.obs_element.abbreviation)}} wi-2x"></i>
+        </div>
+      </div>
+      <div class="el-body"> {{el.obs_element.abbreviation}} </div>
+    </div>
+  </c-col>
+  <c-col xs="12">
+    <c-alert *ngIf="!elements?.length" color="info"> <strong>Info!</strong> No station elements associated with this station.</c-alert>
+  </c-col>
+</c-row>

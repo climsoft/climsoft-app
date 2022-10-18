@@ -1,0 +1,16 @@
+<c-row ngPreserveWhitespaces>
+  <c-col md="12" class="qualifiers" *ngFor="let q of qualifiers" xs="6" sm="6" md="4" lg="3" xl="3" class="p-1">
+    <div class="qual" (click)="selectQualifier(q)">
+      <div class="qual-icon" [cTooltip]="q.qualifier">
+        <div class="qual-icon-wrap">
+          <img src="./assets/img/icons/tag.png" alt="">
+        </div>
+      </div>
+      <div class="qual-label"> {{q.qualifier}} </div>
+      <div class="qual-label"> <small>{{q.station_network_type}}</small> </div>
+    </div>
+  </c-col>
+  <c-col class="no-records">
+    <c-alert *ngIf="!qualifiers?.length" color="info"> <strong>Info!</strong> No qualifiers associated with this station.</c-alert>
+  </c-col>
+</c-row>

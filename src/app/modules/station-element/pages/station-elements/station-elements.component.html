@@ -1,0 +1,76 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12" lg="12" xl="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <c-row>
+          <c-col xs="6">
+            <strong class="col-6">Station Elements</strong>
+          </c-col>
+          <c-col xs="6" class="text-end">
+            <a (click)="addNew()" class="btn btn-sm cs-btn-sm btn-outline"> <svg cIcon name="cilPlus"></svg> Add New </a>
+          </c-col>
+        </c-row>
+      </c-card-header>
+      <c-card-body *ngIf="stationElements$ | async; let state">
+        <app-paginator (onPage)="onPage($event)"
+                       [limit]="state.limit"
+                       [current]="state.page"
+                       [pages]="createPages(state.pages)"></app-paginator>
+        <table cTable>
+          <thead>
+          <tr>
+            <th scope="col">Element</th>
+            <th scope="col">Instrument Code</th>
+            <th scope="col">Height</th>
+            <th scope="col">Begin Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Recorded From</th>
+            <th scope="col">Recorded With</th>
+            <th scope="col">Scheduled For</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let sel of state.elements">
+            <th scope="row">{{sel.described_by}}</th>
+            <td scope="col">{{sel.instrument_code}} <app-no-value *ngIf="!sel.instrument_code"></app-no-value> </td>
+            <td scope="col">{{sel.height}} <app-no-value *ngIf="!sel.height"></app-no-value></td>
+            <td scope="col">{{sel.begin_date | date}}</td>
+            <td scope="col">{{sel.end_date}} <app-no-value *ngIf="!sel.end_date"></app-no-value></td>
+            <td scope="col">{{sel.recorded_from}} <app-no-value *ngIf="!sel.recorded_from"></app-no-value></td>
+            <td scope="col">{{sel.recorded_with}} <app-no-value *ngIf="!sel.recorded_with"></app-no-value></td>
+            <td scope="col">{{sel.scheduled_for}} <app-no-value *ngIf="!sel.scheduled_for"></app-no-value></td>
+            <td>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      (click)="preview(sel)"
+                      cTooltip="View Station">
+                <svg cIcon name="cilArrowThickFromLeft" size="sm"></svg>
+              </button>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      (click)="edit(sel)"
+                      cTooltip="Update Station">
+                <svg cIcon name="cilPencil" size="sm"></svg>
+              </button>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      (click)="remove(sel)"
+                      cTooltip="Remove Station">
+                <svg cIcon name="cilTrash" size="sm" class="text-danger"></svg>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <c-alert *ngIf="!state.elements.length" color="primary"><strong>Info</strong> No station elements available to show. </c-alert>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

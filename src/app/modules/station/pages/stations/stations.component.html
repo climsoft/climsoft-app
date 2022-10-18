@@ -1,0 +1,76 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12" lg="12" xl="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <c-row>
+          <c-col xs="6">
+            <strong class="col-6">Stations</strong>
+          </c-col>
+          <c-col xs="6" class="text-end">
+            <a [routerLink]="['/stations', 'new']" class="btn btn-sm cs-btn-sm cs-btn-sm btn-outline"> <svg cIcon name="cilPlus"></svg> Add New </a>
+          </c-col>
+        </c-row>
+      </c-card-header>
+      <c-card-body *ngIf="stations$ | async; let state">
+        <app-paginator (onPage)="onPage($event)"
+                       [limit]="state.limit"
+                       [current]="state.page"
+                       [pages]="createPages(state.pages)"></app-paginator>
+        <table cTable>
+          <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Country</th>
+            <th scope="col">Location</th>
+            <th scope="col">Elevation</th>
+            <th scope="col">Operational</th>
+            <th scope="col">CPT Selection</th>
+            <th scope="col">WACA Selection</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let st of state.stations">
+            <th scope="row">{{st.station_id}}</th>
+            <td scope="col">{{st.station_name}}</td>
+            <td scope="col">{{st.country}}</td>
+            <td scope="col">{{st.latitude}}, {{st.longitude}}</td>
+            <td scope="col">{{st.elevation}}</td>
+            <td scope="col">
+              <svg *ngIf="st.station_operational" cIcon name="cilCheck" class="text-success"></svg>
+              <svg *ngIf="!st.station_operational" cIcon name="cilXCircle" class="text-danger"></svg>
+            </td>
+            <td scope="col">
+              <svg *ngIf="st.cpt_selection" cIcon name="cilCheck" class="text-success"></svg>
+              <svg *ngIf="!st.cpt_selection" cIcon name="cilXCircle" class="text-danger"></svg>
+            </td>
+            <td scope="col">
+              <svg *ngIf="st.waca_selection" cIcon name="cilCheck" class="text-success"></svg>
+              <svg *ngIf="!st.waca_selection" cIcon name="cilXCircle" class="text-danger"></svg>
+            </td>
+            <td>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      [routerLink]="['/stations', st.station_id]"
+                      cTooltip="View Station">
+                <svg cIcon name="cilArrowThickFromLeft" size="sm"></svg>
+              </button>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      [routerLink]="['/stations', st.station_id,'update']"
+                      cTooltip="Update Station">
+                <svg cIcon name="cilPencil" size="sm"></svg>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

@@ -1,0 +1,59 @@
+<!--sidebar-->
+<c-sidebar
+  #sidebar="cSidebar"
+  class="d-print-none sidebar sidebar-fixed"
+  id="sidebar"
+  visible
+>
+  <c-sidebar-brand
+    *ngIf="isClimsoft"
+    [brandFull]="{ src: 'assets/img/brand/climsoft_sm.png', width: 115, height: 28, alt: 'Climsoft' }"
+    [brandNarrow]="{ src: 'assets/img/brand/climsoft-signet.png', width: 30, height: 40, alt: 'Climsoft' }"
+    routerLink="./"
+  ></c-sidebar-brand>
+  <c-sidebar-brand
+    *ngIf="!isClimsoft"
+    [brandFull]="{ src: 'assets/img/brand/opencdms-logo.png', width: 140, height: 35, alt: 'OpenCDMS' }"
+    [brandNarrow]="{ src: 'assets/img/brand/opencdms-signet.png', width: 40, height: 40, alt: 'OpenCDMS' }"
+    routerLink="./"
+  ></c-sidebar-brand>
+
+  <perfect-scrollbar [config]="perfectScrollbarConfig">
+    <!--  [perfectScrollbar]="perfectScrollbarConfig"-->
+    <c-sidebar-nav [navItems]="navItems"></c-sidebar-nav>
+  </perfect-scrollbar>
+  <c-sidebar-toggler
+    *ngIf="!sidebar.narrow"
+    toggle="unfoldable"
+    cSidebarToggle="sidebar"
+  ></c-sidebar-toggler>
+</c-sidebar>
+
+<!--main-->
+<ngx-loading-bar></ngx-loading-bar>
+
+<div class="wrapper d-flex flex-column min-vh-100 bg-light dark:bg-transparent">
+
+  <!--app-header-->
+  <app-default-header class="mb-4 d-print-none header header-sticky" position="sticky" sidebarId="sidebar"></app-default-header>
+
+  <!-- app-toastr  -->
+  <div class="toaster-wrapper" *ngIf="(toasts | async); let toastList">
+    <c-toaster [placement]="position">
+      <c-toast [autohide]="true" *ngFor="let tos of toastList" [fade]="true" [visible]="true" [color]="tos.type">
+        <c-toast-header>{{tos.title}}</c-toast-header>
+        <c-toast-body>{{tos.body}}</c-toast-body>
+      </c-toast>
+    </c-toaster>
+  </div>
+
+  <!--app-body-->
+  <div class="body flex-grow-1 px-3">
+    <router-outlet></router-outlet>
+    <!-- <c-container breakpoint="lg" class="h-auto">
+      <router-outlet></router-outlet>
+    </c-container> -->
+  </div>
+  <!--app footer-->
+  <app-default-footer></app-default-footer>
+</div>

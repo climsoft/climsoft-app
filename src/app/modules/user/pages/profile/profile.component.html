@@ -1,0 +1,126 @@
+<c-row [gutter]="4">
+  <c-col sm="12" md="5" lg="4" xl="3" *ngIf="(model$ | async) as state">
+    <c-card class="profile-left">
+      <c-card-body>
+        <div class="profile-left-head">
+          <img src="./assets/img/avatars/profile_avatar.png" alt="" class="profile-img">
+          <h5 class="fullname">{{state.profile.firstName}} {{state.profile.lastName}}</h5>
+          <small> {{state.profile.email}} </small>
+        </div>
+        <div class="profile-left-content">
+          <!-- <img src="./assets/img/icons/work_in_progress.png" width="80%" alt=""> -->
+        </div>
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col sm="12" md="7" lg="8" xl="9" *ngIf="(model$ | async) as state">
+    <c-card class="profile-right">
+      <c-card-body>
+        <div class="profile-right-head">
+          <c-row>
+            <c-col>
+              <h4><span><img src="./assets/img/icons/info.png" width="25" alt=""></span> Profile Information</h4>
+            </c-col>
+            <c-col class="text-end">
+              <button cButton
+                      size="sm"
+                      class="mx-1"
+                      color="dark"
+                      shape="rounded-pill"
+                      [routerLink]="['/profile', 'update']"
+                      cTooltip="Update Profile">
+                    <svg cIcon name="cilPencil" size="sm"></svg>
+              </button>
+              <button cButton
+                      size="sm"
+                      class="mx-1"
+                      color="dark"
+                      shape="rounded-pill"
+                      [routerLink]="['/profile', 'password']"
+                      cTooltip="Change Password">
+                    <svg cIcon name="cilHttps" size="sm"></svg>
+              </button>
+            </c-col>
+          </c-row>
+        </div>
+        <div class="profile-right-content">
+          <ul class="profile-info row">
+            <li class="col-sm-12 col-md-6">
+              <div class="inner">
+                <div class="label">First Name</div>
+                <div class="value">{{state.profile.firstName}}</div>
+              </div>
+            </li>
+            <li class="col-sm-12 col-md-6">
+              <div class="inner">
+                <div class="label">Last Name</div>
+                <div class="value">{{state.profile.lastName}}</div>
+              </div>
+            </li>
+            <li class="col-sm-12 col-md-6">
+              <div class="inner">
+                <div class="label">Email</div>
+                <div class="value">{{state.profile.email}}</div>
+              </div>
+            </li>
+            <li class="col-sm-12 col-md-6">
+              <div class="inner">
+                <div class="label">User Name</div>
+                <div class="value">{{state.profile.userId}}</div>
+              </div>
+            </li>
+            <li class="col-sm-12 col-md-6">
+              <div class="inner">
+                <div class="label">Labels</div>
+                <div class="value">None</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="profile-right-head">
+          <c-row>
+            <c-col>
+              <h4><span><img src="./assets/img/icons/setting.png" width="25" alt=""></span>  Preferences</h4>
+            </c-col>
+            <c-col class="text-end">
+              <button cButton
+                  size="sm"
+                  color="dark"
+                  shape="rounded-pill"
+                  [routerLink]="['/profile', 'preferences']"
+                  cTooltip="Update Preferences">
+                  <svg cIcon name="cilEqualizer" size="sm"></svg>
+              </button>
+            </c-col>
+          </c-row>
+        </div>
+        <div class="profile-right-content">
+          <ul class="profile-info row">
+            <li class="col-sm-12 col-md-6">
+              <div class="inner">
+                <div class="label">Mode</div>
+                <div class="value">{{modes[state.preferences.mode]}}</div>
+              </div>
+            </li>
+            <li class="col-sm-12 col-md-6">
+              <div class="inner">
+                <div class="label">Locale</div>
+                <div class="value">{{state.preferences.locale}}</div>
+              </div>
+            </li>
+            <li class="col-sm-12 col-md-6">
+              <div class="inner">
+                <div class="label">Language</div>
+                <div class="value">{{state.preferences.language}}</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+<router-outlet></router-outlet>

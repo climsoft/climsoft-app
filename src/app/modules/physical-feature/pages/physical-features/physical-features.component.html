@@ -1,0 +1,71 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12" lg="12" xl="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <c-row>
+          <c-col xs="6">
+            <strong class="col-6">Physical Features</strong>
+          </c-col>
+          <c-col xs="6" class="text-end">
+            <a (click)="add()" class="btn btn-sm cs-btn-sm btn-outline"> <svg cIcon name="cilPlus"></svg> Add New </a>
+            <a (click)="viewClasses()" class="btn btn-sm cs-btn-sm btn-outline"> <svg cIcon name="cilPlus"></svg> Feature Classes </a>
+          </c-col>
+        </c-row>
+      </c-card-header>
+      <c-card-body *ngIf="features$ | async; let state">
+        <app-paginator (onPage)="onPage($event)"
+                       [limit]="state.limit"
+                       [current]="state.page"
+                       [pages]="createPages(state.pages)"></app-paginator>
+        <table cTable>
+          <thead>
+          <tr>
+            <th scope="col">Station</th>
+            <th scope="col">Description</th>
+            <th scope="col">Classified Into</th>
+            <th scope="col">Begin Date</th>
+            <th scope="col">End Date</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let feat of state.features">
+            <th scope="row">{{feat.associated_with}}</th>
+            <td scope="col">{{feat.description}}</td>
+            <td scope="col">{{feat.classified_into}}</td>
+            <td scope="col">{{feat.begin_date | date}}</td>
+            <td scope="col">{{feat.end_date | date}}</td>
+            <td>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      (click)="view(feat)"
+                      cTooltip="View Station">
+                <svg cIcon name="cilArrowThickFromLeft" size="sm"></svg>
+              </button>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      (click)="update(feat)"
+                      cTooltip="Update Station">
+                <svg cIcon name="cilPencil" size="sm"></svg>
+              </button>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      (click)="remove(feat)"
+                      cTooltip="Remove Station">
+                <svg cIcon name="cilTrash" size="sm" class="text-danger"></svg>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <c-alert *ngIf="!state.features.length" color="primary"><strong>Info</strong> No physical feature records available to show. </c-alert>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

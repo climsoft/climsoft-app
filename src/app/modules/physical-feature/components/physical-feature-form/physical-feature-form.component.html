@@ -1,0 +1,171 @@
+<div class="modal-header">
+  <h5 class="modal-title pull-left">{{update? 'Update': 'Add'}} Physical Feature</h5>
+</div>
+<div class="modal-body">
+  <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Error(s)!</strong> Please correct the following errors.</c-alert>
+  <c-alert *ngIf="submitted && error" color="danger"> {{error}} </c-alert>
+  <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
+    <c-row>
+      <c-col xs="12" md="6" lg="5">
+        <div class="mb-3">
+          <label cLabel for="station">Station</label>
+          <input
+            id="station"
+            type="hidden"
+            formControlName="associated_with"
+            aria-label="default input"
+            cFormControl
+          />
+          <div class="typeahead-selection theme form-group" *ngIf="station">
+            <div class="typeahead-selection-inner">
+              <span>{{station.station_name}}</span>
+              <a (click)="resetStation()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+            </div>
+          </div>
+          <app-station-selection *ngIf="!station" (onSelection)="onStationSelect($event)"></app-station-selection>
+          <div col="12" class="invalid-feedback" *ngIf="f['associated_with'].errors">
+            <div *ngIf="f['associated_with'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Station selection required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="6" lg="5">
+        <label cLabel for="beginDate">Begin Date</label>
+        <c-input-group class="mb-3">
+          <span cInputGroupText>
+            <svg cIcon name="cilCalendar"></svg>
+          </span>
+          <input
+            id="beginDate"
+            type="hidden"
+            formControlName="begin_date"
+            aria-label="default input"
+            cFormControl
+          />
+          <input
+                  name="monthYear"
+                  placeholder="Select Begin Date"
+                  cFormControl
+                  bsDatepicker
+                  (bsValueChange)="onBeginDateChanged($event)"
+                  [ngClass]="{ 'is-invalid': submitted && f['begin_date'].invalid }"
+                  [bsConfig]="bsConfig"
+                  [bsValue]="beginDate"
+                  autocomplete="off"
+                >
+            <div sm="12" class="invalid-feedback" *ngIf="submitted && f['begin_date'].invalid">
+              <svg cIcon name="cilXCircle"></svg> Begin date is required.
+            </div>
+        </c-input-group>
+      </c-col>
+
+      <c-col xs="12" md="6" lg="5">
+        <label cLabel for="endDate">End Date-Time</label>
+        <c-input-group class="mb-3">
+          <span cInputGroupText>
+            <svg cIcon name="cilCalendar"></svg>
+          </span>
+          <input
+            id="endDate"
+            type="hidden"
+            formControlName="end_date"
+            aria-label="default input"
+            cFormControl
+          />
+          <input
+              name="monthYear"
+              placeholder="Select End Date"
+              cFormControl
+              bsDatepicker
+              (bsValueChange)="onEndDateChanged($event)"
+              [ngClass]="{ 'is-invalid': submitted && f['end_date'].invalid }"
+              [bsConfig]="bsConfig"
+              [bsValue]="endDate"
+              [minDate]="minDate"
+              autocomplete="off"
+            >
+            <div sm="12" class="invalid-feedback" *ngIf="submitted && f['end_date'].invalid">
+              <svg cIcon name="cilXCircle"></svg> End date is required.
+            </div>
+        </c-input-group>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="6" lg="5">
+        <div class="mb-3">
+          <label cLabel for="classified">Classified Into</label>
+          <select
+              id="classified"
+              formControlName="classified_into"
+              aria-label="Classified Into"
+              cSelect
+              [ngClass]="{ 'is-invalid': (submitted || f['classified_into'].touched) && f['classified_into'].invalid }">
+            <option value>Select Feature Class</option>
+            <option *ngFor="let pfc of featureClasses" [value]="pfc.feature_class">{{pfc.feature_class}}</option>
+          </select>
+          <div col="12" class="invalid-feedback" *ngIf="submitted && f['classified_into'].errors">
+            <div *ngIf="f['classified_into'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Classified into is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="10">
+        <div class="mb-3">
+          <label cLabel for="desc">Description</label>
+          <textarea
+            id="desc"
+            formControlName="description"
+            aria-label="description"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['description'].touched) && f['description'].invalid }"
+            placeholder="Description"
+            rows="3"
+          ></textarea>
+          <div col="12" class="invalid-feedback" *ngIf="submitted && f['description'].errors">
+            <div *ngIf="f['description'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Description is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="6" lg="7" xl="6" class="p-3" *ngIf="update && !updateImg">
+        <div class="image-wrapper">
+          <img [src]="imageSrc" alt="">
+        </div>
+        <button type="button" (click)="replaceImage()" cButton color="danger" variant="outline" size="sm" class="mt-2"> <svg cIcon name="cilX"></svg> remove</button>
+      </c-col>
+
+      <c-col xs="12" md="10" lg="8" xl="6" *ngIf="!update || updateImg">
+        <div class="mb-3">
+          <label cLabel for="image">Image</label>
+          <input
+            id="image"
+            type="hidden"
+            formControlName="image"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['image'].touched) && f['image'].invalid }"
+          />
+          <app-image-uploader #imageUploader [feature]="'feature'" (onImgSelect)="onImage($event)"></app-image-uploader>
+          <div col="12" class="invalid-feedback" *ngIf="f['image'].errors">
+            <div *ngIf="f['image'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Image is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <hr>
+    <c-row class="mt-4">
+      <c-col xs="12" class="text-start py-3">
+        <button type="submit" class="btn btn-dark mx-1">{{update? 'Update' : 'Add' }}</button>
+        <button type="button" class="btn btn-dark" (click)="onCancel()">Cancel</button>
+      </c-col>
+    </c-row>
+  </form>
+</div>

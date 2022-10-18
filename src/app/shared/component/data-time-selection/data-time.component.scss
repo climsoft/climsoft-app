@@ -1,0 +1,11 @@
+.row {
+  border: 1px solid #d8dfe3;
+  border-radius: 0.2rem;
+  padding: 0.2rem 0.3rem !important;
+  background-color: #e8f1f6;
+
+  &.invalid {
+    border-color: #eac6c1;
+    background-color: #ffe2de;
+  }
+}

@@ -1,0 +1,36 @@
+<c-row class="dropzone-container" *ngIf="!files.length">
+  <c-col md="12">
+    <ngx-dropzone
+      [class.dropzone-visible]="!files.length"
+      (change)="onSelect($event)"
+      [multiple]="false"
+      accept="image/jpeg,image/jpg,image/png,image/gif">
+      <ngx-dropzone-label style="line-height: 20px">Click or Drop Image </ngx-dropzone-label>
+    </ngx-dropzone>
+  </c-col>
+</c-row>
+<c-row *ngIf="files.length && loading">
+  <c-col md="12" lg="8" class="px-3">
+    <c-progress class="mb-3">
+      <c-progress-bar color="info" [value]="progress">{{progress}}%</c-progress-bar>
+    </c-progress>
+  </c-col>
+</c-row>
+<c-row class="preview-container" *ngIf="files.length && !loading">
+  <c-col md="12">
+    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f">
+      <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
+    </ngx-dropzone-image-preview>
+  </c-col>
+  <c-col md="12" class="text-end">
+    <button
+      type="button"
+      cButton
+      size="sm"
+      variant="ghost"
+      color="danger"
+      (click)="onRemove($event)">
+      <svg cIcon name="cilX"></svg> Remove
+    </button>
+  </c-col>
+</c-row>

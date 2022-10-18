@@ -1,0 +1,53 @@
+$light: #ebedef;
+$empty: #ecc9c9;
+$dark: #4f5d73;
+$secondary: #9da5b1;
+$danger: #e60000;
+$info: #39f;
+$warning: #f9b115;
+$text-dark: #33434b;
+
+.flag-legend {
+  ul {
+    padding: 0;
+
+    li {
+      list-style: none;
+      display: inline-block;
+
+      .inner {
+        font-size: 0.8rem;
+        padding: 0.1rem 0.6rem 0.2rem;
+        border: 1px solid #2a3f4d;
+        border-radius: 1.5rem;
+        line-height: 0.9rem;
+        color: #fff;
+
+        &.btn-empty {
+          color: $dark;
+          background-color: $empty;
+        }
+        &.btn-missing {
+          color: $danger;
+          background-color: $empty;
+        }
+        &.btn-trace {
+          background-color: $dark;
+        }
+        &.btn-estimated {
+          background-color: $secondary;
+        }
+        &.btn-generated {
+          background-color: $info;
+        }
+        &.btn-dubious {
+          background-color: $warning;
+        }
+      }
+    }
+
+    li + li {
+      padding: 0.1rem;
+    }
+  }
+}

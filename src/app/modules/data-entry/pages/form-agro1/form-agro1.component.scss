@@ -1,0 +1,12 @@
+.item-header {
+  font-size: 0.8rem;
+  text-align: left;
+}
+
+fieldset.group-fieldset:nth-child(-n+3) {
+  min-height: 400px;
+}
+
+fieldset.group-fieldset:nth-last-child(-n+5) {
+  min-height: 300px;
+}

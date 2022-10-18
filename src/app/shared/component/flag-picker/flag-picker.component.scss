@@ -1,0 +1,131 @@
+$empty: #ecc9c9;
+$light: #ebedef;
+$dark: #4f5d73;
+$secondary: #9da5b1;
+$info: #39f;
+$danger: #e60000;
+$warning: #f9b115;
+$text-dark: #33434b;
+
+.flag-picker {
+  position: relative;
+  display: inline-block;
+
+  ul {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 2.5rem;
+    padding: 0;
+    z-index: 10;
+    transition: all ease-in-out 0.3s;
+    padding: 0.4rem 0.1rem;
+    background-color: #edeefa;
+    border: 1px solid #cfd0dc;
+    border-radius: 1.5rem;
+    box-shadow: rgb(0, 0, 0, 0.25) 1px 1px 0px 1px;
+
+    li {
+      list-style: none;
+      padding: 0.2rem;
+    }
+  }
+
+  &.enabled {
+    ul {
+      display: block;
+
+      li {
+        display: inline-block;
+      }
+    }
+  }
+
+  .active-flag {
+    display: inline-block;
+    width: 2.5rem;
+    height: 2.3rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #034566;
+    background-color: $light;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+
+    &.disabled {
+      cursor: not-allowed;
+    }
+
+    &.btn-light {
+      color: $text-dark;
+      background-color: $empty;
+    }
+
+    &.btn-missing {
+      background-color: $empty;
+      color: $danger;
+      padding: 0.3rem 0.3rem;
+    }
+
+    &.btn-trace {
+      background-color: $dark;
+    }
+
+    &.btn-estimated {
+      color: $text-dark;
+      background-color: $secondary;
+    }
+
+    &.btn-generated {
+      background-color: $info;
+    }
+
+    &.btn-dubious {
+      background-color: $warning;
+    }
+  }
+}
+
+.btn-circle {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.3rem 0;
+  border-radius: 1.2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+  line-height: 0.5rem;
+
+  &.btn-light {
+    background-color: $light;
+    color: $dark;
+    border: 1px solid $text-dark;
+  }
+
+  &.btn-missing {
+    color: $danger;
+    background-color: $empty;
+    border: 1px solid $danger;
+  }
+
+  &.btn-trace {
+    color: $light;
+    background-color: $dark;
+  }
+
+  &.btn-estimated {
+    color: $text-dark;
+    background-color: $secondary;
+  }
+
+  &.btn-generated {
+    background-color: $info;
+  }
+
+  &.btn-dubious {
+    background-color: $warning;
+  }
+}

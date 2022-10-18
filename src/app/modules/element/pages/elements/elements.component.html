@@ -1,0 +1,85 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12" lg="12" xl="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <c-row>
+          <c-col xs="6">
+            <strong class="col-6">Stations</strong>
+          </c-col>
+          <c-col xs="6" class="text-end">
+            <a [routerLink]="['/elements', 'new']" class="btn btn-sm cs-btn-sm btn-outline"> <svg cIcon name="cilPlus"></svg> Add New </a>
+          </c-col>
+        </c-row>
+      </c-card-header>
+      <c-card-body *ngIf="elements$ | async; let state">
+        <app-paginator (onPage)="onPage($event)"
+                       [limit]="state.limit"
+                       [current]="state.page"
+                       [pages]="createPages(state.pages)"></app-paginator>
+        <table cTable>
+          <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Scale</th>
+            <th scope="col">Lower Limit</th>
+            <th scope="col">Upper Limit</th>
+            <th scope="col">Units</th>
+            <th scope="col">Description</th>
+            <th scope="col">QC Total Required</th>
+            <th scope="col">Selected</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let el of state.elements">
+            <th scope="row">{{el.element_id}}</th>
+            <td scope="col">{{el.element_name}}</td>
+            <td scope="col">{{el.element_type}}</td>
+            <td scope="col">{{el.element_scale}}</td>
+            <td scope="col">{{el.lower_limit || 'No Value'}}</td>
+            <td scope="col">{{el.upper_limit || 'No Value'}}</td>
+            <td scope="col">{{el.units}}</td>
+            <td scope="col"><p class="desc-text">{{el.description}}</p></td>
+            <td scope="col" class="text-start">
+              <svg *ngIf="el.qc_total_required" cIcon name="cilCheck" class="text-success"></svg>
+              <svg *ngIf="!el.qc_total_required" cIcon name="cilXCircle" class="text-danger"></svg>
+          </td>
+            <td scope="col" class="text-start">
+                <svg *ngIf="el.selected" cIcon name="cilCheck" class="text-success"></svg>
+                <svg *ngIf="!el.selected" cIcon name="cilXCircle" class="text-danger"></svg>
+            </td>
+            <td>
+              <button cButton
+                      color="light"
+                      size="sm"
+                      shape="rounded-pill"
+                      [routerLink]="['/elements', el.element_id]"
+                      cTooltip="View Element">
+                <svg cIcon name="cilArrowThickFromLeft" size="sm"></svg>
+              </button>
+              <button cButton
+                      color="light"
+                      size="sm"
+                      shape="rounded-pill"
+                      [routerLink]="['/elements', el.element_id,'update']"
+                      cTooltip="Update Element">
+                <svg cIcon name="cilPencil" size="sm"></svg>
+              </button>
+              <button cButton
+                      color="light"
+                      size="sm"
+                      shape="rounded-pill"
+                      (click)="remove(el)"
+                      cTooltip="Remove Element">
+                <svg cIcon name="cilTrash" size="sm" class="text-danger"></svg>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

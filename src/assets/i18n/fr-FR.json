@@ -1,0 +1,30 @@
+{
+  "app": {
+  },
+  "nav": {
+    "title": {
+      "station_metadata": "Station Métadonnées",
+      "data_entry": "Saisie des données"
+    },
+    "dashboard": "Tableau de bord",
+    "stations": "Stations",
+    "elements": "Éléments",
+    "station_elements": "Éléments station",
+    "instruments": "Instruments",
+    "location_histories": "Location historique",
+    "qualifiers": "Qualificatifs",
+    "schedule_class": "Liste de Classe",
+    "physical_features": "Caractéristiques physiques",
+    "paper_archive": "Archives en papier",
+    "data_entry_forms": "Formulaires de saisie",
+    "data_entry": {
+      "hourly": "Mensuelle",
+      "daily": "Journalière",
+      "monthly": "Mensuelle",
+      "hourly_wind": "Vent horaire",
+      "synoptic-carribiean": "Synoptique Carribean",
+      "synoptic-2ra1": "Synoptique 2RA1",
+      "agromet": "Agrométéo"
+    }
+  }
+}

@@ -1,0 +1,80 @@
+<div class="modal-header">
+  <h5 class="modal-title pull-left">{{update? 'Update' : 'Add'}} Schedule Class</h5>
+</div>
+<div class="modal-body">
+  <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
+    <c-row>
+      <c-col xs="12" *ngIf="error">
+        <c-alert color="danger"> <svg cIcon name="cilXCircle"></svg> {{error}}</c-alert>
+      </c-col>
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="schedule_class">Schedule Class</label>
+          <input
+            id="schedule_class"
+            formControlName="schedule_class"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['schedule_class'].touched) && f['schedule_class'].invalid }"
+            placeholder="Schedule Class"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['schedule_class'].errors">
+            <div *ngIf="f['schedule_class'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Form ID is required.</div>
+          </div>
+        </div>
+      </c-col>
+
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="station">Station</label>
+          <input
+            id="station"
+            type="hidden"
+            formControlName="refers_to"
+            aria-label="default input"
+            cFormControl
+          />
+          <div class="typeahead-selection theme form-group" *ngIf="station">
+            <div class="typeahead-selection-inner">
+              <span>{{station.station_name}}</span>
+              <a (click)="resetStation()" *ngIf="!fromStation" class="btn"> <svg cIcon name="cilX"></svg> </a>
+            </div>
+          </div>
+          <app-station-selection *ngIf="!station" (onSelection)="onStationSelect($event)"></app-station-selection>
+          <div col="12" class="invalid-feedback" *ngIf="f['refers_to'].errors">
+            <div *ngIf="f['refers_to'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Station selection required.</div>
+          </div>
+        </div>
+      </c-col>
+
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="description">Description</label>
+          <textarea
+            id="description"
+            formControlName="description"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['description'].touched) && f['description'].invalid }"
+            placeholder="Description"
+            rows="3"
+          ></textarea>
+          <div col="12" class="invalid-feedback" *ngIf="f['description'].errors">
+            <div *ngIf="f['description'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Description not selected.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12">
+        <hr>
+      </c-col>
+
+      <c-col xs="12" class="text-end pt-3">
+        <button type="submit" class="btn btn-dark mx-1">{{update? 'Update' : 'Add'}}</button>
+        <button type="button" class="btn btn-dark" (click)="onCancel()">Cancel</button>
+      </c-col>
+    </c-row>
+  </form>
+</div>

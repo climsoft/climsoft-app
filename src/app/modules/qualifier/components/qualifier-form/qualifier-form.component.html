@@ -1,0 +1,155 @@
+<div class="modal-header">
+  <h5 class="modal-title pull-left">{{update? 'Update': 'Add'}} Qualifier</h5>
+</div>
+<div class="modal-body">
+  <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Error(s)!</strong> Please correct the following errors.</c-alert>
+  <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
+    <c-row>
+      <c-col xs="12" md="6" lg="5">
+        <div class="mb-2">
+          <label cLabel for="station">Belongs To</label>
+          <input
+            id="station"
+            [type]="update ? 'text' : 'hidden'"
+            [attr.disabled]="update"
+            formControlName="belongs_to"
+            aria-label="default input"
+            cFormControl
+          />
+          <div class="typeahead-selection theme form-group" *ngIf="station">
+            <div class="typeahead-selection-inner">
+              <span>{{station.station_name}}</span>
+              <a (click)="resetStation()" *ngIf="!fromStation" class="btn"> <svg cIcon name="cilX"></svg> </a>
+            </div>
+          </div>
+          <app-station-selection *ngIf="!station && !update" (onSelection)="onStationSelect($event)"></app-station-selection>
+          <div col="12" class="invalid-feedback" *ngIf="f['belongs_to'].errors">
+            <div *ngIf="f['belongs_to'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Station selection required.</div>
+          </div>
+        </div>
+      </c-col>
+
+      <c-col xs="12" md="6" lg="5">
+        <div class="mb-2">
+          <label cLabel for="qualifier">Qualifier</label>
+          <input
+            id="qualifier"
+            formControlName="qualifier"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['qualifier'].touched) && f['qualifier'].invalid }"
+            placeholder="Qualifier"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="submitted && f['qualifier'].errors">
+            <div *ngIf="f['qualifier'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Qualifier is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="6" lg="5">
+        <label cLabel for="beginDate">Begin Date</label>
+        <c-input-group class="mb-3">
+          <span cInputGroupText>
+            <svg cIcon name="cilCalendar"></svg>
+          </span>
+          <input
+            id="beginDate"
+            type="hidden"
+            formControlName="qualifier_begin_date"
+            aria-label="default input"
+            cFormControl
+          />
+          <input
+              name="monthYear"
+              placeholder="Select Begin Date"
+              cFormControl
+              bsDatepicker
+              (bsValueChange)="onBeginDateChanged($event)"
+              [ngClass]="{ 'is-invalid': submitted && f['qualifier_begin_date'].invalid }"
+              [bsConfig]="bsConfig"
+              [bsValue]="bsBegin"
+              autocomplete="off"
+            >
+            <div sm="12" class="invalid-feedback" *ngIf="submitted && f['qualifier_begin_date'].invalid">
+              <svg cIcon name="cilXCircle"></svg> Begin date is required.
+            </div>
+        </c-input-group>
+      </c-col>
+      <c-col xs="12" md="6" lg="5">
+        <label cLabel for="endDate">End Date-Time</label>
+        <c-input-group class="mb-3">
+          <span cInputGroupText>
+            <svg cIcon name="cilCalendar"></svg>
+          </span>
+          <input
+            id="endDate"
+            type="hidden"
+            formControlName="qualifier_end_date"
+            aria-label="default input"
+            cFormControl
+          />
+          <input
+              name="monthYear"
+              placeholder="Select End Date"
+              cFormControl
+              bsDatepicker
+              (bsValueChange)="onEndDateChanged($event)"
+              [ngClass]="{ 'is-invalid': submitted && f['qualifier_end_date'].invalid }"
+              [bsConfig]="bsConfig"
+              [bsValue]="bsEnd"
+              [minDate]="minDate"
+              autocomplete="off"
+            >
+            <div sm="12" class="invalid-feedback" *ngIf="submitted && f['qualifier_end_date'].invalid">
+              <svg cIcon name="cilXCircle"></svg> End date is required.
+            </div>
+        </c-input-group>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="6" lg="5">
+        <div class="mb-2">
+          <label cLabel for="timezone">Time Zone</label>
+          <input
+            id="timezone"
+            type="hidden"
+            formControlName="station_timezone"
+            aria-label="default input"
+            cFormControl
+            placeholder="Timezone"
+          />
+          <app-timzone-selection (onSelection)="onTimezoneSelect($event)"></app-timzone-selection>
+          <div col="12" class="invalid-feedback" *ngIf="submitted && f['station_timezone'].errors">
+            <div *ngIf="f['station_timezone'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Station timezone is required.</div>
+          </div>
+        </div>
+      </c-col>
+      <c-col xs="12" md="6" lg="5">
+        <div class="mb-2">
+          <label cLabel for="network">Network Type</label>
+          <input
+            id="network"
+            formControlName="station_network_type"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['station_network_type'].touched) && f['station_network_type'].invalid }"
+            placeholder="Network Type"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['station_network_type'].errors">
+            <div *ngIf="f['station_network_type'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Network type is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+    <hr>
+    <c-row class="mt-4">
+      <c-col xs="12" class="text-start py-3">
+        <button type="submit" class="btn btn-dark mx-1">{{update? 'Update' : 'Add' }}</button>
+        <button type="button" class="btn btn-dark" (click)="onCancel()">Cancel</button>
+      </c-col>
+    </c-row>
+  </form>
+</div>

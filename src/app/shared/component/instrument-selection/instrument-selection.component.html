@@ -1,0 +1,19 @@
+<input [(ngModel)]="search"
+       [typeahead]="elements$"
+       typeaheadOptionField="instrument_name"
+       [typeaheadAsync]="true"
+       (typeaheadLoading)="changeTypeaheadLoading($event)"
+       (typeaheadOnSelect)="onSelect($event)"
+       [typeaheadOptionsLimit]="7"
+       [typeaheadItemTemplate]="itemTemplate"
+       class="form-control"
+       [ngClass]="{loading: typeaheadLoading}"
+       autocomplete="off"
+       autocorrect="off"
+       placeholder="Instrument">
+<div *ngIf="loading" class="typeahead-loading"><img src="./assets/img/gif/spinner.gif" alt=""> searching...</div>
+
+<ng-template let-item="item" #itemTemplate>
+  <div class="item-heading">Instrument ID: {{item.instrument_id}}</div>
+  <div class="item-title"> {{item.instrument_name}} </div>
+</ng-template>

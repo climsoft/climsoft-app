@@ -1,0 +1,7 @@
+<div class="flag-legend">
+  <ul>
+    <li *ngFor="let f of flags">
+      <div class="inner {{f.class}}"> {{f.value || 'Empty'}} </div>
+    </li>
+  </ul>
+</div>

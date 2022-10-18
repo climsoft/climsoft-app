@@ -1,0 +1,47 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2017",
+    "module": "es2020",
+    "lib": [
+      "es2020",
+      "dom"
+    ],
+    "paths": {
+      "@config/*": [ "src/config/*" ],
+      "@data/*": [ "src/app/data/*" ],
+      "@environment/*": [ "src/environments/*" ],
+      "@station/*": [ "src/app/modules/station/*" ],
+      "@element/*": [ "src/app/modules/element/*" ],
+      "@instrument/*": [ "src/app/modules/instrument/*" ],
+      "@station-element/*": [ "src/app/modules/station-element/*" ],
+      "@location-history/*": [ "src/app/modules/location-history/*" ],
+      "@qualifier/*": [ "src/app/modules/qualifier/*" ],
+      "@paper-archive/*": [ "src/app/modules/paper-archive/*" ],
+      "@physical-feature/*": [ "src/app/modules/physical-feature/*" ],
+      "@shared/*": [ "src/app/shared/*" ]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  },
+  "exclude": ["src/config"]
+}

@@ -1,0 +1,21 @@
+<div class="mx-0 px-0 align-items-center" [ngClass]="{ 'invalid': submitted && invalid }">
+  <c-input-group class="mb-3">
+    <span cInputGroupText id="basic-addon1">
+      <svg cIcon name="cilCalendar"></svg>
+    </span>
+    <input
+        type="text"
+        placeholder="Select Date"
+        cFormControl
+        bsDatepicker
+        [bsValue]="bsValue"
+        (bsValueChange)="onDateChanged($event)"
+        [ngClass]="{ 'is-invalid': submitted && invalid }"
+        [bsConfig]="bsConfig"
+        [minDate]="minDate"
+      >
+      <div sm="12" class="invalid-feedback" *ngIf="submitted && invalid">
+        <svg cIcon name="cilXCircle"></svg> {{error}}.
+      </div>
+  </c-input-group>
+</div>

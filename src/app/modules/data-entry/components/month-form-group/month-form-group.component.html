@@ -1,0 +1,29 @@
+<c-row class="monthly-data-row" [ngClass]="styles" [formGroup]="group">
+  <c-col md="5" class="py-2 label">
+    <span *ngIf="!isDirty">{{fg['month'].value}}</span>
+    <button
+      type="button"
+      cButton
+      color="dark"
+      shape="rounded-pill"
+      (click)="revert()"
+      *ngIf="isDirty">{{fg['month'].value}}</button>
+  </c-col>
+  <c-col md="2" class="py-1">
+    <input
+      #inputValue
+      formControlName="value"
+      (focus)="onValueFocus()"
+      (blur)="onValueBlur($event)"
+      aria-label="value"
+      cFormControl />
+  </c-col>
+  <c-col md="2" class="py-1 text-center">
+    <input type="hidden" formControlName="flag" aria-label="flag" cFormControl />
+    <app-flag-picker [flag]="fg['flag'].value" [disabled]="disabled" (onSelect)="selectFlag($event)"></app-flag-picker>
+  </c-col>
+  <c-col md="3" class="py-1 text-center">
+    <input type="hidden" formControlName="period" aria-label="flag" cFormControl />
+    <input formControlName="period" aria-label="period" cFormControl />
+  </c-col>
+</c-row>

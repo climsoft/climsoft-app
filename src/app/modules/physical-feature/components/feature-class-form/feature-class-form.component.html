@@ -1,0 +1,79 @@
+<div class="modal-header">
+  <h5 class="modal-title pull-left">{{update? 'Update' : 'Add'}} Class</h5>
+</div>
+<div class="modal-body">
+  <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
+    <c-row>
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="feature_class">Feature Class</label>
+          <input
+            id="feature_class"
+            formControlName="feature_class"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['feature_class'].touched) && f['feature_class'].invalid }"
+            placeholder="Feature Class"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['feature_class'].errors">
+            <div *ngIf="f['feature_class'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Feature class is required.</div>
+          </div>
+        </div>
+      </c-col>
+
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="description">Description</label>
+          <textarea
+            id="description"
+            formControlName="description"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['description'].touched) && f['description'].invalid }"
+            placeholder="Description"
+            rows="3"
+          ></textarea>
+          <div col="12" class="invalid-feedback" *ngIf="f['description'].errors">
+            <div *ngIf="f['description'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Description not selected.</div>
+          </div>
+        </div>
+      </c-col>
+
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="refers_to">Refers To</label>
+          <input
+            id="refers_to"
+            type="hidden"
+            formControlName="refers_to"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['refers_to'].touched) && f['refers_to'].invalid }"
+            placeholder="Refers To"
+          />
+          <div class="typeahead-selection theme form-group" *ngIf="station">
+            <div class="typeahead-selection-inner">
+              <span>{{station.station_name}}</span>
+              <a (click)="resetStation()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+            </div>
+          </div>
+          <app-station-selection *ngIf="!station" (onSelection)="onStationSelect($event)"></app-station-selection>
+          <div col="12" class="invalid-feedback" *ngIf="f['refers_to'].errors">
+            <div *ngIf="f['refers_to'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Element not selected.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12">
+        <hr>
+      </c-col>
+
+      <c-col xs="12" class="text-end pt-3">
+        <button type="submit" class="btn btn-dark mx-1">{{update? 'Update' : 'Add'}}</button>
+        <button type="button" class="btn btn-dark" (click)="onCancel()">Cancel</button>
+      </c-col>
+    </c-row>
+  </form>
+</div>

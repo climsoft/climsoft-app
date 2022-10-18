@@ -1,0 +1,64 @@
+export interface HourlyState {
+  station: number,
+  element: number,
+  date: string
+}
+
+export interface HourlyPayload {
+    station_id: any;
+    element_id: number;
+    yyyy: number;
+    mm: number;
+    dd: number;
+    hh_00: string;
+    hh_01: string;
+    hh_02: string;
+    hh_03: string;
+    hh_04: string;
+    hh_05: string;
+    hh_06: string;
+    hh_07: string;
+    hh_08: string;
+    hh_09: string;
+    hh_10: string;
+    hh_11: string;
+    hh_12: string;
+    hh_13: string;
+    hh_14: string;
+    hh_15: string;
+    hh_16: string;
+    hh_17: string;
+    hh_18: string;
+    hh_19: string;
+    hh_20: string;
+    hh_21: string;
+    hh_22: string;
+    hh_23: string;
+    flag00: string;
+    flag01: string;
+    flag02: string;
+    flag03: string;
+    flag04: string;
+    flag05: string;
+    flag06: string;
+    flag07: string;
+    flag08: string;
+    flag09: string;
+    flag10: string;
+    flag11: string;
+    flag12: string;
+    flag13: string;
+    flag14: string;
+    flag15: string;
+    flag16: string;
+    flag17: string;
+    flag18: string;
+    flag19: string;
+    flag20: string;
+    flag21: string;
+    flag22: string;
+    flag23: string;
+    total: string;
+    signature: string;
+    entry_datetime: Date;
+}

@@ -1,0 +1,156 @@
+// Here you can add other styles
+
+// Climsoft Colors: Prefix cs-
+$bg-white: #fff;
+$bg-dark: #323b46;
+$alert-danger: #ffcece;
+$alert-danger-text: #e02525;
+
+$btn-sm-color: #ffbb62;
+$btn-sm-color-hover: #f1b15d;
+
+.alert {
+  padding: 0.3rem 1rem;
+
+  &.alert-danger {
+    background-color: $alert-danger !important;
+
+    strong {
+      color: $alert-danger-text;
+    }
+  }
+}
+
+.cs-btn-sm {
+  background-color: $btn-sm-color;
+  padding: 0.15rem 0.2rem;
+  font-size: 0.8rem;
+
+  &:hover {
+    background-color: $btn-sm-color-hover;
+  }
+}
+
+.wi {
+  &.wi-2x {
+    font-size: 1.5rem;
+  }
+
+  &.wi-3x {
+    font-size: 2rem;
+  }
+}
+
+.modal-close {
+  border: none;
+  background-color: transparent;
+}
+
+
+// Form Elements Custom Styles
+fieldset {
+  position: relative;
+  border: 1px solid #999999;
+  border-radius: 0.2rem;
+
+  legend {
+    width: auto;
+    padding: 0.1rem 0.5rem;
+    border: none;
+    border-radius: 0.3rem;
+    font-size: 0.9rem !important;
+    position: absolute !important;
+    top: -0.8rem !important;
+    left: 1rem !important;
+    background-color: $bg-white;
+    color: #131417;
+  }
+}
+
+// Typeahead selection value to show only.
+.typeahead-selection {
+  &-inner {
+    cursor: not-allowed;
+    position: relative;
+    padding: 0.5rem 0.3rem;
+    background-color: #eeeeee;
+    border: 1px solid #bebebe;
+    border-radius: 0.3rem;
+    font-size: 0.85rem;
+    overflow: hidden;
+
+    .btn {
+      position: absolute;
+      top: 4px;
+      right: 2px;
+      line-height: 1rem;
+      padding: 0.3rem;
+    }
+  }
+
+  &.theme {
+    .typeahead-selection-inner {
+      background-color: #a3e8fd;
+      border-color: #81c2d6;
+      color: #2f4d57;
+    }
+  }
+
+  &.success {
+    .typeahead-selection-inner {
+      background-color: #c9f597;
+      border: 1px solid #a8be8f;
+    }
+  }
+}
+
+.typeahead-loading {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.9rem;
+
+  img {
+    width: 18px;
+    margin-right: 0.2rem;
+  }
+}
+
+typeahead-container {
+  .dropdown-item.active {
+    background-color: #277bc9 !important;
+  }
+}
+
+// min-height styles
+.mh {
+  &-4 {
+    min-height: 4rem;
+  }
+
+  &-8 {
+    min-height: 8rem;
+  }
+
+  &-12 {
+    min-height: 12rem;
+  }
+
+  &-16 {
+    min-height: 16rem;
+  }
+
+  &-20 {
+    min-height: 20rem;
+  }
+
+  &-24 {
+    min-height: 24rem;
+  }
+
+  &-28 {
+    min-height: 28rem;
+  }
+
+  &-32 {
+    min-height: 32rem;
+  }
+}

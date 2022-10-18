@@ -1,0 +1,226 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>{{isUpdate? 'Update' : 'Add'}} Instrument</strong>
+      </c-card-header>
+      <c-card-body>
+        <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Error(s)</strong> Please correct the following erros before you proceed.</c-alert>
+        <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)" autocomplete="off">
+          <c-row *ngIf="loading">
+            <c-col xs="12" lg="8" class="py-2">
+              <app-infinite-loading></app-infinite-loading>
+            </c-col>
+          </c-row>
+          <c-row *ngIf="!isUpdate">
+            <c-col xs="12" md="5" xl="4">
+              <div class="mb-2">
+                <label cLabel for="instrument_id">Instrument ID</label>
+                <input
+                  id="instrument_id"
+                  formControlName="instrument_id"
+                  aria-label="default input"
+                  cFormControl
+                  [ngClass]="{
+                    'is-invalid': (f['instrument_id'].touched) && f['instrument_id'].invalid,
+                    'is-valid': instValidated && !f['instrument_id'].hasError('instrumentExists')
+                  }"
+                  class="{{ instValidated && f['instrument_id'].hasError('instrumentExists')? 'is-invalid' : '' }}"
+                />
+                <div col="12" class="invalid-feedback" *ngIf="f['instrument_id'].errors">
+                  <div *ngIf="f['instrument_id'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Instrument is required.</div>
+                  <div *ngIf="instValidated && f['instrument_id'].hasError('instrumentExists')"> <svg cIcon name="cilXCircle"></svg> Instrument id already exists.</div>
+                </div>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col xs="12" md="5" xl="4">
+              <div class="mb-3">
+                <label cLabel for="inst_name">Instrument Name</label>
+                <input
+                  id="inst_name"
+                  formControlName="instrument_name"
+                  aria-label="Instrument Name"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['instrument_name'].touched) && f['instrument_name'].invalid }"
+                  placeholder="Instrument Name"
+                />
+                <div col="12" class="invalid-feedback" *ngIf="f['instrument_name'].errors">
+                  <div *ngIf="f['instrument_name'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Instrument name is required.</div>
+                </div>
+              </div>
+            </c-col>
+            <c-col xs="12" md="5" xl="4">
+              <div class="mb-3">
+                <label cLabel for="inst_abbrev">Abbreviation</label>
+                <input
+                  id="inst_abbrev"
+                  formControlName="abbreviation"
+                  aria-label="Abbreviation"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['abbreviation'].touched) && f['abbreviation'].invalid }"
+                  placeholder="Abbreviation"
+                />
+                <div col="12" class="invalid-feedback" *ngIf="f['abbreviation'].errors">
+                  <div *ngIf="f['abbreviation'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Latitude is required.</div>
+                  <div *ngIf="f['abbreviation'].errors['pattern']"> <svg cIcon name="cilXCircle"></svg> Latitude must be a number.</div>
+                </div>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col xs="12" md="5" xl="4">
+              <div class="mb-3">
+                <label cLabel for="inst_man">Manufacturer</label>
+                <input
+                  id="inst_man"
+                  formControlName="manufacturer"
+                  aria-label="Manufacturer"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['manufacturer'].touched) && f['manufacturer'].invalid }"
+                  placeholder="Manufacturer"
+                />
+                <div col="12" class="invalid-feedback" *ngIf="f['manufacturer'].errors">
+                  <div *ngIf="f['manufacturer'].errors['required']"> <svg cIcon name="cilXCircle"></svg> WMO Id is required.</div>
+                </div>
+              </div>
+            </c-col>
+            <c-col xs="12" md="5" xl="4">
+              <div class="mb-3">
+                <label cLabel for="inst_model">Model</label>
+                <input
+                  id="inst_model"
+                  formControlName="model"
+                  aria-label="Model"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['model'].touched) && f['model'].invalid }"
+                  placeholder="Model" />
+                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['model'].errors">
+                    <div *ngIf="f['model'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Elevation is required.</div>
+                  </div>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col xs="12" md="5" xl="4">
+              <div class="mb-3">
+                <label cLabel for="inst_serial">Serial Number</label>
+                <input
+                  id="inst_serial"
+                  formControlName="serial_number"
+                  aria-label="default input"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['serial_number'].touched) && f['serial_number'].invalid }"
+                  placeholder="Serial Number" />
+                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['serial_number'].errors">
+                    <div *ngIf="f['serial_number'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Serial Number is required.</div>
+                    <div *ngIf="f['serial_number'].errors['pattern']"> <svg cIcon name="cilXCircle"></svg> Value must be a number.</div>
+                  </div>
+              </div>
+            </c-col>
+            <c-col xs="12" md="5" xl="4">
+              <div class="mb-3">
+                <label cLabel for="inst_install_at">Installed At</label>
+                <input
+                  id="inst_install_at"
+                  type="hidden"
+                  formControlName="installed_at"
+                  aria-label="Installed At"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['installed_at'].touched) && f['installed_at'].invalid }"
+                  placeholder="Installed At"
+                />
+                <div class="typeahead-selection theme form-group" *ngIf="station">
+                  <div class="typeahead-selection-inner">
+                    <span>{{station.station_name}}</span>
+                    <a (click)="resetStation()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+                  </div>
+                </div>
+                <app-station-selection *ngIf="!station" (onSelection)="onStationSelect($event)"></app-station-selection>
+                <div col="12" class="invalid-feedback" *ngIf="f['installed_at'].errors">
+                  <div *ngIf="f['installed_at'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Station is required.</div>
+                </div>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col xs="12" md="5" xl="4">
+              <div class="mb-3">
+                <label cLabel for="inst_install">Installation Date/Time</label>
+                <app-data-time
+                    [current]="f['installation_datetime'].value"
+                    (onChange)="onInstallDateChange($event)"
+                    [submitted]="submitted"
+                    error="Installation datetime is required."></app-data-time>
+              </div>
+            </c-col>
+            <c-col xs="12" md="5" xl="4">
+              <div class="mb-3">
+                <label cLabel for="inst_deinstall">Deinstallation Date/Time</label>
+                <app-data-time
+                    [current]="f['deinstallation_datetime'].value"
+                    (onChange)="onDeinstallDateChange($event)"
+                    [submitted]="submitted"
+                    [minDate]="minDate"
+                    error="Deinstallation datetime is required."></app-data-time>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col xs="12" md="5" xl="4">
+              <div class="mb-3">
+                <label cLabel for="inst_uncert">Uncertainty</label>
+                <input
+                  id="inst_uncert"
+                  formControlName="instrument_uncertainty"
+                  aria-label="Instrument Uncertainty"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['instrument_uncertainty'].touched) && f['instrument_uncertainty'].invalid }"
+                  placeholder="Instrument Uncertainty" />
+                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['instrument_uncertainty'].errors">
+                    <div *ngIf="f['instrument_uncertainty'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Icao id is required.</div>
+                  </div>
+              </div>
+            </c-col>
+            <c-col xs="12" md="5" xl="4">
+              <div class="mb-3">
+                <label cLabel for="inst_height">Height</label>
+                <input
+                  id="inst_height"
+                  formControlName="height"
+                  aria-label="Height"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['height'].touched) && f['height'].invalid }"
+                  placeholder="Height"
+                />
+                <div col="12" class="invalid-feedback" *ngIf="f['height'].errors">
+                  <div *ngIf="f['height'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Admin region is required.</div>
+                </div>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row>
+
+          </c-row>
+          <c-row>
+            <c-col xs="12" md="5" xl="4">
+              <div class="mb-3">
+                <label cLabel for="inst_pic">Instrument Picture</label>
+                <app-image-uploader #imageUploader [feature]="'feature'"></app-image-uploader>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row [ngClass]="{ 'mt-4': !error }">
+            <c-col xs="12">
+              <button type="submit" cButton class="px-4" color="dark">
+                <c-spinner *ngIf="loading" aria-hidden="true" size="sm"></c-spinner> Submit </button>
+              <button type="button" cButton class="px-4" color="dark" (click)="onReset()"> Reset </button>
+              <button type="button" cButton class="px-4" color="dark" (click)="onCancel()"> Cancel </button>
+            </c-col>
+          </c-row>
+        </form>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

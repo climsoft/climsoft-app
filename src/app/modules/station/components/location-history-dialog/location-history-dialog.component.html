@@ -1,0 +1,216 @@
+<div class="modal-header">
+  <h5 class="modal-title pull-left">{{ update? 'Update' : 'Add'}} Location History Item</h5>
+  <button type="button" class="btn-close pull-right" aria-label="Close" (click)="onCancel()"></button>
+</div>
+<div class="modal-body">
+  <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Error(s)!</strong> Please correct the following errors.</c-alert>
+  <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
+    <c-row>
+      <c-col xs="12" md="6" *ngIf="!fromStation">
+        <div class="mb-2">
+          <label cLabel for="station">Station</label>
+          <input
+            id="station"
+            type="hidden"
+            formControlName="belongs_to"
+            aria-label="default input"
+            cFormControl
+          />
+          <div class="typeahead-selection theme form-group" *ngIf="station">
+            <div class="typeahead-selection-inner">
+              <span>{{station?.station_name}}</span>
+              <a (click)="resetStation()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+            </div>
+          </div>
+          <app-station-selection *ngIf="!station" (onSelection)="onStationSelect($event)"></app-station-selection>
+          <div col="12" class="invalid-feedback" *ngIf="f['belongs_to'].errors">
+            <div *ngIf="f['belongs_to'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Station selection required.</div>
+          </div>
+        </div>
+      </c-col>
+
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="st-type">Station Type</label>
+          <select formControlName="station_type" aria-label="Station Type" cSelect [ngClass]="{ 'is-invalid': (submitted || f['station_type'].touched) && f['station_type'].invalid }">
+            <option value>Select Station Type</option>
+            <option *ngFor="let st of stationTypes" [value]="st.value">{{st.key}}</option>
+          </select>
+          <div col="12" class="invalid-feedback" *ngIf="f['station_type'].errors">
+            <div *ngIf="f['station_type'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Station type is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="latitude">Latitude</label>
+          <input
+            id="latitude"
+            formControlName="latitude"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['latitude'].touched) && f['latitude'].invalid }"
+            placeholder="Latitude"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['latitude'].errors">
+            <div *ngIf="f['latitude'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Latitude is required.</div>
+          </div>
+        </div>
+      </c-col>
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="longitude">Longitude</label>
+          <input
+            id="longitude"
+            formControlName="longitude"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['longitude'].touched) && f['longitude'].invalid }"
+            placeholder="Longitude"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['longitude'].errors">
+            <div *ngIf="f['longitude'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Longitude is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="geoloc_method">Geolocation Method</label>
+          <input
+            id="geoloc_method"
+            formControlName="geoLocationMethod"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['geoLocationMethod'].touched) && f['geoLocationMethod'].invalid }"
+            placeholder="Geolocation Method"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['geoLocationMethod'].errors">
+            <div *ngIf="f['geoLocationMethod'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Geolocation method is required.</div>
+          </div>
+        </div>
+      </c-col>
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="geoloc-acc">Geolocation Accuracy</label>
+          <input
+            id="geoloc-acc"
+            formControlName="geoLocationAccuracy"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['geoLocationAccuracy'].touched) && f['geoLocationAccuracy'].invalid }"
+            placeholder="Geolocation Accuracy"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['geoLocationAccuracy'].errors">
+            <div *ngIf="f['geoLocationAccuracy'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Geolocation accuracy is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="open-date">Opening Date-Time</label>
+          <app-data-time
+            [current]="f['opening_datetime'].value"
+            (onChange)="onOpeningDateChanged($event)"
+            [submitted]="submitted"
+            error="Opening datetime is required."></app-data-time>
+        </div>
+      </c-col>
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="close-date">Closing Date-Time</label>
+          <app-data-time
+            [current]="f['closing_datetime'].value"
+            (onChange)="onClosingDateChanged($event)"
+            [submitted]="submitted"
+            [minDate]="minDate"
+            error="Closing datetime is required."></app-data-time>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="authority">Authority</label>
+          <input
+            id="authority"
+            formControlName="authority"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['authority'].touched) && f['authority'].invalid }"
+            placeholder="Authority"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['authority'].errors">
+            <div *ngIf="f['authority'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Authority data is required.</div>
+          </div>
+        </div>
+      </c-col>
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="elevation">Elevation</label>
+          <input
+            id="elevation"
+            formControlName="elevation"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['elevation'].touched) && f['elevation'].invalid }"
+            placeholder="Elevation"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['elevation'].errors">
+            <div *ngIf="f['elevation'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Instrument code is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="admin_region">Admin Region</label>
+          <input
+            id="admin_region"
+            formControlName="admin_region"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['admin_region'].touched) && f['admin_region'].invalid }"
+            placeholder="Admin Region"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['admin_region'].errors">
+            <div *ngIf="f['admin_region'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Authority data is required.</div>
+          </div>
+        </div>
+      </c-col>
+      <c-col xs="12" md="6">
+        <div class="mb-2">
+          <label cLabel for="drain">Drainage Besin</label>
+          <input
+            id="drain"
+            formControlName="drainage_basin"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['drainage_basin'].touched) && f['drainage_basin'].invalid }"
+            placeholder="Drainage Basin"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['drainage_basin'].errors">
+            <div *ngIf="f['drainage_basin'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Drainage basin value is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+    <c-row>
+      <c-col xs="12" class="text-end py-3">
+        <button type="submit" class="btn btn-dark mx-1">{{update? 'Update' : 'Add' }}</button>
+        <button type="button" class="btn btn-dark" (click)="onCancel()">Cancel</button>
+      </c-col>
+    </c-row>
+  </form>
+</div>

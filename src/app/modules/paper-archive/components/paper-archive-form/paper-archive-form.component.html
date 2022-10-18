@@ -1,0 +1,102 @@
+<div class="modal-header">
+  <h5 class="modal-title pull-left">{{update? 'Update' : 'Add'}} Paper Archive</h5>
+</div>
+<div class="modal-body">
+  <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
+    <c-row>
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="belongs_to">Belongs To</label>
+          <input
+            id="belongs_to"
+            type="hidden"
+            formControlName="belongs_to"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['belongs_to'].touched) && f['belongs_to'].invalid }"
+            placeholder="Refers To"
+          />
+          <div class="typeahead-selection theme form-group" *ngIf="station">
+            <div class="typeahead-selection-inner">
+              <span>{{station.station_name}}</span>
+              <a (click)="resetStation()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+            </div>
+          </div>
+          <app-station-selection *ngIf="!station" (onSelection)="onStationSelect($event)"></app-station-selection>
+          <div col="12" class="invalid-feedback" *ngIf="f['belongs_to'].errors">
+            <div *ngIf="f['belongs_to'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Belongs to is required.</div>
+          </div>
+        </div>
+      </c-col>
+
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="form_datetime">Form Date/Time</label>
+          <app-data-time
+            [current]="f['form_datetime'].value"
+            (onChange)="onFormDateChanged($event)"
+            [submitted]="submitted"
+            error="form datetime is required."></app-data-time>
+          <div col="12" class="invalid-feedback" *ngIf="f['form_datetime'].errors">
+            <div *ngIf="f['form_datetime'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Form date time not selected.</div>
+          </div>
+        </div>
+      </c-col>
+
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="classified_into">Classified Into</label>
+          <input
+            id="classified_into"
+            type="hidden"
+            formControlName="classified_into"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['classified_into'].touched) && f['classified_into'].invalid }"
+            placeholder="Classified Into"
+          />
+          <div class="typeahead-selection theme form-group" *ngIf="definition">
+            <div class="typeahead-selection-inner">
+              <span>{{definition.form_id}}</span>
+              <a (click)="resetDefinition()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+            </div>
+          </div>
+          <app-archive-definition-selection *ngIf="!definition" (onSelection)="onDefinitionSelect($event)"></app-archive-definition-selection>
+          <div col="12" class="invalid-feedback" *ngIf="f['classified_into'].errors">
+            <div *ngIf="f['classified_into'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Element not selected.</div>
+          </div>
+        </div>
+      </c-col>
+
+      <c-col xs="12">
+        <div class="mb-2">
+          <label cLabel for="classified_into">Image</label>
+          <input
+            id="image"
+            type="hidden"
+            formControlName="image"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['image'].touched) && f['image'].invalid }"
+            placeholder="Network Type"
+          />
+          <app-image-uploader #imageUploader [feature]="'feature'" (onImgSelect)="onImage($event)"></app-image-uploader>
+          <div col="12" class="invalid-feedback" *ngIf="f['classified_into'].errors">
+            <div *ngIf="f['classified_into'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Element not selected.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12">
+        <hr>
+      </c-col>
+
+      <c-col xs="12" class="text-end pt-3">
+        <button type="submit" class="btn btn-dark mx-1">{{update? 'Update' : 'Add'}}</button>
+        <button type="button" class="btn btn-dark" (click)="onCancel()">Cancel</button>
+      </c-col>
+    </c-row>
+  </form>
+</div>

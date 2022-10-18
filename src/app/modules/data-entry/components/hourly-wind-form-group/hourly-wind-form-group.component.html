@@ -1,0 +1,46 @@
+<c-row class="hourly-data-row" [ngClass]="styles" [formGroup]="group">
+  <c-col class="py-2 label" sm="2">
+    <span *ngIf="!isDirty">{{hourVal(fg['hour'].value)}}</span>
+    <button
+      type="button"
+      cButton
+      color="dark"
+      shape="rounded-pill"
+      (click)="revert()"
+      *ngIf="isDirty">{{hourVal(fg['hour'].value)}}</button>
+  </c-col>
+  <c-col class="py-1" sm="4">
+    <input
+      formControlName="ddff"
+      #ddffValue
+      aria-label="ddff"
+      (focus)="onValFocus('ddff')"
+      (blur)="onValBlur()"
+      [ngClass]="{ 'is-invalid': ddffInvalid }"
+      cFormControl />
+  </c-col>
+  <c-col class="py-1" sm="2">
+    <!-- <input
+      formControlName="dd"
+      #ddValue
+      aria-label="dd"
+      (focus)="onValFocus('dd')"
+      (blur)="onValBlur('dd')"
+      cFormControl /> -->
+      <div class="text-label">{{fg['dd'].value}}</div>
+  </c-col>
+  <c-col class="py-1" sm="2">
+    <!-- <input
+      formControlName="ff"
+      #ffValue
+      aria-label="ff"
+      (focus)="onValFocus('ff')"
+      (blur)="onValBlur('ff')"
+      cFormControl /> -->
+      <div class="text-label">{{fg['ff'].value}}</div>
+  </c-col>
+  <c-col class="py-1 text-center"  sm="2">
+    <input type="hidden" formControlName="flag" aria-label="flag" cFormControl />
+    <app-flag-picker [flag]="fg['flag'].value" [disabled]="disabled" (onSelect)="selectFlag($event)"></app-flag-picker>
+  </c-col>
+</c-row>

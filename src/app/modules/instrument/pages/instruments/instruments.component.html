@@ -1,0 +1,78 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12" lg="12" xl="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <c-row>
+          <c-col xs="6">
+            <strong class="col-6">Instruments</strong>
+          </c-col>
+          <c-col xs="6" class="text-end">
+            <a [routerLink]="['/instruments', 'new']" class="btn btn-sm cs-btn-sm btn-outline"> <svg cIcon name="cilPlus"></svg> Add New </a>
+          </c-col>
+        </c-row>
+      </c-card-header>
+      <c-card-body *ngIf="instruments$ | async; let state">
+        <app-paginator (onPage)="onPage($event)"
+                       [limit]="state.limit"
+                       [current]="state.page"
+                       [pages]="createPages(state.pages)"></app-paginator>
+        <table cTable>
+          <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Serial</th>
+            <th scope="col">Model</th>
+            <th scope="col">Manufacturer</th>
+            <th scope="col">Height</th>
+            <th scope="col">Uncertainty</th>
+            <th scope="col">Installation</th>
+            <th scope="col">De-Installation</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let inst of state.instruments">
+            <th scope="row">{{inst.instrument_id}}</th>
+            <td scope="col">[{{inst.abbreviation}}] {{inst.instrument_name}}</td>
+            <td scope="col">{{inst.serial_number}}</td>
+            <td scope="col">{{inst.model}}</td>
+            <td scope="col">{{inst.manufacturer}}</td>
+            <td scope="col">{{inst.height}}</td>
+            <td scope="col">{{inst.instrument_uncertainty}}</td>
+            <td scope="col">{{inst.installation_datetime | date : 'dd MMM YYYY hh:mm'}}</td>
+            <td scope="col">{{inst.deinstallation_datetime | date : 'dd MMM YYYY hh:mm'}}</td>
+            <td>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      [routerLink]="['/instruments', inst.instrument_id]"
+                      cTooltip="View Station">
+                <svg cIcon name="cilArrowThickFromLeft" size="sm"></svg>
+              </button>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      [routerLink]="['/instruments', inst.instrument_id,'update']"
+                      cTooltip="Update Station">
+                <svg cIcon name="cilPencil" size="sm"></svg>
+              </button>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      (click)="remove(inst)"
+                      cTooltip="Remove Station">
+                <svg cIcon name="cilTrash" size="sm" class="text-danger"></svg>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <c-alert *ngIf="!state.instruments.length" color="primary"><strong>Info</strong> No instruments available to show. </c-alert>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

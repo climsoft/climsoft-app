@@ -1,0 +1,190 @@
+<div class="modal-header">
+  <h5 class="modal-title pull-left">{{update? 'Update': 'Add'}} Station Element</h5>
+</div>
+<div class="modal-body">
+  <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Error(s)!</strong> Please correct the following errors.</c-alert>
+  <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
+    <c-row>
+      <c-col xs="12" *ngIf="loading">
+        <app-infinite-loading></app-infinite-loading>
+      </c-col>
+
+      <c-col xs="12" md="6" lg="5">
+        <div class="mb-2">
+          <label cLabel for="station">Station</label>
+          <input
+            id="station"
+            type="hidden"
+            formControlName="recorded_from"
+            aria-label="default input"
+            cFormControl
+          />
+          <div class="typeahead-selection theme form-group" *ngIf="station">
+            <div class="typeahead-selection-inner">
+              <span>{{station.station_name}}</span>
+              <a (click)="resetStation()" *ngIf="!fromStation" class="btn"> <svg cIcon name="cilX"></svg> </a>
+            </div>
+          </div>
+          <app-station-selection *ngIf="!station && !update" (onSelection)="onStationSelect($event)"></app-station-selection>
+          <div col="12" class="invalid-feedback" *ngIf="f['recorded_from'].errors">
+            <div *ngIf="f['recorded_from'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Station selection required.</div>
+          </div>
+        </div>
+      </c-col>
+
+      <c-col xs="12" md="6" lg="5">
+        <div class="mb-2">
+          <label cLabel for="element">Element</label>
+          <input
+            id="element"
+            type="hidden"
+            [attr.disabled]="update"
+            formControlName="described_by"
+            aria-label="default input"
+            cFormControl
+          />
+          <div class="typeahead-selection theme form-group" *ngIf="element">
+            <div class="typeahead-selection-inner">
+              <span>{{element.element_name}}</span>
+              <a (click)="resetElement()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+            </div>
+          </div>
+          <app-element-selection *ngIf="!element && !update" (onSelection)="onElementSelect($event)"></app-element-selection>
+          <div col="12" class="invalid-feedback" *ngIf="f['described_by'].errors">
+            <div *ngIf="f['described_by'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Element selection required.</div>
+          </div>
+        </div>
+      </c-col>
+
+      <c-col xs="12" md="6" lg="5">
+        <div class="mb-2">
+          <label cLabel for="instrument">Instrument</label>
+          <input
+            id="instrument"
+            type="hidden"
+            [attr.disabled]="update"
+            formControlName="recorded_with"
+            aria-label="default input"
+            cFormControl
+          />
+          <div class="typeahead-selection theme form-group" *ngIf="instrument">
+            <div class="typeahead-selection-inner">
+              <span>{{instrument.instrument_name}}</span>
+              <a (click)="resetElement()" class="btn"> <svg cIcon name="cilX"></svg> </a>
+            </div>
+          </div>
+          <app-instrument-selection *ngIf="!instrument && !update" (onSelection)="onInstrumentSelect($event)"></app-instrument-selection>
+          <div col="12" class="invalid-feedback" *ngIf="f['recorded_with'].errors">
+            <div *ngIf="f['recorded_with'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Instrument selection required.</div>
+          </div>
+        </div>
+      </c-col>
+
+      <c-col xs="12" md="6" lg="5">
+        <div class="mb-3">
+          <label cLabel for="scheduled_for">Classified Into</label>
+          <select
+              id="scheduled_for"
+              formControlName="scheduled_for"
+              [ngClass]="{ 'is-invalid': (submitted || f['scheduled_for'].touched) && f['scheduled_for'].invalid }"
+              cSelect
+              [ngClass]="{ 'is-invalid': (submitted || f['scheduled_for'].touched) && f['scheduled_for'].invalid }">
+            <option value>Select Schedule For</option>
+            <option *ngFor="let sc of scheduleClasses" [value]="sc.schedule_class">{{sc.schedule_class}}</option>
+          </select>
+          <div col="12" class="invalid-feedback" *ngIf="submitted && f['scheduled_for'].errors">
+            <div *ngIf="f['scheduled_for'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Schedule Class is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="6" lg="5">
+        <label cLabel for="begin_date">Begin Date</label>
+        <c-input-group class="mb-3">
+          <span cInputGroupText>
+            <svg cIcon name="cilCalendar"></svg>
+          </span>
+          <input
+            id="begin_date"
+            type="hidden"
+            formControlName="begin_date"
+            aria-label="default input"
+            cFormControl
+          />
+          <input
+              name="monthYear"
+              placeholder="Select Begin Date"
+              cFormControl
+              bsDatepicker
+              (bsValueChange)="onBeginDateChanged($event)"
+              [bsValue]="bsBegin"
+              [ngClass]="{ 'is-invalid': submitted && f['begin_date'].invalid }"
+              [bsConfig]="bsConfig"
+              autocomplete="off"
+            >
+            <div sm="12" class="invalid-feedback" *ngIf="submitted && f['begin_date'].invalid">
+              <svg cIcon name="cilXCircle"></svg> Begin date is required.
+            </div>
+        </c-input-group>
+      </c-col>
+      <c-col xs="12" md="6" lg="5">
+        <label cLabel for="end_date">End Date</label>
+        <c-input-group class="mb-3">
+          <span cInputGroupText>
+            <svg cIcon name="cilCalendar"></svg>
+          </span>
+          <input
+            id="end_date"
+            type="hidden"
+            formControlName="end_date"
+            aria-label="default input"
+            cFormControl
+          />
+          <input
+              name="monthYear"
+              placeholder="Select End Date"
+              cFormControl
+              bsDatepicker
+              (bsValueChange)="onEndDateChanged($event)"
+              [bsValue]="bsEnd"
+              [ngClass]="{ 'is-invalid': submitted && f['end_date'].invalid }"
+              [bsConfig]="bsConfig"
+              [minDate]="minDate"
+              autocomplete="off"
+            >
+            <div sm="12" class="invalid-feedback" *ngIf="submitted && f['end_date'].invalid">
+              <svg cIcon name="cilXCircle"></svg> End date is required.
+            </div>
+        </c-input-group>
+      </c-col>
+    </c-row>
+
+    <c-row>
+      <c-col xs="12" md="6" lg="5">
+        <div class="mb-2">
+          <label cLabel for="height">Height</label>
+          <input
+            id="height"
+            formControlName="height"
+            aria-label="default input"
+            cFormControl
+            [ngClass]="{ 'is-invalid': (submitted || f['height'].touched) && f['height'].invalid }"
+            placeholder="Height"
+          />
+          <div col="12" class="invalid-feedback" *ngIf="f['height'].errors">
+            <div *ngIf="f['height'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Height is required.</div>
+          </div>
+        </div>
+      </c-col>
+    </c-row>
+    <hr>
+    <c-row class="mt-4">
+      <c-col xs="12" class="text-start py-3">
+        <button type="submit" class="btn btn-dark mx-1">{{update? 'Update' : 'Add' }}</button>
+        <button type="button" class="btn btn-dark" (click)="onCancel()">Cancel</button>
+      </c-col>
+    </c-row>
+  </form>
+</div>

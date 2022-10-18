@@ -1,0 +1,21 @@
+<c-row class="daily-data-row" [ngClass]="styles" [formGroup]="group">
+  <c-col class="py-2 label">
+    <span *ngIf="!isDirty">{{fg['day'].value}}</span>
+    <button type="button" cButton color="dark" shape="rounded-pill" (click)="revert()" *ngIf="isDirty">{{fg['day'].value}}</button>
+  </c-col>
+  <c-col class="py-1">
+    <input #inputValue
+           formControlName="value"
+           (focus)="onValueFocus()"
+           (blur)="onValueBlur($event)"
+           aria-label="value"
+           cFormControl />
+  </c-col>
+  <c-col class="py-1 text-center">
+    <input type="hidden" formControlName="flag" aria-label="flag" cFormControl />
+    <app-flag-picker [flag]="fg['flag'].value" [disabled]="disabled" (onSelect)="selectFlag($event)"></app-flag-picker>
+  </c-col>
+  <c-col class="py-1">
+    <input formControlName="period" aria-label="period" cFormControl />
+  </c-col>
+</c-row>

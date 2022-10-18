@@ -1,0 +1,170 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>{{isUpdate? 'Update' : 'Add'}} Element</strong>
+      </c-card-header>
+      <c-card-body>
+        <c-alert *ngIf="submitted && form.invalid" color="danger"><strong>Error(s)!</strong> Please correct the following erros before you proceed.</c-alert>
+        <form cForm [formGroup]="form" novalidate (ngSubmit)="onSubmit($event)">
+          <c-row>
+            <c-col xs="12" md="5" lg="4" xl="3">
+              <div class="mb-3">
+                <label cLabel for="el-name">Element Name</label>
+                <input
+                  id="el-name"
+                  formControlName="element_name"
+                  aria-label="default input"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['element_name'].touched) && f['element_name'].invalid }"
+                  placeholder="Element Name"
+                />
+                <div col="12" class="invalid-feedback" *ngIf="f['element_name'].errors">
+                  <div *ngIf="f['element_name'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Element name is required.</div>
+                </div>
+              </div>
+            </c-col>
+            <c-col xs="12" md="5" lg="4" xl="3">
+              <div class="mb-3">
+                <label cLabel for="el-abbr">Abbreviation</label>
+                <input
+                  id="el-abbr"
+                  formControlName="abbreviation"
+                  aria-label="default input"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['abbreviation'].touched) && f['abbreviation'].invalid }"
+                  placeholder="Abbreviation" />
+                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['abbreviation'].errors">
+                    <div *ngIf="f['abbreviation'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Abbreviation is required.</div>
+                  </div>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col xs="12" md="5" lg="4" xl="3">
+              <div class="mb-3">
+                <label cLabel for="el-type">Type</label>
+                <input
+                  id="el-type"
+                  formControlName="element_type"
+                  aria-label="default input"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['element_type'].touched) && f['element_type'].invalid }"
+                  placeholder="Element Type" />
+                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['element_type'].errors">
+                    <div *ngIf="f['element_type'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Element type is required.</div>
+                  </div>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col xs="12" md="6">
+              <div class="mb-3">
+                <label cLabel for="el-desc">Description</label>
+                <textarea formControlName="description"
+                          aria-label="default input"
+                          cFormControl
+                          id="el-desc"
+                          rows="5">
+                </textarea>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col xs="12" md="4" lg="3" xl="2">
+              <div class="mb-3">
+                <label cLabel for="el-lower-limit">Lower Limit</label>
+                <input
+                  id="el-lower-limit"
+                  formControlName="lower_limit"
+                  aria-label="default input"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['lower_limit'].touched) && f['lower_limit'].invalid }"
+                  placeholder="Lower Limit"
+                />
+                <div col="12" class="invalid-feedback" *ngIf="f['lower_limit'].errors">
+                  <div *ngIf="f['lower_limit'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Latitude is required.</div>
+                  <div *ngIf="f['lower_limit'].errors['pattern']"> <svg cIcon name="cilXCircle"></svg> Latitude must be a number.</div>
+                </div>
+              </div>
+            </c-col>
+            <c-col xs="12" md="4" lg="3" xl="2">
+              <div class="mb-3">
+                <label cLabel for="el-upper-limit">Upper Limit</label>
+                <input
+                  id="el-upper-limit"
+                  formControlName="upper_limit"
+                  aria-label="default input"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['upper_limit'].touched) && f['upper_limit'].invalid }"
+                  placeholder="Upper Limit" />
+                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['upper_limit'].errors">
+                    <div *ngIf="f['upper_limit'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Elevation is required.</div>
+                  </div>
+              </div>
+            </c-col>
+            <c-col xs="12" md="4" lg="3" xl="2">
+              <div class="mb-3">
+                <label cLabel for="el-units">Units</label>
+                <input
+                  id="el-units"
+                  formControlName="units"
+                  aria-label="default input"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['units'].touched) && f['units'].invalid }"
+                  placeholder="Units"
+                />
+                <div col="12" class="invalid-feedback" *ngIf="f['units'].errors">
+                  <div *ngIf="f['units'].errors['required']"> <svg cIcon name="cilXCircle"></svg> WMO Id is required.</div>
+                </div>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col xs="12" md="5" lg="4" xl="3">
+              <div class="mb-3">
+                <label cLabel for="el-scale">Scale</label>
+                <input
+                  id="el-scale"
+                  formControlName="element_scale"
+                  aria-label="default input"
+                  cFormControl
+                  [ngClass]="{ 'is-invalid': (submitted || f['element_scale'].touched) && f['element_scale'].invalid }"
+                  placeholder="Element Scale" />
+                  <div col="12" class="invalid-feedback pl-1" *ngIf="f['element_scale'].errors">
+                    <div *ngIf="f['element_scale'].errors['required']"> <svg cIcon name="cilXCircle"></svg> Icao id is required.</div>
+                  </div>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col xs="12" md="5" lg="4" xl="3">
+              <div class="mb-3">
+                <c-form-check sizing="lg" switch>
+                  <input cFormCheckInput type="checkbox" formControlName="qc_total_required" />
+                  <label cFormCheckLabel>QC Total Required</label>
+                </c-form-check>
+              </div>
+            </c-col>
+            <c-col xs="12" md="5" lg="4" xl="3">
+              <div class="mb-3">
+                <c-form-check sizing="lg" switch>
+                  <input cFormCheckInput type="checkbox" formControlName="selected" />
+                  <label cFormCheckLabel>Selected</label>
+                </c-form-check>
+              </div>
+            </c-col>
+          </c-row>
+          <c-row [ngClass]="{ 'mt-3': !error }">
+            <c-col xs="12">
+              <button type="submit" cButton class="px-4" color="dark">
+                <c-spinner *ngIf="loading" aria-hidden="true" size="sm"></c-spinner> Submit </button>
+              <button type="button" cButton class="px-4" color="dark" (click)="onReset()"> Reset </button>
+              <button type="button" cButton class="px-4" color="dark" (click)="onCancel()"> Cancel </button>
+            </c-col>
+          </c-row>
+        </form>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

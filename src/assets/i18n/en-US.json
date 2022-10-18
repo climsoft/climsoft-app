@@ -1,0 +1,31 @@
+{
+  "app": {
+
+  },
+  "nav": {
+    "title": {
+      "station_metadata": "Station MetaData",
+      "data_entry": "Data Entry"
+    },
+    "dashboard": "Dashboard",
+    "stations": "Stations",
+    "elements": "Elements",
+    "station_elements": "Station Elements",
+    "instruments": "Instruments",
+    "location_histories": "Location Histories",
+    "qualifiers": "Qualifiers",
+    "schedule_class": "Schedule Class",
+    "physical_features": "Physical Features",
+    "paper_archive": "Paper Archive",
+    "data_entry_forms": "Data Entry Forms",
+    "data_entry": {
+      "hourly": "Hourly",
+      "daily": "Daily",
+      "monthly": "Monthly",
+      "hourly_wind": "Hourly Wind",
+      "synoptic-carribiean": "Synoptic Carribean",
+      "synoptic-2ra1": "Synoptic 2RA1",
+      "agromet": "Agromet"
+    }
+  }
+}

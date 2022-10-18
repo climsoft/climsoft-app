@@ -1,0 +1,13 @@
+<ng-container>
+  <label cLabel for="element">Year</label>
+  <c-input-group class="mb-3">
+    <select
+      [formControl]="formControl"
+      class="select"
+      cSelect class="mb-3"
+      sizing="md">
+      <option value>Select Year</option>
+      <option *ngFor="let y of years" [value]="y"> {{y}} </option>
+    </select>
+  </c-input-group>
+</ng-container>

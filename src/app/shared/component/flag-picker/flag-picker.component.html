@@ -1,0 +1,28 @@
+<div class="flag-picker" [ngClass]="{ 'enabled': toggled }">
+  <div class="inner">
+    <a [cTooltip]="activeLabel"
+       [ngClass]="{ 'disabled': disabled }"
+       class="active-flag btn {{ flagConfig[activeFlag].class }}"
+       (click)="toggleActive()">
+       {{activeFlag === 'N'? ' ' : activeFlag}}
+    </a>
+  </div>
+  <ul>
+    <li>
+      <button
+        type="button"
+        class="btn btn-circle btn-light"
+        (click)="selectFlag('N')">
+      </button>
+    </li>
+    <li *ngFor="let f of filteredFlags">
+      <button
+        type="button"
+        class="btn btn-circle"
+        [ngClass]="flagConfig[f].class"
+        (click)="selectFlag(f)">
+        {{f}}
+      </button>
+    </li>
+  </ul>
+</div>

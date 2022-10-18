@@ -1,0 +1,36 @@
+<div class="modal-header">
+  <h5 class="modal-title pull-left">View Physical Feature</h5>
+  <button type="button" class="modal-close" aria-label="Close" (click)="onCancel()">
+    <svg cIcon name="cilX"></svg>
+  </button>
+</div>
+<div class="modal-body">
+  <c-row>
+    <c-col md="12" class="text-end py-3">
+      <button type="button" class="btn btn-dark" (click)="onUpdate()">Edit</button>
+    </c-col>
+  </c-row>
+  <c-row>
+    <c-col xs="12" md="6">
+      <app-info-block [config]="{ key: 'Begin Date', type: 'date', value: feature?.begin_date }"></app-info-block>
+    </c-col>
+    <c-col xs="12" md="6">
+      <app-info-block [config]="{ key: 'End Date', type: 'date', value: feature?.end_date }"></app-info-block>
+    </c-col>
+    <c-col xs="12">
+      <app-info-block [config]="{ key: 'Description', value: feature?.description}"></app-info-block>
+    </c-col>
+  </c-row>
+  <c-row>
+    <c-col xs="12" md="6">
+      <app-info-block [config]="{ key: 'Classified Into', value: feature?.classified_into }"></app-info-block>
+    </c-col>
+  </c-row>
+  <c-row>
+    <c-col md="12" class="p-3">
+      <div class="image-wrapper mh-12">
+        <img [src]="imageSrc" alt="">
+      </div>
+    </c-col>
+  </c-row>
+</div>

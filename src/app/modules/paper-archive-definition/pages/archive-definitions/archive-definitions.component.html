@@ -1,0 +1,56 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12" lg="12" xl="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <c-row>
+          <c-col xs="6">
+            <strong class="col-6">Paper Archive Definitions</strong>
+          </c-col>
+          <c-col xs="6" class="text-end">
+            <a (click)="add()" class="btn btn-sm cs-btn-sm btn-outline"> <svg cIcon name="cilPlus"></svg> Add New </a>
+          </c-col>
+        </c-row>
+      </c-card-header>
+      <c-card-body *ngIf="state$ | async; let state">
+        <app-paginator (onPage)="onPage($event)"
+                       [limit]="state.limit"
+                       [current]="state.page"
+                       [pages]="createPages(state.pages)"></app-paginator>
+        <table cTable>
+          <thead>
+          <tr>
+            <th scope="col">Form ID</th>
+            <th scope="col">Description</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let def of state.definitions">
+            <th scope="row">{{def.form_id}}</th>
+            <th scope="row">{{def.description}}</th>
+            <td>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      (click)="update(def)"
+                      cTooltip="Update Archive">
+                <svg cIcon name="cilPencil" size="sm"></svg>
+              </button>
+              <button cButton
+                      size="sm"
+                      color="light"
+                      shape="rounded-pill"
+                      (click)="remove(def)"
+                      cTooltip="Remove Archive">
+                <svg cIcon name="cilTrash" size="sm" class="text-danger"></svg>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <c-alert *ngIf="!state.definitions.length" color="primary"><strong>Info</strong> No paper archive records available to show. </c-alert>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
