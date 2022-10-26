@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import { IDataEntryForm } from '@data/interface/data-entry-form';
 import { Flag } from '@data/enum/flag';
 import { Station } from '@data/interface/station';
-import { SynopticPayload, SynopticRAPayload } from '@data/interface/data-entry-synoptic-payload';
+import { SynopticRAPayload } from '@data/interface/data-entry-synoptic-payload';
 import { ConfirmationComponent } from '@shared/dialogs/confirmation/confirmation.component';
 import { ResponsiveService } from '@shared/services/responsive.service';
 import { SynopticFormGroupComponent } from './../../components/synoptic-form-group/synoptic-form-group.component';
