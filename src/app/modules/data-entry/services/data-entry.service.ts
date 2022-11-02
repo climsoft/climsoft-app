@@ -53,6 +53,10 @@ export class DataEntryService {
     return this.agroState$.asObservable();
   }
 
+  get synopticState(): Observable<any> {
+    return this.synopticState$.asObservable();
+  }
+
   getDailyEntry(station: string | any, element: string | any, year: number, month: number, hour: number): Observable<any> {
     this.updateDailyState({ station, element, monthYear: `${month}-1-${year}`, hour });
     return this.http.GET(`${dailyUrl}?station_id=${station}&element_id=${element}&yyyy=${year}&mm=${month}&hh=${hour}&limit=25&offset=0`);

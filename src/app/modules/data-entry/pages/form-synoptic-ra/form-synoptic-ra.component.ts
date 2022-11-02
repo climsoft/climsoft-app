@@ -1,6 +1,7 @@
+import { StationService } from '@station/services/station.service';
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import { of, delay } from 'rxjs';
+import { of, delay, take } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -9,46 +10,61 @@ import * as moment from 'moment';
 import { IDataEntryForm } from '@data/interface/data-entry-form';
 import { Flag } from '@data/enum/flag';
 import { Station } from '@data/interface/station';
-import { SynopticRAPayload } from '@data/interface/data-entry-synoptic-payload';
+import { SynopticRAPayload, SynopticState } from '@data/interface/data-entry-synoptic-payload';
 import { ConfirmationComponent } from '@shared/dialogs/confirmation/confirmation.component';
 import { ResponsiveService } from '@shared/services/responsive.service';
 import { SynopticFormGroupComponent } from './../../components/synoptic-form-group/synoptic-form-group.component';
 import { DataEntryService } from './../../services/data-entry.service';
 
 const groupsList = [
-  { element: 192, key: 'cloudHeight',   label: 'Height of Cloud' },
-  { element: 110, key: 'visibility',    label: 'Visibility' },
-  { element: 114, key: 'cloudCover',    label: 'Total Cloud Cover' },
-  { element: 112, key: 'windDirection', label: 'Wind Direction' },
-  { element: 111, key: 'windSpeed',     label: 'Wind Speed' },
-  { element: 101, key: 'dryBulb',       label: 'Dry Bulb' },
-  { element: 102, key: 'wetBulb',       label: 'Wet Bulb' },
-  { element: 103, key: 'dewPoint',      label: 'Dew Point' },
-  { element: 105, key: 'relativeHum',   label: 'Relative Humidity' },
-  { element: 106, key: 'stnLevelPress', label: 'Station Level Pressure' },
-  { element: 107, key: 'seaLevelPress', label: 'Height of cloud' },
-  { element: 0,   key: 'rainFall',      label: 'Rain Fall' }, // ??
-  { element: 167, key: 'presentWx',     label: 'Present WX' },
-  { element: 0,   key: 'pastWx1',       label: 'Past WX 1' }, // ??
-  { element: 0,   key: 'pastWx2',       label: 'Past WX 2' }, // ??
-  { element: 0,   key: 'nh',            label: 'Nh' }, // ??
-  { element: 0,   key: 'cl',            label: 'Cl' }, // ??
-  { element: 193, key: 'cm',            label: 'Cm' }, // ??
-  { element: 0,   key: 'ch',            label: 'Ch' }, // ??
-  { element: 3,   key: 'tmin',          label: 'Temperature Min' },
-  { element: 0,   key: 'gmin',          label: 'G Min' }, // ??
-  { element: 116, key: 'cldAmtLvl1',    label: 'Cloud Amt Level 1' },
-  { element: 117, key: 'cldTpLvl1',     label: 'Cloud Type Level 1' },
-  { element: 118, key: 'cldHtLvl1',     label: 'Cloud Height Level 1' },
-  { element: 120, key: 'cldAmtLvl2',    label: 'Cloud Amt Level 2' },
-  { element: 121, key: 'cldTpLvl2',     label: 'Cloud Type Level 2' },
-  { element: 122, key: 'cldHtLvl2',     label: 'Cloud Height Level 2' },
-  { element: 124, key: 'cldAmtLvl3',    label: 'Cloud Amt Level 3' },
-  { element: 125, key: 'cldTpLvl3',     label: 'Cloud Type Level 3' },
-  { element: 126, key: 'cldHtLvl3',     label: 'Cloud Height Level 3' },
-  { element: 128, key: 'cldAmtLvl4',    label: 'Cloud Amt Level 4' },
-  { element: 129, key: 'cldTpLvl4',     label: 'Cloud Type Level 4' },
-  { element: 130, key: 'cldHtLvl4',     label: 'Cloud Height Level 4' }
+  { element: 106, key: 'stnLevelPress', label: 'Station Level Pressure' }, // 1
+  { element: 107, key: 'seaReducedMSLP',label: 'Pressure Reduced to MSL-P' }, // 2
+  { element: 400, key: '3HrPressCh',    label: '3Hr Pressure Change-P3' }, // 3
+  { element: 814, key: '3HrPressCh',    label: '3Hr Pressure Characteristic' }, // 4
+  { element: 399, key: '24HrPressCh',   label: '24Hr Pressure Change-P24' }, // 5
+  { element: 301, key: 'stPressLevelA', label: 'Standard Pressure Level-a' }, // 6
+  { element: 185, key: 'geoPotHeight',  label: 'Geopotential Height-hhh' }, // 7
+  { element: 102, key: 'wetBulbTemp',   label: 'Wet Bulb Temp-TwTwTw' }, // 8
+  { element: 101, key: 'dryBulbTemp',   label: 'Dry Bulb Temp-TTT' }, // 9
+  { element: 103, key: 'dewPoint',      label: 'Dew Point-TdTdTd' }, // 10
+  { element: 105, key: 'relativeHum',   label: 'Relative Humidity-U' }, // 11
+  { element: 192, key: 'visibility',    label: 'Horizontal Visibility-VV' }, // 12
+  { element: 110, key: 'visibility',    label: 'Low Cloud Height-h' }, // 13
+  { element: 114, key: 'cloudCover',    label: 'Total Cloud Cover-N' }, // 14
+  { element: 115, key: 'verticalSig',   label: 'Vertical Significance' }, // 15
+  { element: 168, key: 'lowLvlCldNh',   label: 'Low Lvl Clouds Amt-Nh' }, // 16
+  { element: 169, key: 'lowLvlCldCl',   label: 'Low Lvl Clouds Type-CL' }, // 17
+  { element: 170, key: 'medLvlCldCm',   label: 'Medium Lvl Clouds Type-CM' }, // 18
+  { element: 171, key: 'highLvlCldCh',  label: 'High Level Clouds Type-CH' }, // 19
+  { element: 119, key: 'vertSig1',      label: 'Vertical Significance 1' }, // 20
+  { element: 116, key: 'cldAmtLvl1',    label: 'Cloud Amt Lvl1-N1' }, // 21
+  { element: 117, key: 'cldTpLvl1',     label: 'Cloud Type Lvl1-C1' }, // 22
+  { element: 118, key: 'cldHtLvl1',     label: 'Cloud Ht Lvl1-HsHs1' }, // 23
+  { element: 123, key: 'cldAmtLvl1',    label: 'Vertical Significance 2' }, // 24
+  { element: 120, key: 'cldAmtLvl2',    label: 'Cloud Amt Lvl2-N2' }, // 25
+  { element: 121, key: 'cldTpLvl2',     label: 'Cloud Type Lvl2-C2' }, // 26
+  { element: 122, key: 'cldHtLvl2',     label: 'Cloud Ht Lvl2-HsHs2' }, // 27
+  { element: 127, key: 'cldAmtLvl1',    label: 'Vertical Significance 3' }, // 28
+  { element: 124, key: 'cldAmtLvl3',    label: 'Cloud Amt Lvl3-N3' }, // 29
+  { element: 125, key: 'cldTpLvl3',     label: 'Cloud Type Lvl3-C3' }, // 30
+  { element: 126, key: 'cldHtLvl3',     label: 'Cloud Ht Lvl3-HsHs3' }, // 31
+  { element: 131, key: 'cldAmtLvl1',    label: 'Vertical Significance 4' }, // 32
+  { element: 128, key: 'cldAmtLvl4',    label: 'Cloud Amt Lvl4-N4' }, // 33
+  { element: 129, key: 'cldTpLvl4',     label: 'Cloud Type Lvl4-C4' }, // 34
+  { element: 130, key: 'cldHtLvl4',     label: 'Cloud Ht Lvl4-HsHs4' }, // 35
+  { element: 167, key: 'presentWx',     label: 'Present WX' }, // 36
+  { element: 197, key: 'pastWx1',       label: 'Past WX1' }, // 37
+  { element: 193, key: 'pastWx2',       label: 'Past WX2' }, // 38
+  { element: 2,   key: 'tmax',          label: 'T Max' }, // 39
+  { element: 3,   key: 'tmin',          label: 'T Min' }, // 40
+  // { element: 99,  key: 'None',       label: 'None' }, // Null
+  { element: 84,  key: 'sss24Hr',       label: 'SSS-24Hr' }, // 43
+  { element: 132, key: 'sss1Hr',        label: 'SSS-1Hr' }, // 44
+  { element: 5,   key: 'precip1Hr',     label: 'Precip-24Hr' }, // 45
+  { element: 174, key: 'precip3Hr',     label: 'Precip-3Hr' }, // 46
+  { element: 112, key: 'windDirection', label: 'Wind Direction-dd' }, // 47
+  { element: 111, key: 'windSpeed',     label: 'Wind Speed-ff' }, // 48
+  { element: 46,  key: 'insolation',    label: 'Insolation' }, // 49
 ];
 
 @Component({
@@ -77,7 +93,7 @@ export class FormSynopticRaComponent implements OnInit, IDataEntryForm {
   year!: number;
   month!: number;
   day!: number;
-  hour!: number;
+  hour: number = 6;
   raw: any;
   hasRecord = false;
   activeItem = 0;
@@ -87,7 +103,8 @@ export class FormSynopticRaComponent implements OnInit, IDataEntryForm {
   constructor(
       private modalService: BsModalService,
       private responsiveSvc: ResponsiveService,
-      private dataEntryService: DataEntryService
+      private dataEntryService: DataEntryService,
+      private stationService: StationService
     ) {}
 
   ngOnInit(): void {
@@ -97,6 +114,17 @@ export class FormSynopticRaComponent implements OnInit, IDataEntryForm {
       console.log(x);
       // this.size = x;
     });
+
+    this.dataEntryService.synopticState
+        .pipe(
+          tap((st) => this.loading = !!st),
+          filter(st => !!st),
+          take(1)
+        )
+        .subscribe((st: SynopticState) => {
+          console.log(st);
+          this.setFormState(+st.station, new Date(`${st.month}-${st.day}-${st.year}`));
+        });
   }
 
   get f() {
@@ -109,6 +137,14 @@ export class FormSynopticRaComponent implements OnInit, IDataEntryForm {
 
   get isModified(): boolean {
     return this.monthModified;
+  }
+
+  get dirtyEntries(): boolean {
+    return this.synopticGroup.toArray().filter(gp => !!gp.isDirty).length > 0;
+  }
+
+  get invalidEntries(): boolean {
+    return this.synopticGroup.toArray().filter(gp => !!gp.isInvalid).length > 0;
   }
 
   onFormModified(val: boolean) {
@@ -154,16 +190,31 @@ export class FormSynopticRaComponent implements OnInit, IDataEntryForm {
   }
 
   onHourSelect(data: any) {
-    this.hour = this.f['hour'].value;
+    this.hour = +this.f['hour'].value;
     this.loadSynopData();
   }
 
   onSubmit(e: Event) {
     this.submitted = true;
-    // if(this.form.invalid) {
-    //   return false;
-    // }
-    // this.hasRecord ? this.updateRecord() : this.addRecord();
+    if(this.form.invalid) {
+      return;
+    }
+    if(!this.dirtyEntries) {
+      this.error = 'The form has no inputs, please make some changes and try again.'
+      return;
+    }
+
+    if(this.form.invalid && (!this.f['tempRH06GMT'].invalid || !this.f['soilTemp05GMT'].invalid || !this.f['soilTemp09GMT'].invalid || !this.f['windrunRainfall'].invalid || !this.f['sunshineEvap'].invalid || !this.f['tempRH12GMT'].invalid || !this.f['soilTemp13GMT'].invalid || !this.f['tempRSoilMoist'])) {
+      return;
+    }
+
+    if(this.invalidEntries) {
+      this.error = 'The agro data contains some invalid entried, please fix the items and try again.'
+      return;
+    }
+
+    const payload: SynopticRAPayload = this.buildPayload();
+    this.hasRecord ? this.update(payload) : this.save(payload);
   }
 
   get groupArray(): FormArray {
@@ -234,6 +285,16 @@ export class FormSynopticRaComponent implements OnInit, IDataEntryForm {
     }
   }
 
+  private setFormState(station: number, date: Date) {
+    this.monthYearValue = date;
+    this.stationService.getStation(station)
+        .subscribe((res) => {
+          this.station = res.result[0];
+          this.form.controls['station'].setValue(this.station?.station_id);
+          this.loadSynopData();
+        });
+  }
+
   private loadSynopData() {
     console.log(this.station, this.year, this.month, this.day);
     if(this.station && this.year && this.month && this.day && this.hour) {
@@ -246,16 +307,20 @@ export class FormSynopticRaComponent implements OnInit, IDataEntryForm {
           .subscribe(data => {
             console.log(data);
             this.hasRecord = true;
-            this.patchForm(data)
+            this.patchForm(data);
+            this.loading = false;
           });
     }
   }
 
   private patchForm(data: any) {
-    this.formGroups.forEach((g, i) => {
-      const num = (i+1 < 10) ? `0${i+1}` : (i+1);
-      const patchValue = { day: i+1, value: data[`day${num}`], flag: data[`flag${num}`] };
-      g.patchValue({ ...patchValue });
+    this.synopticGroup.forEach((g, i) => {
+      let groupVal = { ...g.group.value };
+      const patchVal = {
+        value: data[`val_elem${this.formatEl(groupVal.element)}`],
+        flag: data[`flag${this.formatEl(groupVal.element)}`]
+      };
+      g.group.patchValue({ ...patchVal });
     });
   }
 
@@ -331,13 +396,14 @@ export class FormSynopticRaComponent implements OnInit, IDataEntryForm {
       mm: mom.month(),
       dd: mom.date(),
       hh: this.hour,
+      Val_Elem099: null,
       total: 0,
       signature: '',
       entry_datetime: new Date()
     };
     this.synopticGroup.forEach(fg => {
       const target = { ...fg.group.value };
-      payload[`val_elem${this.formatEl(target.element)}`] = target.value;
+      payload[`Val_Elem${this.formatEl(target.element)}`] = target.value;
       payload[`flag${this.formatEl(target.element)}`] = target.flag;
     });
 

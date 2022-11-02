@@ -1,4 +1,4 @@
-<h5> Carribean Synoptic Data </h5>
+<h5> Synoptic RA1 Data </h5>
 <hr>
 <form [formGroup]="form" *ngIf="form" novalidate (ngSubmit)="onSubmit($event)" (keydown.enter)="onReturn($event)">
   <c-row>
@@ -91,7 +91,7 @@
     <c-row formArrayName="tags" *ngIf="formGroups.length">
       <c-col md="12" lg="4">
         <c-row>
-          <c-col md="12" *ngFor="let g of formGroups | slice: 0:12;">
+          <c-col md="12" *ngFor="let g of formGroups | slice: 0:19;">
             <app-synoptic-form-group
               #synopticGroup
               [disabled]="!isEditable"
@@ -107,7 +107,7 @@
       </c-col>
       <c-col md="12" lg="4">
         <c-row>
-          <c-col md="12" *ngFor="let g of formGroups | slice: 12:24;">
+          <c-col md="12" *ngFor="let g of formGroups | slice: 19:38;">
             <app-synoptic-form-group
               #synopticGroup
               [disabled]="!isEditable"
@@ -123,7 +123,7 @@
       </c-col>
       <c-col md="12" lg="4">
         <c-row>
-          <c-col md="12" *ngFor="let g of formGroups | slice: 24:33;">
+          <c-col md="12" *ngFor="let g of formGroups | slice: 38:48;">
             <app-synoptic-form-group
               #synopticGroup
               [disabled]="!isEditable"
@@ -147,7 +147,7 @@
   <c-row>
     <c-col xs="12 py-4">
       <button type="submit" cButton class="px-3" color="dark">
-        <c-spinner *ngIf="loading" aria-hidden="true" size="sm"></c-spinner> Submit </button>
+        <c-spinner *ngIf="loading" aria-hidden="true" size="sm"></c-spinner> {{ hasRecord ? 'Update' : 'Save'}}  </button>
       <button type="button" cButton class="px-3 mx-1" color="dark" (click)="onReset()"> Reset </button>
       <button type="button" cButton class="px-3" color="dark" (click)="onCancel()"> Cancel </button>
     </c-col>
