@@ -11,7 +11,7 @@ import * as moment from 'moment';
 
 import { Station } from '@data/interface/station';
 import { ObsElement } from '@data/interface/element';
-import { IDataEntryForm } from '@data/interface/data-entry-form';
+import { ElementLimits, IDataEntryForm } from '@data/interface/data-entry-form';
 import { Flag } from '@data/enum/flag';
 import { UnitOptions } from '@data/enum/units';
 
@@ -37,6 +37,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
 
   station!: Station | undefined;
   element!: ObsElement | undefined;
+  limits!: ElementLimits | null;
 
   monthYearValue: Date = new Date();
   bsConfig: Partial<BsDatepickerConfig> = {
@@ -129,11 +130,13 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
   resetElement() {
     this.element = undefined;
     this.form.controls['element'].reset();
+    this.limits = null;
   }
 
   onElementSelect(data: ObsElement) {
     this.element = data;
     this.form.controls['element'].setValue(data.element_id);
+    this.limits = (data.lower_limit && data.upper_limit)? { lower: +data.lower_limit, upper: +data.upper_limit } : null;
     this.loadDailyData();
   }
 
@@ -279,7 +282,7 @@ export class FormDaily2Component implements OnInit, IDataEntryForm, IDeactivateC
     return new FormGroup({
       day:    new FormControl(day),
       value:  new FormControl(value, [Validators.min(0), Validators.max(70)]),
-      flag:   new FormControl(flag || ''),
+      flag:   new FormControl(flag || Flag.N),
       period: new FormControl(period)
     });
   }

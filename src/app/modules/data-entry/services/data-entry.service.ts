@@ -139,6 +139,7 @@ export class DataEntryService {
    *  Monthly Data
    */
   getMonthlyEntry(station: string | any, element: string | any, year: number): Observable<any> {
+    console.log(year);
     this.updateMonthlyState({ station, element, year: new Date(`1-1-${year}`).toISOString() });
     return this.http.GET(`${monthlyUrl}?station_id=${station}&element_id=${element}&yyyy=${year}&limit=25&offset=0`);
   }

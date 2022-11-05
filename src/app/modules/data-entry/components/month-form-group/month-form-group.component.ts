@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { fromEvent } from 'rxjs';
 import { Flag } from '@data/enum/flag';
 import * as moment from 'moment';
+import { ElementLimits } from '@data/interface/data-entry-form';
 
 @Component({
   selector: 'app-month-form-group',
@@ -14,6 +15,7 @@ export class MonthFormGroupComponent implements OnInit, AfterViewInit {
   @ViewChild('inputValue') txtVal!: ElementRef;
 
   @Input() modified: boolean = false;
+  @Input() limits!: ElementLimits | null;
   @Input() group: FormGroup = new FormGroup({
     month:  new FormControl(''),
     value:  new FormControl(null, Validators.required),
@@ -65,6 +67,18 @@ export class MonthFormGroupComponent implements OnInit, AfterViewInit {
   }
 
   public get isInvalid(): boolean {
+    const val = this.fg['value'].value;
+
+    if(val) {
+      if(!(/^\d+$/.test(val))) {
+        return true;
+      }
+
+      if(this.limits) {
+        return val < this.limits.lower || val > this.limits.upper;
+      }
+    }
+
     return this.fg['value'].dirty && this.fg['value'].value !== '' && (this.fg['flag'].value === Flag.M);
   }
 

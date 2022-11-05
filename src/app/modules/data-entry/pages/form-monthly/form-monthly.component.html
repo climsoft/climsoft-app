@@ -117,6 +117,7 @@
               (onBlur)="monthBlur($event)"
               (onDirty)="onFormModified($event)"
               (onRevert)="revertMonth($event)"
+              [limits]="limits"
               [group]="g">
             </app-month-form-group>
           </c-col>
@@ -134,6 +135,7 @@
               (onBlur)="monthBlur($event)"
               (onDirty)="onFormModified($event)"
               (onRevert)="revertMonth($event)"
+              [limits]="limits"
               [group]="g">
             </app-month-form-group>
           </c-col>

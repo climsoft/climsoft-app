@@ -1,3 +1,4 @@
+import { ElementLimits } from '@data/interface/data-entry-form';
 import { ConfirmationComponent } from '@shared/dialogs/confirmation/confirmation.component';
 import { Router } from '@angular/router';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
@@ -33,6 +34,7 @@ export class FormMonthlyComponent implements OnInit {
 
   station!: Station | undefined;
   element!: ObsElement | undefined;
+  limits!: ElementLimits | null;
 
   yearValue: number = new Date().getFullYear();
   bsConfig: Partial<BsDatepickerConfig> = {
@@ -118,11 +120,13 @@ export class FormMonthlyComponent implements OnInit {
   resetElement() {
     this.element = undefined;
     this.form.controls['element'].reset();
+    this.limits = null;
   }
 
   onElementSelect(data: ObsElement) {
     this.element = data;
     this.form.controls['element'].setValue(data.element_id);
+    this.limits = (data.lower_limit && data.upper_limit)? { lower: +data.lower_limit, upper: +data.upper_limit } : null;
     this.loadMonthlyData();
   }
 
@@ -147,7 +151,7 @@ export class FormMonthlyComponent implements OnInit {
   }
 
   yearSelect(e: any) {
-    this.f['yyyy'] = e;
+    this.f['yyyy'].setValue(e);
     this.renderFormMonths(e);
     this.loadMonthlyData();
   }
@@ -284,7 +288,7 @@ export class FormMonthlyComponent implements OnInit {
   private loadMonthlyData() {
     if(this.station && this.element && this.yearValue) {
       this.loading = true;
-      this.dataEntryService.getMonthlyEntry(this.station.station_id, this.element.element_id, this.yearValue)
+      this.dataEntryService.getMonthlyEntry(this.station.station_id, this.element.element_id, this.f['yyyy'].value)
           .subscribe((res) => {
             console.log(res);
             this.hasRecord = res.result.length > 0;
