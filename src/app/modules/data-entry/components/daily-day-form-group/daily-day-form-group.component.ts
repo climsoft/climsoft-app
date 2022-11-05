@@ -11,6 +11,8 @@ import { filter, of, delay, Observable, fromEvent } from 'rxjs';
 })
 export class DailyDayFormGroupComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('inputValue') txtVal!: ElementRef;
+
+  @Input() limits!: { lower: number, upper: number } | null;
   @Input() modified: boolean = false;
   @Input() group: FormGroup = new FormGroup({
     day:    new FormControl(1),
@@ -95,12 +97,14 @@ export class DailyDayFormGroupComponent implements OnInit, OnChanges, AfterViewI
     if(this.pristine.value === val && val !== '') {
       this.fg['value'].markAsPristine();
     }
-    if(val === '' && this.fg['flag'].value !== Flag.M) {
+    console.log(val, this.fg['flag'].value);
+    console.log((val === null || val === '') && this.fg['flag'].value !== Flag.M);
+    if((val === null || val === '') && this.fg['flag'].value !== Flag.M) {
       this.selectFlag(Flag.M);
     }
-    if(val !== '' && this.fg['flag'].value === Flag.M) {
-      this.selectFlag(Flag.N);
-    }
+    // if(val !== null && this.fg['flag'].value === Flag.M) {
+    //   this.selectFlag(Flag.N);
+    // }
     this.onBlur.emit(this.fg['day'].value);
     this.valFocus = false;
   }
@@ -114,6 +118,15 @@ export class DailyDayFormGroupComponent implements OnInit, OnChanges, AfterViewI
   }
 
   public get isInvalid(): boolean {
+    const val = this.fg['value'].value;
+
+    if(val && !(/^\d+$/.test(val)))
+      return true;
+
+    if(this.limits && val) {
+      return val < this.limits.lower || val > this.limits.upper;
+    }
+
     return this.fg['value'].dirty && this.fg['value'].value !== '' && (this.fg['flag'].value === Flag.M);
   }
 

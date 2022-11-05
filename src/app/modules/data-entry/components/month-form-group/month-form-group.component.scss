@@ -1,9 +1,13 @@
 $block-bg: #e5ecf2;
 $block-border: #cdd4da;
 $border-radius: 0.2rem;
+$border-focus: #9dacb9;
 
 $block-error-bg: #ffe2e2;
 $block-error-border: #dd6868;
+$block-focus-bg: #dbfaff;
+$block-dirty-bg: #a3e8fd;
+$block-dirty-border: #8cc9db;
 
 .monthly-data-row {
   padding: 0.1rem 0.3rem;
@@ -13,7 +17,7 @@ $block-error-border: #dd6868;
   border-radius: $border-radius;
 
   .label {
-    text-align: left;
+    text-align: center;
   }
 
   c-col {
@@ -25,12 +29,28 @@ $block-error-border: #dd6868;
     border: 1px solid $block-error-border;
   }
 
+  &.is-invalid {
+    background-color: $block-error-bg;
+    border: 1px solid $block-error-border;
+  }
+
+  &.is-dirty {
+    background-color: $block-dirty-bg;
+    border: 1px solid $block-dirty-border;
+  }
+
+  &.has-focus {
+    background-color: #e2e7ec;
+    border: 1px solid $border-focus;
+    box-shadow: rgb(0, 0, 0, 0.25) 1px 1px 0px 1px;
+  }
+
   .form-control:disabled {
     cursor: not-allowed;
   }
 
   .btn.rounded-pill {
-    padding: 0rem 0.4rem;
-    font-size: 0.8rem;
+    padding: 0.1rem 0.4rem;
+    font-size: 0.9rem;
   }
 }

@@ -1,3 +1,4 @@
+import { ElementLimits } from './../../../../data/interface/data-entry-form';
 import { Flag } from './../../../../data/enum/flag';
 import { filter, fromEvent } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -14,6 +15,7 @@ export class HourlyFormGroupComponent implements OnInit, AfterViewInit {
   @ViewChild('inputValue') txtVal!: ElementRef;
 
   @Input() modified: boolean = false;
+  @Input() limits!: ElementLimits | null;
   @Input() group: FormGroup = new FormGroup({
     hour:    new FormControl(1),
     value:  new FormControl(null, Validators.required),
@@ -67,6 +69,15 @@ export class HourlyFormGroupComponent implements OnInit, AfterViewInit {
   }
 
   public get isInvalid(): boolean {
+    const val = this.fg['value'].value;
+
+    if(val && !(/^\d+$/.test(val)))
+      return true;
+
+    if(this.limits && val) {
+      return val < this.limits.lower || val > this.limits.upper;
+    }
+
     return this.fg['value'].dirty && this.fg['value'].value !== '' && (this.fg['flag'].value === Flag.M);
   }
 

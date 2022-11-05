@@ -14,7 +14,7 @@ import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { ResponsiveService } from '@shared/services/responsive.service';
 import { ObsElement } from '@data/interface/element';
 import { Station } from '@data/interface/station';
-import { HourlyRecord } from '@data/interface/data-entry-form';
+import { ElementLimits, HourlyRecord } from '@data/interface/data-entry-form';
 import { IDataEntryForm } from '@data/interface/data-entry-form';
 
 import * as moment from 'moment';
@@ -37,6 +37,7 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
 
   station!: Station | undefined;
   element!: ObsElement | undefined;
+  limits!: ElementLimits | null;
 
   monthYearValue: Date = new Date();
   bsConfig: Partial<BsDatepickerConfig> = {
@@ -117,11 +118,13 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
   resetElement() {
     this.element = undefined;
     this.form.controls['element'].reset();
+    this.limits = null;
   }
 
   onElementSelect(data: ObsElement) {
     this.element = data;
     this.form.controls['element'].setValue(data.element_id);
+    this.limits = (data.lower_limit && data.upper_limit)? { lower: +data.lower_limit, upper: +data.upper_limit } : null;
     this.loadHourlyData();
   }
 
@@ -215,7 +218,7 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
   private renderFormHours() {
     this.resetHours();
     for(let i=0; i < this.hoursList.length; i++) {
-      this.hoursArray.push(this.getHourGroup({ hour: i, value: 0, flag: Flag.N }));
+      this.hoursArray.push(this.getHourGroup({ hour: i, value: '', flag: Flag.N }));
     }
   }
 
@@ -248,7 +251,7 @@ export class FormHourlyComponent implements OnInit, IDataEntryForm {
           const fVal = this.raw[`flag${postFix}`];
           this.formHoursGroups[hh] = this.getHourGroup({ hour: hh, value: +hVal, flag: Flag.N });
         } else {
-          this.formHoursGroups[hh] = this.getHourGroup({ hour: hh, value: 0, flag: Flag.N });
+          this.formHoursGroups[hh] = this.getHourGroup({ hour: hh, value: '', flag: Flag.N });
         }
       }
     });

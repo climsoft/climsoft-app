@@ -1,10 +1,8 @@
 ![OpenCDMS](http://dev3.opencdms.org/assets/img/brand/opencdms-signet.png) OpenCDMS App
-OpenCDMS UI Application contains the frontend client application built using Angular Framework, Reactive Forms and Datam odels aligned with the PyOpen data models from API.
+OpenCDMS UI Application contains the frontend client application built using Angular Framework, Reactive Forms and Data models aligned with the Py=Open data models from API.
 
 
 # ![OpenCDMS App](http://dev3.opencdms.org/assets/img/brand/opencdms-signet.png)
-
-Additionally, there is an Angular 1.5 version of this codebase that you can [fork](https://github.com/opencdms/opencdms-app/tree/main).
 
 ## How to run it locally
 1. [Download](https://github.com/opencdms/opencdms-app/tree/main) or clone the [repository](https://github.com/opencdms/opencdms-app.git) to your local machine:
@@ -27,7 +25,31 @@ $ npm start
 $ npm run cy:open
 ```
 
+## Pre-Deployment Environment setup for NodeJS on Linux
+
+As Pre-requisites please install NodeJS on Linux environment using following steps.
+
+a. Connect to your Linux instance as ec2-user using SSH.
+b. Install node version manager (nvm) by typing the following at the command line.
+```bash
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+```
+c. Activate nvm by typing the following at the command line.
+```bash
+$ . ~/.nvm/nvm.sh
+```
+d. Use nvm to install the latest version of Node.js by typing the following at the command line. This is automatically install npm as part of installation.
+```bash
+$ nvm install --lts
+```
+e. Test that Node.js is installed and running correctly by typing the following at the command line.
+```bash
+$ node -e "console.log('Running Node.js ' + process.version)"
+```
+
 ## Production Deployment
+
+Follow the below steps for deployment.
 
 1. Prepare your required environment y installing all the required dependencies including Nodejs, Git, Angular CLI etc. Clone the repository at https://github.com/opencdms/opencdms-app.git. Install the required dependencies using step-2 above. 
 
