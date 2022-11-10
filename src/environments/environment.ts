@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiPrefix: 'api',
+  dbAPIPrefix: '',
   AUTH_KEY: 'api_key',
   APP_MODE_COOKIE: 'app_mode',
   IDLE_TIME_IN_MINUTES: 5
