@@ -45,7 +45,8 @@ export class AuthService {
   }
 
   loadDatabases() {
-    return this.httpClient.post(`databases`, null);
+    const { dbAPIPrefix } = environment;
+    return this.httpClient.post(`${dbAPIPrefix}databases`, null);
   }
 
   setDatabaseName(db: string) {
