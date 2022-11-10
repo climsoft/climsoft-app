@@ -12,6 +12,29 @@
                 </div>
                 <h2>Login</h2>
                 <p class="text-medium-emphasis">Sign In to your account</p>
+
+                <c-row *ngIf="submitted && !f['db'].value">
+                  <c-col class="mt-2 mb-3">
+                    <div class="error-block"> <svg cIcon name="cilFaceDead"></svg> Please Select a database.</div>
+                  </c-col>
+                </c-row>
+
+                <c-input-group class="mb-3">
+                  <span cInputGroupText [ngClass]="{ 'invalid': (submitted || f['db'].touched) && f['db'].invalid }">
+                    <svg cIcon name="cilStorage"></svg>
+                  </span>
+                  <select formControlName="db"
+                          aria-label="Database"
+                          cSelect
+                          [ngClass]="{ 'is-invalid': (submitted || f['db'].touched) && f['db'].invalid }">
+                      <option value>Please Select  Database</option>
+                      <option *ngFor="let op of dbOptions" [value]="op.value">{{op.key}}</option>
+                  </select>
+                  <div col="12" class="invalid-feedback" *ngIf="f['db'].errors">
+                    <div *ngIf="f['db'].errors['required']">Database selection required.</div>
+                  </div>
+                </c-input-group>
+
                 <c-input-group class="mb-3">
                   <span cInputGroupText [ngClass]="{ 'invalid': (submitted || f['username'].touched) && f['username'].invalid }">
                     <svg cIcon name="cilUser"></svg>
@@ -26,6 +49,7 @@
                       <div *ngIf="f['username'].errors['required']"> <i class="fa fa-times"></i> Username is required.</div>
                     </div>
                 </c-input-group>
+
                 <c-input-group class="mb-3">
                   <span cInputGroupText [ngClass]="{ 'invalid': (submitted || f['username'].touched) && f['username'].invalid }">
                     <svg cIcon name="cilLockLocked"></svg>
@@ -41,7 +65,8 @@
                     <div *ngIf="f['password'].errors['required']">Password is required.</div>
                   </div>
                 </c-input-group>
-                <c-input-group class="mb-3">
+
+                <!-- <c-input-group class="mb-3">
                   <span cInputGroupText [ngClass]="{ 'invalid': (submitted || f['api'].touched) && f['api'].invalid }">
                     <svg cIcon name="cil-sitemap"></svg>
                   </span>
@@ -55,22 +80,8 @@
                   <div col="12" class="invalid-feedback" *ngIf="f['api'].errors">
                     <div *ngIf="f['api'].errors['required']">Target API selection required.</div>
                   </div>
-                </c-input-group>
-                <c-input-group class="mb-3">
-                  <span cInputGroupText [ngClass]="{ 'invalid': (submitted || f['db'].touched) && f['db'].invalid }">
-                    <svg cIcon name="cilStorage"></svg>
-                  </span>
-                  <select formControlName="db"
-                          aria-label="Database"
-                          cSelect
-                          [ngClass]="{ 'is-invalid': (submitted || f['db'].touched) && f['db'].invalid }">
-                      <option value>Please Select</option>
-                      <option *ngFor="let op of dbOptions" [value]="op.value">{{op.key}}</option>
-                  </select>
-                  <div col="12" class="invalid-feedback" *ngIf="f['db'].errors">
-                    <div *ngIf="f['db'].errors['required']">Database selection required.</div>
-                  </div>
-                </c-input-group>
+                </c-input-group> -->
+
                 <c-row *ngIf="submitted && error">
                   <c-col class="mt-2 mb-3">
                     <div class="error-block"> <svg cIcon name="cilFaceDead"></svg> Authentication failed, Please try again.</div>

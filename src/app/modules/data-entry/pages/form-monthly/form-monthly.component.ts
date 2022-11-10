@@ -132,12 +132,12 @@ export class FormMonthlyComponent implements OnInit {
 
   onSubmit(e: Event) {
     this.submitted = true;
-    if(this.form.invalid && this.f['months'].invalid) {
+    if(this.form.invalid && !this.f['months'].invalid) {
       return;
     }
-    console.log(this.invalidEntries);
+
     if(this.invalidEntries) {
-      this.error = 'The monthly data contains some invalid entried, please fix the items and try again.'
+      this.error = 'The monthly data contains some invalid entries, please fix the items and try again.'
       return;
     }
     console.log(+this.f['total'].value, this.calcTotal, +this.f['total'].value === this.calcTotal);
@@ -248,7 +248,7 @@ export class FormMonthlyComponent implements OnInit {
     for(let i of this.monthsList) {
       const period = moment(`${year}-${i}}`, "YYYY-MM").daysInMonth();
       const monthText = moment(`${year}-${i}`, "YYYY-MM").format('MMMM');
-      this.monthsArray.push(this.getMonthGroup({ month: monthText, value: 0, flag: Flag.M, period: period }));
+      this.monthsArray.push(this.getMonthGroup({ month: monthText, value: null, flag: Flag.M, period: period }));
     }
   }
 
@@ -346,7 +346,7 @@ export class FormMonthlyComponent implements OnInit {
     if(!this.hasChanges) {
       alert('You must enter a few values');
     }
-    this.dataEntryService.updateMonthlyEntry(this.station?.station_id, this.element?.element_id, this.yearValue, formVal).subscribe();
+    this.dataEntryService.updateMonthlyEntry(this.station?.station_id, this.element?.element_id, this.f['yyyy'].value, formVal).subscribe();
   }
 
   private buildPayload(): any {
