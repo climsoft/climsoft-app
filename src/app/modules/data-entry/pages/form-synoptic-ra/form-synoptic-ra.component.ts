@@ -261,7 +261,7 @@ export class FormSynopticRaComponent implements OnInit, IDataEntryForm {
     });
   }
 
-  private getTagGroup(index: number, element: number, key: string, label: string, value: number, flag?: string): FormGroup {
+  private getTagGroup(index: number, element: number, key: string, label: string, value: number | string, flag?: string): FormGroup {
     return new FormGroup({
       index:  new FormControl(index),
       element: new FormControl(element),
@@ -281,7 +281,7 @@ export class FormSynopticRaComponent implements OnInit, IDataEntryForm {
     });
 
     for(let i=0; i < groupsList.length; i++) {
-      this.groupArray.push(this.getTagGroup(i, groupsList[i].element, groupsList[i].key, groupsList[i].label, 0));
+      this.groupArray.push(this.getTagGroup(i, groupsList[i].element, groupsList[i].key, groupsList[i].label, ''));
     }
   }
 
@@ -322,33 +322,6 @@ export class FormSynopticRaComponent implements OnInit, IDataEntryForm {
       };
       g.group.patchValue({ ...patchVal });
     });
-  }
-
-  private addRecord() {
-    let formVal: any = {
-      station_id: this.station?.station_id,
-      yyyy: this.year,
-      mm: this.month,
-      dd: this.day,
-      hh: this.hour
-    };
-
-    this.formGroups.forEach((g, i) => {
-      const num = (i+1 < 10) ? `0${i+1}` : (i+1);
-      formVal[`day${num}`] = g.controls['value'].value;
-      formVal[`flag${num}`] = g.controls['flag'].value;
-      formVal[`period${num}`] = g.controls['period'].value;
-    });
-
-    // formVal['signature'] = this.f['signature'].value;
-    formVal['entry_datetime'] =  new Date().toISOString();
-
-    console.log(formVal);
-    // this.dataEntryService.addDailyEntry(formVal)
-  }
-
-  private updateRecord() {
-    // this.dataEntryService.updateDailyEntry(this.station?.station_id, this.element?.element_id, this.year, this.month, this.hour, formVal)
   }
 
   private save(payload: SynopticRAPayload) {

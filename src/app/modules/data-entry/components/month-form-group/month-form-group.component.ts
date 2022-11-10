@@ -18,7 +18,7 @@ export class MonthFormGroupComponent implements OnInit, AfterViewInit {
   @Input() limits!: ElementLimits | null;
   @Input() group: FormGroup = new FormGroup({
     month:  new FormControl(''),
-    value:  new FormControl(null, Validators.required),
+    value:  new FormControl(null),
     flag:   new FormControl(null),
     priod:  new FormControl(''),
   });
@@ -75,7 +75,7 @@ export class MonthFormGroupComponent implements OnInit, AfterViewInit {
       }
 
       if(this.limits) {
-        return val < this.limits.lower || val > this.limits.upper;
+        return +val < this.limits.lower || +val > this.limits.upper;
       }
     }
 

@@ -1,6 +1,6 @@
 import { ConfirmationComponent } from './../../../shared/dialogs/confirmation/confirmation.component';
 import { Router, ActivatedRoute } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, filter, tap, switchMap } from 'rxjs/operators';
@@ -30,6 +30,7 @@ export class AuthService {
   constructor(
       private router: Router,
       private route: ActivatedRoute,
+      private httpClient: HttpClient,
       private http: HttpService,
       private modalService: BsModalService
     ) {}
@@ -41,6 +42,14 @@ export class AuthService {
     }
 
     return !helper.isTokenExpired(tok);
+  }
+
+  loadDatabases() {
+    return this.httpClient.post(`databases`, null);
+  }
+
+  setDatabaseName(db: string) {
+    this.http.setDatabase(db);
   }
 
   login(cred: { username: string, password: string }): Observable<any> {

@@ -13,7 +13,7 @@ import AppConfig from '@config/app-config.json';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   form: FormGroup = new FormGroup({
     username: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
@@ -31,16 +31,18 @@ export class LoginComponent {
     { key: 'API Latest', value: 'api-latest' },
     { key: 'API Test', value: 'api-test' }
   ];
-  dbOptions = [
-    { key: 'openCDMS DB 1', value: 'opencdms-db-1' },
-    { key: 'openCDMS DB 2', value: 'opencdms-db-2' },
-    { key: 'Test Database', value: 'test_db' },
-    { key: 'Climsoft DB 1', value: 'climsoft-db-1' },
-    { key: 'Climsoft DB 2', value: 'climsoft-db-2' }
-  ];
+  dbOptions: { key: string, value: string }[] = [];
 
   constructor(private cookieService: CookieService, private authService: AuthService) {
     console.log(AppConfig);
+  }
+
+  ngOnInit(): void {
+      this.authService.loadDatabases().subscribe((dblist: any) => {
+        Object.keys(dblist).forEach((key: string) => {
+          this.dbOptions.push({ key, value: dblist[key] === 'empty-database' ? '' : dblist[key] });
+        });
+      });
   }
 
   get f() {
@@ -53,9 +55,11 @@ export class LoginComponent {
 
   onSubmit() {
     this.submitted = true;
-    if(this.form.invalid) {
+    console.log(this.f['db'].value);
+    if(!this.f['db'].value || this.form.invalid) {
       return;
     }
+    this.authService.setDatabaseName(this.f['db'].value);
     this.loading = true;
     const payload = { ...this.form.value };
     delete payload.api;
@@ -74,7 +78,5 @@ export class LoginComponent {
         });
   }
 
-  forgotPassword() {
-
-  }
+  forgotPassword() {}
 }
