@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  authApi: '',
   apiPrefix: 'https://api.climsoft.org',
   dbAPIPrefix: 'https://api.climsoft.org/',
   AUTH_KEY: 'api_key',

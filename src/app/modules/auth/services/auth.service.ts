@@ -60,6 +60,7 @@ export class AuthService {
   }
 
   login(cred: { username: string, password: string }): Observable<any> {
+    const { dbAPIPrefix } = environment;
     const payload: URLSearchParams = new URLSearchParams();
     // payload.set('grant_type', 'password');
     payload.set('scope', `deployment_key:${this.http.getDatabase()}`);
@@ -67,7 +68,7 @@ export class AuthService {
     payload.set('password', cred.password);
 
     // return this.http.POST(`token`, payload.toString(), { "Content-Type": "application/x-www-form-urlencoded" })
-    return this.httpClient.post(`token`, payload.toString(), { headers: { "Content-Type": "application/x-www-form-urlencoded" }})
+    return this.httpClient.post(`${dbAPIPrefix}token`, payload.toString(), { headers: { "Content-Type": "application/x-www-form-urlencoded" }})
                           .pipe(
                             catchError((err: HttpErrorResponse) => of({ error: err.error, status: err.status })),
                             tap((res: any) => {
