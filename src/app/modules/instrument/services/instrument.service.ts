@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 
 import { Instrument, InstrumentsState } from './../../../data/interface/instrument';
 
-const apiPrefix = `climsoft/v1`;
+const apiPrefix = `/v1`;
 
 @Injectable({
   providedIn: 'root'

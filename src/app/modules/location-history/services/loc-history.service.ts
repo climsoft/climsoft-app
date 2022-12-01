@@ -4,7 +4,7 @@ import { LocationHistoriesState, LocationHistoryPayload } from './../../../data/
 import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-const apiPrefix = `climsoft/v1/station-location-histories`;
+const apiPrefix = `/v1/station-location-histories`;
 
 @Injectable({
   providedIn: 'root'

@@ -10,7 +10,7 @@ import { FormDailyPayload, DailyState } from '@data/interface/data-entry-daily-p
 import { SynopticState } from '@data/interface/data-entry-synoptic-payload';
 import { HourlyWindPayload, HourlyWindState } from '@data/interface/data-entry-hourly-wind-payload';
 
-const apiPrefix = `climsoft/v1`;
+const apiPrefix = `/v1`;
 const hourlyUrl = `${apiPrefix}/form_hourlys`;
 const hourlyWindsUrl = `${apiPrefix}/form_hourlywinds`;
 const dailyUrl = `${apiPrefix}/form_daily2s`;

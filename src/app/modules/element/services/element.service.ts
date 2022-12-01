@@ -4,7 +4,7 @@ import { BehaviorSubject, Subject, Observable, catchError, tap } from 'rxjs';
 import { HttpService } from './../../../shared/services/http.service';
 import { ObsElement, ObsElementState } from 'src/app/data/interface/element';
 
-const apiPrefix = `climsoft/v1/obselements`;
+const apiPrefix = `/v1/obselements`;
 @Injectable({
   providedIn: 'root'
 })
@@ -66,7 +66,7 @@ export class ElementService {
   }
 
   searchElements(query: string) {
-    return this.http.GET(`climsoft/v1/obselements/search?query=${query}`);
+    return this.http.GET(`${apiPrefix}/search?query=${query}`);
   }
 
   getElement(id: number): Observable<ObsElement | any> {

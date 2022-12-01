@@ -65,7 +65,7 @@ export class IdleService {
   }
 
   awake() {
-    const apiPrefix = `climsoft/v1/flags`;
+    const apiPrefix = `/v1/flags`;
     this.http.GET(`${apiPrefix}`)
         .pipe(take(1))
         .subscribe(() => {

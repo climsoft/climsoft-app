@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, Subject, catchError, of, tap } from 'rxjs'
 
 import { Station, StationsState } from 'src/app/data/interface/station';
 
-const apiPrefix = `climsoft/v1`;
+const apiPrefix = `/v1`;
 
 @Injectable({
   providedIn: 'root'

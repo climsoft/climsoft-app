@@ -97,8 +97,8 @@ export class DailyDayFormGroupComponent implements OnInit, OnChanges, AfterViewI
     if(this.pristine.value === val && val !== '') {
       this.fg['value'].markAsPristine();
     }
-    console.log(val, this.fg['flag'].value);
-    console.log((val === null || val === '') && this.fg['flag'].value !== Flag.M);
+    // console.log(val, this.fg['flag'].value);
+    // console.log((val === null || val === '') && this.fg['flag'].value !== Flag.M);
     if((val === null || val === '') && this.fg['flag'].value !== Flag.M) {
       this.selectFlag(Flag.M);
     }

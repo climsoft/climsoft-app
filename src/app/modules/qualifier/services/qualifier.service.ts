@@ -4,7 +4,7 @@ import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
 import { HttpService } from './../../../shared/services/http.service';
 import { Qualifier, QualifiersState } from './../../../data/interface/qualifier';
 
-const apiPrefix = `climsoft/v1/station-qualifiers`;
+const apiPrefix = `/v1/station-qualifiers`;
 
 @Injectable({
   providedIn: 'root'
