@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 import { HttpService } from '@shared/services/http.service';
 import { ScheduleClass, ScheduleClassState, SchedClassUpdatePayload } from './../../../data/interface/schedule-class';
 
-const apiPrefix = `climsoft/v1`;
+const apiPrefix = `/v1`;
 
 @Injectable({
   providedIn: 'root'

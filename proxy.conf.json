@@ -1,7 +1,7 @@
 [
   {
     "context": ["/api"],
-    "target": "https://api.opencdms.org",
+    "target": "https://api.climsoft.org",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true,
@@ -9,6 +9,13 @@
   },
   {
     "context": ["/databases"],
+    "target": "https://api.climsoft.org",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  {
+    "context": [],
     "target": "https://api.climsoft.org",
     "secure": false,
     "logLevel": "debug",

@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { Component, OnInit, Input } from '@angular/core';
 import { PhysicalFeature } from '@data/interface/physical-features';
 
-const apiPrefix = `climsoft/`;
+const apiPrefix = `/`;
 
 @Component({
   selector: 'app-physical-feature',

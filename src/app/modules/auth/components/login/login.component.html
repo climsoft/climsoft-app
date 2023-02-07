@@ -28,7 +28,7 @@
                           cSelect
                           [ngClass]="{ 'is-invalid': (submitted || f['db'].touched) && f['db'].invalid }">
                       <option value>Please Select  Database</option>
-                      <option *ngFor="let op of dbOptions" [value]="op.value">{{op.key}}</option>
+                      <option *ngFor="let op of dbOptions" [value]="op.key">{{op.key}}</option>
                   </select>
                   <div col="12" class="invalid-feedback" *ngIf="f['db'].errors">
                     <div *ngIf="f['db'].errors['required']">Database selection required.</div>

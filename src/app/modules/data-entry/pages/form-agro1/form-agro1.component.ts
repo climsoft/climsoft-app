@@ -314,7 +314,7 @@ export class FormAgro1Component implements OnInit, IDataEntryForm {
     Object.keys(obsGroups).forEach((k) => {
       obsGroups[k].forEach((el: number) => {
         const target = obsList[`val_${this.formatEl(el)}`];
-        this.groupArray(k).push(this.getElementGroup(k, idx, el, target.label, 0, Flag.N));
+        this.groupArray(k).push(this.getElementGroup(k, idx, el, target.label, null, Flag.N));
         idx++;
       });
     });

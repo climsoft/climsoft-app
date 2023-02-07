@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, catchError, tap } from 'rxjs';
 import { HttpService } from '@shared/services/http.service';
 import { Injectable } from '@angular/core';
 
-const apiPrefix = `climsoft/v1`;
+const apiPrefix = `/v1`;
 
 @Injectable({
   providedIn: 'root'

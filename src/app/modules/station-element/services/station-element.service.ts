@@ -4,7 +4,7 @@ import { HttpService } from './../../../shared/services/http.service';
 import { Injectable } from '@angular/core';
 import { StationElement } from '@data/interface/station';
 
-const apiPrefix = `climsoft/v1`;
+const apiPrefix = `/v1`;
 
 @Injectable({
   providedIn: 'root'

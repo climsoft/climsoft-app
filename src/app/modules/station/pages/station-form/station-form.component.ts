@@ -111,6 +111,13 @@ export class StationFormComponent implements OnInit, IDeactivateComponent {
           console.log(res);
           this.form.removeControl('station_id');
           this.form.patchValue(res.result[0]);
+          if(this.isValidDate(res.result[0].opening_datetime)) {
+            this.bsBegin = new Date(res.result[0].opening_datetime);
+          }
+          if(this.isValidDate(res.result[0].closing_datetime)) {
+            this.bsEnd = new Date(res.result[0].closing_datetime);
+          }
+
           this.loading = false;
         });
   }
@@ -181,5 +188,9 @@ export class StationFormComponent implements OnInit, IDeactivateComponent {
         catchError((error => of(null)))
       )
     }
+  }
+
+  private isValidDate(date: any): boolean {
+    return !isNaN(new Date(date).getTime());
   }
 }

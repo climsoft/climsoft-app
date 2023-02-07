@@ -33,7 +33,13 @@ export class AuthService {
       private httpClient: HttpClient,
       private http: HttpService,
       private modalService: BsModalService
-    ) {}
+    ) {
+      let tok = localStorage.getItem(environment.AUTH_KEY);
+      if(tok && this.isLoggedIn) {
+        const decoded: any = helper.decodeToken(tok);
+        this.http.setDatabase(decoded.deployment_key);
+      }
+    }
 
   get isLoggedIn(): boolean {
     const tok = localStorage.getItem(environment.AUTH_KEY);
@@ -54,23 +60,26 @@ export class AuthService {
   }
 
   login(cred: { username: string, password: string }): Observable<any> {
+    const { dbAPIPrefix } = environment;
     const payload: URLSearchParams = new URLSearchParams();
-    payload.set('grant_type', 'password');
+    // payload.set('grant_type', 'password');
+    payload.set('scope', `deployment_key:${this.http.getDatabase()}`);
     payload.set('username', cred.username);
     payload.set('password', cred.password);
 
-    return this.http.POST(`auth`, payload.toString(), { "Content-Type": "application/x-www-form-urlencoded" })
-              .pipe(
-                catchError((err: HttpErrorResponse) => of({ error: err.error, status: err.status })),
-                tap((res: any) => {
-                  if(res && res.access_token) {
-                    const decoded: any = helper.decodeToken(res.access_token);
-                    this.handleAuth(decoded.firstName, decoded.lastName, decoded.username, res.access_token, decoded.expiresIn);
-                    this.redirectUrl = this.route.snapshot.queryParams[`returnUrl`] || `/dashboard`;
-                    this.router.navigate([this.redirectUrl]);
-                  }
-                })
-              );
+    // return this.http.POST(`token`, payload.toString(), { "Content-Type": "application/x-www-form-urlencoded" })
+    return this.httpClient.post(`${dbAPIPrefix}token`, payload.toString(), { headers: { "Content-Type": "application/x-www-form-urlencoded" }})
+                          .pipe(
+                            catchError((err: HttpErrorResponse) => of({ error: err.error, status: err.status })),
+                            tap((res: any) => {
+                              if(res && res.access_token) {
+                                const decoded: any = helper.decodeToken(res.access_token);
+                                this.handleAuth(decoded.firstName, decoded.lastName, decoded.username, res.access_token, decoded.expiresIn);
+                                this.redirectUrl = this.route.snapshot.queryParams[`returnUrl`] || `/dashboard`;
+                                this.router.navigate([this.redirectUrl]);
+                              }
+                            })
+                          );
   }
 
   logout(force: boolean = false) {

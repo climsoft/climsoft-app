@@ -8,7 +8,7 @@ import {
   PhysicalFeatureClass
 } from '@data/interface/physical-features';
 
-const apiPrefix = `climsoft/v1`;
+const apiPrefix = `/v1`;
 
 @Injectable({
   providedIn: 'root'

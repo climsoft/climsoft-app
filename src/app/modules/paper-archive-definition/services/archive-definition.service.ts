@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpService } from '@shared/services/http.service';
 import { PaperArchiveDefinition, PaperArchiveDefinitionState } from '@data/interface/paper-archive';
 
-const apiPrefix = `climsoft/v1`;
+const apiPrefix = `/v1`;
 
 @Injectable({
   providedIn: 'root'

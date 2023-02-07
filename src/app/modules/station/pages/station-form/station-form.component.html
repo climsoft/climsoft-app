@@ -227,14 +227,14 @@
                   cFormControl
                 />
                 <input
-                    name="monthYear"
-                    placeholder="Select End Date"
+                    name="openingDate"
+                    placeholder="Select Opening Date"
                     cFormControl
                     bsDatepicker
                     (bsValueChange)="onOpeningChanged($event)"
                     [ngClass]="{ 'is-invalid': submitted && f['opening_datetime'].invalid }"
                     [bsConfig]="bsConfig"
-                    [bsValue]="bsEnd"
+                    [bsValue]="bsBegin"
                     autocomplete="off"
                   >
                   <div sm="12" class="invalid-feedback" *ngIf="submitted && f['opening_datetime'].invalid">

@@ -28,13 +28,17 @@ export class HttpService {
   }
 
   public setDatabase(db: string) {
-    this.database = db === 'climsoft' ? '' : `/${db}`;
+    this.database = db;
+  }
+
+  public getDatabase() {
+    return this.database;
   }
 
   POST<T, R>(path: string, data: T, options?: any): Observable<R> {
     return this.http
       .post<R>(
-        `${this.API_BASE + this.database}/${path}`,
+        `${this.API_BASE}/${this.getDatabase()}${path}`,
         data,
         options ? { headers: new HttpHeaders(options) } : this.createDefaultOptions()
       );
@@ -43,7 +47,7 @@ export class HttpService {
   PUT<T, R>(path: string, data: T): Observable<R> {
     return this.http
       .put<R>(
-        `${this.API_BASE + this.database}/${path}`,
+        `${this.API_BASE}/${this.getDatabase()}${path}`,
         data,
         this.createDefaultOptions()
       );
@@ -51,25 +55,25 @@ export class HttpService {
 
   GET<T>(path: string): Observable<T> {
     return this.http.get<T>(
-      `${this.API_BASE + this.database}/${path}`,
+      `${this.API_BASE}/${this.getDatabase()}${path}`,
       this.createDefaultOptions()
     );
   }
 
   DELETE<R>(path: string): Observable<any> {
     return this.http.delete(
-      `${this.API_BASE + this.database}/${path}`
+      `${this.API_BASE}/${this.getDatabase()}${path}`,
       );
   }
 
   UPLOAD_TO_S3(image: File, attr: string) {
-    const path = `climsoft/v1/file-upload/image`;
+    const path = `/${this.getDatabase()}/v1/file-upload/image`;
     var formData = new FormData();
     formData.append('name', image.name);
     formData.append('file', image);
 
     return this.http.post(
-      `${this.API_BASE + this.database}/${path}`,
+      `${this.API_BASE}/${path}`,
       formData,
       { reportProgress: true, observe: 'events' }
     );
